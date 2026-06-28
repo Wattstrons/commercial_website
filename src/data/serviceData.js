@@ -68,6 +68,10 @@ import alanKayImg from "../assets/ourservice/alankay.png";
 import mattMullenwegImg from "../assets/ourservice/MattMullenweg.png";
 import dieterRamsImg from "../assets/ourservice/DieterRams.png";
 import steveJobsImg from "../assets/ourservice/SteveJobs.png";
+import stm32Logo from "../assets/icon/stm32.png";
+import seekLogo from "../assets/icon/seeklogo.png";
+import loraLogo from "../assets/icon/loro.png";
+import threeDLogo from "../assets/icon/3d.png";
 import henryFordImg from "../assets/ourservice/HenryFord.png";
 import stephenHawkingImg from "../assets/ourservice/StephenHawking.jpg";
 import edwardBerardImg from "../assets/ourservice/Edward V. Berard,.jpg";
@@ -164,7 +168,8 @@ export const PortalDevelopmentData = {
       { name: "MySQL", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" },
       { name: "AWS", logo: "https://cdn.worldvectorlogo.com/logos/aws-2.svg" },
       { name: "Azure", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azure/azure-original.svg" },
-      { name: "Docker", logo: "https://cdn.worldvectorlogo.com/logos/docker.svg" }
+      { name: "Docker", logo: "https://cdn.worldvectorlogo.com/logos/docker.svg" },
+      { name: "MQTT", logo: "https://mqtt.org/assets/img/mqtt-logo-transp.svg" }
     ]
   },
   quotes: [
@@ -226,12 +231,17 @@ export const AI_IntelligentAutomationData = {
       { name: "PyTorch", logo: "https://cdn.worldvectorlogo.com/logos/pytorch-2.svg" },
       { name: "OpenCV", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/opencv/opencv-original.svg" },
       { name: "NVIDIA Jetson", logo: "https://cdn.worldvectorlogo.com/logos/nvidia.svg" },
-      { name: "Scikit-Learn", logo: "https://upload.wikimedia.org/wikipedia/commons/0/05/Scikit_learn_logo_small.svg" },
-      { name: "Keras", logo: "https://upload.wikimedia.org/wikipedia/commons/a/ae/Keras_logo.svg" },
-      { name: "Pandas", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pandas/pandas-original.svg" },
-      { name: "NumPy", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/numpy/numpy-original.svg" },
-      { name: "Jupyter", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jupyter/jupyter-original.svg" },
-      { name: "Hugging Face", logo: "https://huggingface.co/front/assets/huggingface_logo-noborder.svg" }
+      { name: "Raspberry Pi", logo: "https://cdn.worldvectorlogo.com/logos/raspberry-pi.svg" },
+      { name: "STM32", logo: stm32Logo },
+      { name: "ESP32", logo: "https://cdn.worldvectorlogo.com/logos/espressif-systems.svg" },
+      { name: "AWS", logo: "https://cdn.worldvectorlogo.com/logos/aws-2.svg" },
+      { name: "Microsoft Azure", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azure/azure-original.svg" },
+      { name: "Google Cloud", logo: "https://cdn.worldvectorlogo.com/logos/google-cloud-1.svg" },
+      { name: "Docker", logo: "https://cdn.worldvectorlogo.com/logos/docker.svg" },
+      { name: "MongoDB", logo: "https://cdn.worldvectorlogo.com/logos/mongodb-icon-1.svg" },
+      { name: "Node.js", logo: "https://cdn.worldvectorlogo.com/logos/nodejs-icon.svg" },
+      { name: "Linux", logo: "https://cdn.worldvectorlogo.com/logos/linux-tux.svg" },
+      { name: "Git", logo: "https://cdn.worldvectorlogo.com/logos/git-icon.svg" }
     ]
   },
   quotes: [
@@ -288,22 +298,22 @@ export const embeddedSystemDesignData = {
   technologies: {
     sectionTitle: "Technologies",
     logos: [
-      { name: "STM32", logo: "https://avatars.githubusercontent.com/u/40149029?s=200&v=4" },
-      { name: "ESP32", logo: "https://avatars.githubusercontent.com/u/12781483?s=200&v=4" },
-      { name: "Arduino", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/arduino/arduino-original.svg" },
-      { name: "Raspberry Pi", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/raspberrypi/raspberrypi-original.svg" },
-      { name: "C", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg" },
-      { name: "C++", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg" },
-      { name: "Python", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" },
-      { name: "FreeRTOS", logo: "https://avatars.githubusercontent.com/u/65363435?s=200&v=4" },
-      { name: "Linux", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg" },
+      { name: "STM32", logo: stm32Logo },
+      { name: "ESP32", logo: "https://cdn.worldvectorlogo.com/logos/espressif-systems.svg" },
+      { name: "Arduino", logo: "https://cdn.worldvectorlogo.com/logos/arduino-1.svg" },
+      { name: "Raspberry Pi", logo: "https://cdn.worldvectorlogo.com/logos/raspberry-pi.svg" },
+      { name: "C", logo: "https://cdn.worldvectorlogo.com/logos/c-1.svg" },
+      { name: "C++", logo: "https://cdn.worldvectorlogo.com/logos/c.svg" },
+      { name: "Python", logo: "https://cdn.worldvectorlogo.com/logos/python-5.svg" },
+      { name: "FreeRTOS", logo: "https://upload.wikimedia.org/wikipedia/commons/4/4e/Logo_freeRTOS.png" },
+      { name: "Linux", logo: "https://cdn.worldvectorlogo.com/logos/linux-tux.svg" },
       { name: "MQTT", logo: "https://mqtt.org/assets/img/mqtt-logo-transp.svg" },
       { name: "Bluetooth", logo: "https://cdn.worldvectorlogo.com/logos/bluetooth.svg" },
       { name: "Wi-Fi", logo: "https://cdn.worldvectorlogo.com/logos/wi-fi.svg" },
-      { name: "Altium Designer", logo: "https://avatars.githubusercontent.com/u/10834371?s=200&v=4" },
+      { name: "Altium Designer", logo: seekLogo },
       { name: "KiCad", logo: "https://upload.wikimedia.org/wikipedia/commons/5/59/KiCad-Logo.svg" },
-      { name: "VS Code", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" },
-      { name: "Git", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" }
+      { name: "VS Code", logo: "https://cdn.worldvectorlogo.com/logos/visual-studio-code-1.svg" },
+      { name: "Git", logo: "https://cdn.worldvectorlogo.com/logos/git-icon.svg" }
     ]
   },
   quotes: [
@@ -362,11 +372,11 @@ export const iotApplicationDevelopmentData = {
       { name: "ESP32", logo: "https://cdn.worldvectorlogo.com/logos/espressif-systems.svg" },
       { name: "Arduino", logo: "https://cdn.worldvectorlogo.com/logos/arduino-1.svg" },
       { name: "Raspberry Pi", logo: "https://cdn.worldvectorlogo.com/logos/raspberry-pi.svg" },
-      { name: "STM32", logo: "https://avatars.githubusercontent.com/u/40149029?s=200&v=4" },
+      { name: "STM32", logo: stm32Logo },
       { name: "MQTT", logo: "https://mqtt.org/assets/img/mqtt-logo-transp.svg" },
       { name: "Bluetooth", logo: "https://cdn.worldvectorlogo.com/logos/bluetooth.svg" },
       { name: "Wi-Fi", logo: "https://cdn.worldvectorlogo.com/logos/wi-fi.svg" },
-      { name: "LoRa", logo: "https://avatars.githubusercontent.com/u/13257850?s=200&v=4" },
+      { name: "LoRa", logo: loraLogo },
       { name: "AWS", logo: "https://cdn.worldvectorlogo.com/logos/aws-2.svg" },
       { name: "Microsoft Azure", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azure/azure-original.svg" },
       { name: "Google Cloud", logo: "https://cdn.worldvectorlogo.com/logos/google-cloud-1.svg" },
@@ -432,12 +442,11 @@ export const IndustrialEnclosureProductDesignData = {
     sectionTitle: "Technologies",
     logos: [
       { name: "SolidWorks", logo: "https://cdn.worldvectorlogo.com/logos/solidworks.svg" },
-      { name: "Autodesk Fusion 360", logo: "https://avatars.githubusercontent.com/u/746322?s=200&v=4" },
       { name: "AutoCAD", logo: "https://img.icons8.com/color/512/autocad.png" },
-      { name: "CATIA", logo: "https://avatars.githubusercontent.com/u/3550269?s=200&v=4" },
+      { name: "CATIA", logo: "https://upload.wikimedia.org/wikipedia/commons/6/60/DS-CATIA-Logo.png" },
       { name: "Blender", logo: "https://cdn.worldvectorlogo.com/logos/blender-2.svg" },
       { name: "KeyShot", logo: "https://avatars.githubusercontent.com/u/11883584?s=200&v=4" },
-      { name: "Ultimaker", logo: "https://avatars.githubusercontent.com/u/1301037?s=200&v=4" },
+      { name: "3D Printing", logo: threeDLogo },
       { name: "CNC Machining", logo: "https://cdn.worldvectorlogo.com/logos/autodesk.svg" }
     ]
   },
@@ -493,10 +502,9 @@ export const pcbDesignCircuitDevelopmentData = {
   technologies: {
     sectionTitle: "Technologies",
     logos: [
-      { name: "Altium Designer", logo: "https://avatars.githubusercontent.com/u/10834371?s=200&v=4" },
+      { name: "Altium Designer", logo: seekLogo },
       { name: "KiCad", logo: "https://upload.wikimedia.org/wikipedia/commons/5/59/KiCad-Logo.svg" },
       { name: "EasyEDA", logo: "https://github.com/easyeda.png" },
-      { name: "LTspice", logo: "https://avatars.githubusercontent.com/u/41551065?s=200&v=4" },
       { name: "MATLAB", logo: "https://cdn.worldvectorlogo.com/logos/matlab.svg" },
       { name: "Git", logo: "https://cdn.worldvectorlogo.com/logos/git-icon.svg" },
       { name: "Linux", logo: "https://cdn.worldvectorlogo.com/logos/linux-tux.svg" }
@@ -556,11 +564,11 @@ export const productPrototypeHardwareDevelopmentData = {
   technologies: {
     sectionTitle: "Technologies",
     logos: [
-      { name: "STM32", logo: "https://avatars.githubusercontent.com/u/40149029?s=200&v=4" },
+      { name: "STM32", logo: stm32Logo },
       { name: "ESP32", logo: "https://cdn.worldvectorlogo.com/logos/espressif-systems.svg" },
       { name: "Arduino", logo: "https://cdn.worldvectorlogo.com/logos/arduino-1.svg" },
       { name: "Raspberry Pi", logo: "https://cdn.worldvectorlogo.com/logos/raspberry-pi.svg" },
-      { name: "Altium Designer", logo: "https://avatars.githubusercontent.com/u/10834371?s=200&v=4" },
+      { name: "Altium Designer", logo: seekLogo },
       { name: "KiCad", logo: "https://upload.wikimedia.org/wikipedia/commons/5/59/KiCad-Logo.svg" },
       { name: "EasyEDA", logo: "https://github.com/easyeda.png" },
       { name: "C", logo: "https://cdn.worldvectorlogo.com/logos/c-1.svg" },
@@ -624,19 +632,19 @@ export const softwareSolutionsData = {
   technologies: {
     sectionTitle: "Technologies",
     logos: [
-      { name: "React", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" },
       { name: "Node.js", logo: "https://cdn.worldvectorlogo.com/logos/nodejs-icon.svg" },
-      { name: "Express", logo: "https://raw.githubusercontent.com/tandpfun/skill-icons/main/icons/ExpressJS-Light.svg" },
       { name: "Python", logo: "https://cdn.worldvectorlogo.com/logos/python-5.svg" },
       { name: "Java", logo: "https://cdn.worldvectorlogo.com/logos/java-4.svg" },
       { name: ".NET", logo: "https://cdn.worldvectorlogo.com/logos/dot-net-core-7.svg" },
       { name: "MongoDB", logo: "https://cdn.worldvectorlogo.com/logos/mongodb-icon-1.svg" },
       { name: "MySQL", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" },
       { name: "PostgreSQL", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" },
+      { name: "Redis", logo: "https://cdn.worldvectorlogo.com/logos/redis.svg" },
       { name: "Neo4j", logo: "https://cdn.worldvectorlogo.com/logos/neo4j.svg" },
       { name: "Docker", logo: "https://cdn.worldvectorlogo.com/logos/docker.svg" },
       { name: "Linux", logo: "https://cdn.worldvectorlogo.com/logos/linux-tux.svg" },
-      { name: "Git", logo: "https://cdn.worldvectorlogo.com/logos/git-icon.svg" }
+      { name: "Git", logo: "https://cdn.worldvectorlogo.com/logos/git-icon.svg" },
+      { name: "MQTT", logo: "https://mqtt.org/assets/img/mqtt-logo-transp.svg" }
     ]
   },
   quotes: [

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { ChevronDown } from "lucide-react";
 
 const Question = () => {
   const [openIndex, setOpenIndex] = useState(null);
@@ -199,18 +200,16 @@ const Question = () => {
 
                 <span
                   className="
-                    text-2xl sm:text-3xl
                     inline-block
                     text-gray-400
                     select-none
                     transition-transform duration-300
                   "
                   style={{
-                    lineHeight: 1,
                     transform: openIndex === i ? 'rotate(180deg)' : 'rotate(0deg)'
                   }}
                 >
-                  ⮟
+                  <ChevronDown className="w-6 h-6 sm:w-8 sm:h-8" />
                 </span>
               </div>
 
