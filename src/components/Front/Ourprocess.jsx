@@ -151,19 +151,19 @@ const AccordionItem = ({ project, isActive, onClick }) => {
       <div className="px-5 py-4 md:px-6 md:py-5 flex items-center gap-4">
         {/* Icon */}
         <div
-          className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-500"
+          className="flex-shrink-0 w-10 h-10 min-[1600px]:!w-16 min-[1600px]:!h-16 rounded-full flex items-center justify-center transition-colors duration-500"
           style={{ background: isActive ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.03)" }}
         >
-          {Icon && <Icon size={18} color={isActive ? glowColor : "rgba(255,255,255,0.5)"} />}
+          {Icon && <Icon size={18} className="min-[1600px]:!w-8 min-[1600px]:!h-8" color={isActive ? glowColor : "rgba(255,255,255,0.5)"} />}
         </div>
 
         {/* Title */}
-        <h3 className="text-base md:text-lg font-bold flex-1 transition-colors duration-500" style={{ color: isActive ? "#fff" : "rgba(255,255,255,0.7)" }}>
+        <h3 className="text-base md:text-lg min-[1600px]:!text-[32px] font-bold flex-1 transition-colors duration-500" style={{ color: isActive ? "#fff" : "rgba(255,255,255,0.7)" }}>
           {project.title}
         </h3>
 
         {/* Number */}
-        <div className="text-lg md:text-xl font-semibold transition-colors duration-500" style={{ color: isActive ? "#ffffff" : "rgba(255,255,255,0.3)" }}>
+        <div className="text-lg md:text-xl min-[1600px]:!text-[36px] font-semibold transition-colors duration-500" style={{ color: isActive ? "#ffffff" : "rgba(255,255,255,0.3)" }}>
           {project.number}
         </div>
       </div>
@@ -177,7 +177,7 @@ const AccordionItem = ({ project, isActive, onClick }) => {
             transition={{ duration: 0.3 }}
           >
             <div className="px-5 pb-5 pt-0 md:px-6 md:pb-6 md:pt-0">
-              <p className="text-sm md:text-[15px] leading-relaxed text-white pl-[56px] pr-4">
+              <p className="text-sm md:text-[15px] min-[1600px]:!text-[22px] min-[1600px]:!pl-[80px] min-[1600px]:!leading-loose leading-relaxed text-white pl-[56px] pr-4">
                 {project.desc}
               </p>
             </div>
@@ -354,7 +354,7 @@ const Ourprocess = ({
   /* ── DESKTOP ── */
   return (
     <section ref={sectionRef} style={{ position: "relative", height: `${(steps.length + 1) * 100}vh`, background: "#000", overflowX: "clip" }}>
-      <div style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden", display: "flex", paddingTop: "120px" }}>
+      <div className="w-full max-w-[1600px] xl:max-w-[1900px] min-[1600px]:max-w-[2100px] mx-auto" style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden", display: "flex", paddingTop: "120px" }}>
 
         {/* Heading like Technology Stack */}
         <div
@@ -372,7 +372,7 @@ const Ourprocess = ({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="text-5xl font-bold tracking-tight text-white"
+            className="text-5xl font-bold tracking-tight text-white min-[1600px]:!text-[80px]"
             style={{
               margin: "0 auto",
               fontFamily: "'Space Grotesk', sans-serif",
@@ -385,7 +385,7 @@ const Ourprocess = ({
           <div style={{ pointerEvents: "auto", width: "fit-content", margin: "0 auto" }}>
             <AnimatedSplitText
               text={subtitle}
-              className="text-white"
+              className="text-white min-[1600px]:!text-[26px]"
               style={{
                 margin: "5px 0 10px 0",
                 fontSize: "18px",
@@ -411,7 +411,7 @@ const Ourprocess = ({
 
         {/* RIGHT — Accordion List */}
         <div style={{ flex: "0 0 50%", position: "relative", display: "flex", alignItems: "center", justifyContent: "center", padding: "0 clamp(24px,4vw,64px)", zIndex: 10 }}>
-          <div style={{ width: "100%", height: "65vh", minHeight: "500px", maxWidth: 560, display: "flex", flexDirection: "column", justifyContent: "space-between", gap: "12px" }}>
+          <div className="min-[1600px]:!max-w-[800px] min-[1600px]:!gap-6" style={{ width: "100%", height: "65vh", minHeight: "500px", maxWidth: 560, display: "flex", flexDirection: "column", justifyContent: "space-between", gap: "12px" }}>
             {desktopAccordionList}
           </div>
         </div>

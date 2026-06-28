@@ -72,6 +72,7 @@ import stm32Logo from "../assets/icon/stm32.png";
 import loraLogo from "../assets/icon/loro.png";
 import threeDLogo from "../assets/icon/3d.png";
 import bluetoothLogo from "../assets/icon/bluetooth.png";
+import altiumLogo from "../assets/icon/altium.png";
 import henryFordImg from "../assets/ourservice/HenryFord.png";
 import stephenHawkingImg from "../assets/ourservice/StephenHawking.jpg";
 import edwardBerardImg from "../assets/ourservice/Edward V. Berard,.jpg";
@@ -504,7 +505,8 @@ export const pcbDesignCircuitDevelopmentData = {
       { name: "EasyEDA", logo: "https://github.com/easyeda.png" },
       { name: "MATLAB", logo: "https://cdn.worldvectorlogo.com/logos/matlab.svg" },
       { name: "Git", logo: "https://cdn.worldvectorlogo.com/logos/git-icon.svg" },
-      { name: "Linux", logo: "https://cdn.worldvectorlogo.com/logos/linux-tux.svg" }
+      { name: "Linux", logo: "https://cdn.worldvectorlogo.com/logos/linux-tux.svg" },
+      { name: "Altium Designer", logo: altiumLogo }
     ]
   },
   quotes: [

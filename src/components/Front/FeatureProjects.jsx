@@ -157,14 +157,24 @@ const Featureprojects = () => {
   return (
     <section
       id="projects"
-      className="min-h-screen flex flex-col justify-center bg-transparent text-white py-12 sm:py-16 md:py-20 relative overflow-hidden"
+      className="bg-transparent text-white py-12 sm:py-16 md:py-20 lg:py-24 min-[1600px]:!py-[40px] relative z-20 overflow-hidden"
     >
 
-      <div className="w-full mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 relative z-10">
+      <style>{`
+        @media (min-width: 1600px) {
+          .feature-projects-container {
+            padding-left: clamp(30px, 4vw, 10px) !important;
+            padding-right: clamp(10px, 3vw, 10px) !important;
+          }
+        }
+      `}</style>
+      <div 
+        className="feature-projects-container w-full max-w-[1600px] xl:max-w-[1900px] min-[1600px]:max-w-[2100px] mx-auto px-4 sm:px-6 md:px-8 lg:px-[80px] min-[1600px]:!px-[80px] min-[1920px]:!px-[100px] relative z-10"
+      >
 
         {/* Header with animation when in view */}
         <motion.div
-          className="text-center mb-12"
+          className="text-center mb-6"
           variants={headerVariants}
           initial="hidden"
           whileInView="visible"
@@ -175,10 +185,11 @@ const Featureprojects = () => {
               fontSize: "clamp(32px, 5vw, 48px)",
               fontWeight: 700,
               letterSpacing: "-0.02em",
-              marginBottom: "8px",
+              marginBottom: "4px",
               color: "#ffffff",
               fontFamily: "'Space Grotesk', sans-serif",
             }}
+            className="min-[1600px]:!text-[80px]"
           >
             Ongoing projects
           </h1>
@@ -186,7 +197,7 @@ const Featureprojects = () => {
 
           {/* Subtitle with character-by-character animation (like FAQ page) */}
           <motion.p
-            className="text-white text-sm sm:text-base md:text-lg flex flex-wrap justify-center"
+            className="text-white text-sm sm:text-base md:text-lg min-[1600px]:!text-[26px] flex flex-wrap justify-center min-[1600px]:mt-6"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
@@ -224,7 +235,7 @@ sm:grid-cols-2
 md:grid-cols-2 
 lg:grid-cols-3 
 xl:grid-cols-4 
-gap-5 sm:gap-6 md:gap-7 lg:gap-8"
+gap-5 sm:gap-6 md:gap-7 lg:gap-8 min-[1600px]:!gap-12"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -242,31 +253,33 @@ gap-5 sm:gap-6 md:gap-7 lg:gap-8"
               <GlowCard
                 glowColor="cyan"
                 customSize={true}
-                className="project-card flex flex-col h-full w-full overflow-hidden group transition-all duration-500 ease-out bg-[#111111] p-0 gap-0"
+                className="project-card h-full w-full overflow-hidden group transition-all duration-500 ease-out bg-[#111111] p-0"
               >
-                <div className="relative h-[30vh] sm:h-[35vh] md:h-[40vh] lg:h-[45vh] 2xl:h-[50vh] p-[16px]">
-                  <div className="w-full h-full overflow-hidden rounded-[20px]">
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="w-full h-full object-cover"
-                    />
+                <div className="flex flex-col h-full w-full">
+                  <div className="relative h-[30vh] sm:h-[35vh] md:h-[40vh] lg:h-[50vh] xl:h-[55vh] 2xl:h-[45vh] min-[1600px]:h-[50vh] p-[16px] shrink-0">
+                    <div className="w-full h-full overflow-hidden rounded-[20px]">
+                      <img
+                        src={project.image}
+                        alt={project.title}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
                   </div>
-                </div>
 
-                {/* Body */}
-                <div className="px-5 sm:px-6 md:px-7 pb-6 pt-4 flex flex-col gap-2 flex-1">
-                  <h3 className="text-lg font-bold text-gray-100 group-hover:text-white transition-colors leading-tight">
-                    {project.title}
-                  </h3>
-                  <p className="text-gray-400 text-xs uppercase tracking-wider">
-                    {project.subtitle}
-                  </p>
-                  <p className="text-white text-[13px] ">{project.desc}</p>
-                  {/* <div className="view-details-btn flex items-center gap-1.5 mt-2 text-[#80D25D] text-[13px] font-semibold tracking-widest group-hover:gap-2.5 transition-all duration-300">
-                    {project.cta}
-                    <ArrowRight size={11} />
-                  </div> */}
+                  {/* Body */}
+                  <div className="px-5 sm:px-6 md:px-7 pb-6 pt-4 flex flex-col gap-2 flex-1">
+                    <h3 className="text-lg min-[1600px]:text-3xl font-bold text-gray-100 group-hover:text-white transition-colors leading-tight">
+                      {project.title}
+                    </h3>
+                    {project.subtitle && (
+                      <p className="text-gray-400 text-xs min-[1600px]:text-base uppercase tracking-wider">
+                        {project.subtitle}
+                      </p>
+                    )}
+                    <p className="text-white text-[13px] min-[1600px]:text-[18px] leading-relaxed flex-1">
+                      {project.desc}
+                    </p>
+                  </div>
                 </div>
               </GlowCard>
             </motion.div>

@@ -385,11 +385,10 @@ ${formData.resumeLink || "Not provided"}
             <button
               onClick={handleShare}
               title={shareSuccess ? "Link copied!" : "Share this position"}
-              className={`p-2 rounded-full transition-all duration-300 cursor-pointer ${
-                shareSuccess
+              className={`p-2 rounded-full transition-all duration-300 cursor-pointer ${shareSuccess
                   ? "bg-[#00EDC2]/20 text-[#00EDC2]"
                   : "hover:bg-white/10 text-white/60 hover:text-[#00EDC2]"
-              }`}
+                }`}
             >
               {shareSuccess ? <Check size={18} /> : <Share2 size={18} />}
             </button>
@@ -516,7 +515,7 @@ ${formData.resumeLink || "Not provided"}
           </button>
 
           <p className="text-xs text-white/40 text-center">
-            By submitting, you agree to our privacy policy. 
+            By submitting, you agree to our privacy policy.
           </p>
         </form>
       </motion.div>

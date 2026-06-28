@@ -7,7 +7,7 @@ import Ourprocess from "./Front/Ourprocess";
 const AnimatedLetters = ({ text, className = "", style = {}, delay = 0 }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-10%" });
-  
+
   const words = text.split(" ");
   let globalCharIndex = 0;
 
@@ -142,16 +142,16 @@ const BulletItem = ({ text, index }) => {
   return (
     <motion.div
       ref={ref}
-      className="flex items-center gap-3"
+      className="flex items-center gap-3 min-[1600px]:!gap-6"
       initial={{ opacity: 0, x: -30 }}
       animate={isInView ? { opacity: 1, x: 0 } : {}}
       transition={{ duration: 0.55, delay: 0.1 + index * 0.09, ease: [0.22, 1, 0.36, 1] }}
     >
       <div
-        className="w-2.5 h-2.5 rounded-full flex-shrink-0"
+        className="w-2.5 h-2.5 min-[1600px]:!w-3 min-[1600px]:!h-3 rounded-full flex-shrink-0"
         style={{ background: "#00EDC2", boxShadow: "0 0 10px rgba(0,237,194,0.4)" }}
       />
-      <span className="text-white text-base font-medium">{text}</span>
+      <span className="text-white text-base font-medium min-[1600px]:!text-[20px]">{text}</span>
     </motion.div>
   );
 };
@@ -161,12 +161,12 @@ const BentoCard = ({ className = "", innerClassName = "", children }) => {
   const mouseX = useMotionValue(-1000);
   const mouseY = useMotionValue(-1000);
   const [isHovered, setIsHovered] = useState(false);
-  
+
   const moveX = useMotionValue(0);
   const moveY = useMotionValue(0);
   const shadowX = useMotionValue(0);
   const shadowY = useMotionValue(0);
-  
+
   const hoverTransform = useMotionTemplate`translate(${moveX}px, ${moveY}px)`;
   const hoverShadow = useMotionTemplate`${shadowX}px ${shadowY}px 30px rgba(0, 0, 0, 0.7)`;
 
@@ -313,10 +313,10 @@ const QuoteSlider = ({ quotes }) => {
   }, []);
 
   // Desktop: image shrinks to 40vw.
-  const quoteWidth = useTransform(quoteScroll, [0, 0.9], isMobile ? ["100vw", "90vw"] : ["100vw", "40vw"]);
+  const quoteWidth = useTransform(quoteScroll, [0, 0.9], isMobile ? ["100%", "90%"] : ["100%", "40%"]);
   const quoteHeight = useTransform(quoteScroll, [0, 0.9], isMobile ? ["100vh", "40vh"] : ["100vh", "70vh"]);
   const quoteTop = useTransform(quoteScroll, [0, 0.9], isMobile ? ["0vh", "10vh"] : ["0vh", "15vh"]);
-  const quoteLeft = useTransform(quoteScroll, [0, 0.9], isMobile ? ["0vw", "5vw"] : ["0vw", "5vw"]);
+  const quoteLeft = useTransform(quoteScroll, [0, 0.9], isMobile ? ["0%", "5%"] : ["0%", "5%"]);
   const quoteRadius = useTransform(quoteScroll, [0, 0.9], ["0px", "0px"]);
 
   const quoteTextOpacity = useTransform(quoteScroll, [0.3, 0.9], [0, 1]);
@@ -332,7 +332,7 @@ const QuoteSlider = ({ quotes }) => {
 
   return (
     <section ref={quoteRef} className="relative bg-black" style={{ height: "200vh" }}>
-      <div className="sticky top-0 w-full h-screen overflow-hidden flex items-center justify-center bg-black">
+      <div className="sticky top-0 w-full max-w-[1600px] xl:max-w-[1900px] min-[1600px]:max-w-[2100px] mx-auto h-screen overflow-hidden flex items-center justify-center bg-black relative">
 
         {/* Animated Image */}
         <motion.div
@@ -362,7 +362,7 @@ const QuoteSlider = ({ quotes }) => {
               <motion.div
                 key={`role-${currentIndex}`}
                 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }}
-                className="text-[#00EDC2] text-xs md:text-sm font-bold tracking-widest uppercase mb-1"
+                className="text-[#00EDC2] text-xs md:text-sm min-[1600px]:!text-[20px] font-bold tracking-widest uppercase mb-1"
                 style={{ fontFamily: "'Space Grotesk', sans-serif" }}
               >
                 {current.role}
@@ -370,7 +370,7 @@ const QuoteSlider = ({ quotes }) => {
               <motion.div
                 key={`name-${currentIndex}`}
                 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}
-                className="text-white text-3xl md:text-5xl font-bold tracking-wide"
+                className="text-white text-3xl md:text-5xl min-[1600px]:!text-[64px] font-bold tracking-wide"
                 style={{ fontFamily: "'Space Grotesk', sans-serif" }}
               >
                 {current.name}
@@ -385,8 +385,8 @@ const QuoteSlider = ({ quotes }) => {
             style={{
               opacity: quoteTextOpacity,
               top: isMobile ? "50vh" : "15vh",
-              left: isMobile ? "5vw" : "45vw",
-              width: isMobile ? "90vw" : "50vw",
+              left: isMobile ? "5%" : "45%",
+              width: isMobile ? "90%" : "50%",
               height: isMobile ? "45vh" : "70vh",
             }}
             className="absolute bg-black p-8 md:py-16 md:pr-16 md:pl-8 flex flex-col justify-center pointer-events-auto"
@@ -394,7 +394,7 @@ const QuoteSlider = ({ quotes }) => {
             <AnimatedSplitText
               key={`quote-${currentIndex}`}
               text={`"${current.quote}"`}
-              className="text-white/90 text-xl md:text-3xl lg:text-4xl font-medium leading-relaxed mb-6 md:mb-8"
+              className="text-white/90 text-xl md:text-3xl lg:text-4xl min-[1600px]:!text-[56px] min-[1600px]:!leading-tight font-medium leading-relaxed mb-6 md:mb-8"
               style={{ fontFamily: "'Space Grotesk', sans-serif" }}
               delayOffset={0.2}
             />
@@ -418,13 +418,13 @@ const PremiumCTA = ({ cta, serviceName }) => {
   const [formError, setFormError] = useState("");
 
   return (
-    <section id="contact-section" className="bg-black pt-0 pb-8 md:pb-12 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16" ref={ref}>
+    <section id="contact-section" className="bg-black pt-0 pb-8 md:pb-12 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 min-[1600px]:!px-[80px]" ref={ref}>
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={isInView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
       >
-        <div className="relative group overflow-hidden w-full mx-auto">
+        <div className="relative group overflow-hidden w-full max-w-[1600px] xl:max-w-[1900px] min-[1600px]:max-w-[2100px] mx-auto">
           {/* Inner card content (no background/borders) */}
           <div className="relative pt-0 pb-12 px-0">
 
@@ -481,8 +481,8 @@ const PremiumCTA = ({ cta, serviceName }) => {
             {/* Content */}
             <div className="relative z-10 text-center max-w-4xl mx-auto">
               {/* Title with animated letters */}
-              <h2 
-                className="font-bold text-white leading-[1.1] mb-2"
+              <h2
+                className="font-bold text-white leading-[1.1] mb-2 min-[1600px]:!text-[80px]"
                 style={{
                   fontSize: "clamp(32px, 5vw, 48px)",
                   fontWeight: 700,
@@ -509,6 +509,7 @@ const PremiumCTA = ({ cta, serviceName }) => {
               {/* Subtitle */}
               <AnimatedPara
                 delay={0.7}
+                className="min-[1600px]:!text-[26px] min-[1600px]:!max-w-[900px]"
                 style={{
                   fontSize: "15px",
                   color: "rgba(255,255,255,0.45)",
@@ -532,7 +533,7 @@ const PremiumCTA = ({ cta, serviceName }) => {
               >
                 <button
                   onClick={() => setIsFormOpen(true)}
-                  className="group/btn relative inline-flex items-center gap-3 px-10 py-5 rounded-2xl font-semibold text-base overflow-hidden transition-all duration-500 hover:scale-[1.03] hover:shadow-[0_0_40px_rgba(0,237,194,0.25)] active:scale-[0.98]"
+                  className="group/btn relative inline-flex items-center gap-3 px-10 py-5 rounded-2xl font-semibold text-base overflow-hidden transition-all duration-500 hover:scale-[1.03] hover:shadow-[0_0_40px_rgba(0,237,194,0.25)] active:scale-[0.98] min-[1600px]:!text-[20px] min-[1600px]:!px-12 min-[1600px]:!py-6"
                   style={{ background: "#00EDC2", color: "#000" }}
                 >
                   <div
@@ -544,7 +545,7 @@ const PremiumCTA = ({ cta, serviceName }) => {
                   />
                   <span className="relative z-10 tracking-wide">{cta?.buttonText || "Let's Talk"}</span>
                   <motion.span
-                    className="relative z-10 text-lg"
+                    className="relative z-10 text-lg min-[1600px]:!text-[24px]"
                     animate={{ x: [0, 4, 0] }}
                     transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
                   >
@@ -767,10 +768,10 @@ const ServiceTemplate = ({ data }) => {
           </div>
 
           {/* Hero text */}
-          <div className="relative z-10 flex flex-col items-center justify-center text-center text-white px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 pointer-events-none w-full h-full">
+          <div className="relative z-10 flex flex-col items-center justify-center text-center text-white px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 min-[1600px]:!px-[80px] pointer-events-none w-full h-full">
             <div className="w-full">
               <div
-                className="font-bold tracking-wide"
+                className="font-bold tracking-wide min-[1600px]:!text-[100px] min-[1600px]:!leading-[1.1]"
                 style={{ fontSize: isMobile ? "clamp(26px, 7.5vw, 36px)" : "64px", marginBottom: "0px", lineHeight: "1.3" }}
               >
                 <AnimatedLetters text={hero.titleWord1} delay={0} />
@@ -780,7 +781,7 @@ const ServiceTemplate = ({ data }) => {
               <AnimatedWords
                 text={hero.subtitle}
                 delay={0.4}
-                className=""
+                className="min-[1600px]:!text-[26px]"
                 style={{ fontSize: isMobile ? "15px" : "18px", lineHeight: "1.8", color: "#d1d5db", whiteSpace: isMobile ? "normal" : "nowrap" }}
               />
               <motion.div
@@ -824,14 +825,14 @@ const ServiceTemplate = ({ data }) => {
                   }}
                   className="
                     relative w-full sm:w-auto
-                    px-6 sm:px-8 md:px-10
-                    py-3 sm:py-3.5 md:py-4
+                    px-6 sm:px-8 md:px-10 min-[1600px]:!px-16
+                    py-3 sm:py-3.5 md:py-4 min-[1600px]:!py-6
                     rounded-full font-semibold
                     text-black
                     border-none
                     transition-all duration-300
                     hover:scale-105
-                    text-sm sm:text-base
+                    text-sm sm:text-base min-[1600px]:!text-2xl
                     cursor-pointer
                   "
                   style={{
@@ -865,7 +866,7 @@ const ServiceTemplate = ({ data }) => {
           }}
         >
           {/* ── ABOUT ─────────────────────────────────────────────── */}
-          <section className="py-24 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 relative z-10">
+          <section className="py-24 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 min-[1600px]:!px-[80px] relative z-10">
             {/* Header */}
             <motion.div
               className="text-center mb-16 relative z-10"
@@ -885,14 +886,14 @@ const ServiceTemplate = ({ data }) => {
                   hidden: { opacity: 0, y: 20 },
                   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
                 }}
-                className="font-bold tracking-tight mb-4 text-white m-0"
+                className="font-bold tracking-tight mb-4 text-white m-0 min-[1600px]:!text-[80px]"
                 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: isMobile ? "clamp(24px, 7.5vw, 36px)" : "48px", lineHeight: "1.2" }}
               >
                 {about.sectionTitle}
               </motion.h2>
               <AnimatedSplitText
                 text={about.sectionSubtitle}
-                className="mt-4 mx-auto max-w-3xl text-white text-lg tracking-wide leading-relaxed"
+                className="mt-4 mx-auto max-w-3xl text-white text-lg min-[1600px]:!text-[26px] tracking-wide leading-relaxed min-[1600px]:!max-w-[1200px]"
                 style={{
                   fontFamily: "'Space Grotesk', sans-serif",
                   letterSpacing: "0.2px"
@@ -901,7 +902,7 @@ const ServiceTemplate = ({ data }) => {
               />
             </motion.div>
 
-            <div className="w-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div className="w-full max-w-[1600px] xl:max-w-[1900px] min-[1600px]:max-w-[2100px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center min-[1600px]:!gap-24">
 
               {/* Left Side Image */}
               <motion.div
@@ -942,18 +943,19 @@ const ServiceTemplate = ({ data }) => {
                     fontWeight: "700", marginBottom: "16px",
                     color: "#fff", lineHeight: "1.2",
                   }}
+                  className="min-[1600px]:!text-[50px]"
                 >
                   {about.contentTitle}
                 </motion.h2>
                 <AnimatedPara
-                  className="mt-2"
+                  className="mt-2 min-[1600px]:!text-[22px] min-[1600px]:!max-w-[1000px]"
                   style={{ fontSize: isMobile ? "15px" : "17px", color: "#cbd5e1", lineHeight: "1.8", marginBottom: "40px", maxWidth: "600px", textAlign: "left" }}
                   delay={0.2}
                 >
                   {about.contentDesc}
                 </AnimatedPara>
 
-                <div className="flex flex-col gap-5 w-full">
+                <div className="flex flex-col gap-5 min-[1600px]:!gap-8 w-full">
                   {about.bulletPoints.map((item, i) => (
                     <BulletItem key={i} text={item} index={i} />
                   ))}
@@ -967,7 +969,7 @@ const ServiceTemplate = ({ data }) => {
         <div className="bg-black relative">
 
           {/* ── TECH STACK ─────────────────────────────────────────── */}
-          <section className="bg-black pt-[40px] pb-6 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 relative overflow-hidden">
+          <section className="bg-black pt-[40px] pb-6 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 min-[1600px]:!px-[80px] relative overflow-hidden">
             <motion.div
               className="text-center mb-5 relative z-10"
               initial="hidden"
@@ -986,14 +988,14 @@ const ServiceTemplate = ({ data }) => {
                   hidden: { opacity: 0, y: 20 },
                   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
                 }}
-                className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-2 sm:mb-3 text-white m-0"
+                className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-2 sm:mb-3 text-white m-0 min-[1600px]:!text-[80px]"
                 style={{ fontFamily: "'Space Grotesk', sans-serif" }}
               >
                 {techStack.sectionTitle}
               </motion.h2>
               <AnimatedSplitText
                 text={techStack.sectionSubtitle}
-                className="text-white text-xs sm:text-sm md:text-base lg:text-lg tracking-tight leading-relaxed mt-1 mb-0"
+                className="text-white text-xs sm:text-sm md:text-base lg:text-lg tracking-tight leading-relaxed mt-1 mb-0 min-[1600px]:!text-[26px]"
                 style={{
                   fontFamily: "'Space Grotesk', sans-serif",
                   letterSpacing: "0.2px"
@@ -1003,17 +1005,17 @@ const ServiceTemplate = ({ data }) => {
             </motion.div>
 
             {techStack.boxes ? (
-              <div className="w-full mx-auto grid grid-cols-1 md:grid-cols-4 md:auto-rows-[150px] lg:auto-rows-[170px] gap-4 relative z-10">
+              <div className="w-full max-w-[1600px] xl:max-w-[1900px] min-[1600px]:max-w-[2100px] mx-auto grid grid-cols-1 md:grid-cols-4 md:auto-rows-[150px] lg:auto-rows-[170px] min-[1600px]:!auto-rows-[250px] gap-4 relative z-10">
 
                 {/* Box 1: High Performance */}
                 <BentoCard className="md:col-span-1 md:row-span-1 min-h-[150px]" innerClassName="p-0 overflow-hidden group">
                   <div className="absolute inset-0 bg-[#0a0a0a] z-0" />
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none pb-8">
                     <div className="flex items-baseline opacity-80 group-hover:opacity-100 transition-opacity duration-500">
-                      <span className="text-[60px] md:text-[80px] font-bold font-sans tracking-tighter text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.15)" }}>
+                      <span className="text-[60px] md:text-[80px] min-[1600px]:!text-[120px] font-bold font-sans tracking-tighter text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.15)" }}>
                         {techStack.boxes.box1.number}
                       </span>
-                      <span className="text-white/20 text-lg md:text-xl font-bold ml-1">
+                      <span className="text-white/20 text-lg md:text-xl font-bold ml-1 min-[1600px]:!text-[32px]">
                         {techStack.boxes.box1.subNumber}
                       </span>
                     </div>
@@ -1023,8 +1025,8 @@ const ServiceTemplate = ({ data }) => {
                     </div>
                   </div>
                   <div className="absolute bottom-5 left-5 z-20">
-                    <h3 className="text-white font-bold text-lg mb-0.5">{techStack.boxes.box1.title}</h3>
-                    <p className="text-white/40 text-xs pr-4">{techStack.boxes.box1.desc}</p>
+                    <h3 className="text-white font-bold text-lg mb-0.5 min-[1600px]:!text-[36px]">{techStack.boxes.box1.title}</h3>
+                    <p className="text-white/40 text-xs pr-4 min-[1600px]:!text-[22px]">{techStack.boxes.box1.desc}</p>
                   </div>
                 </BentoCard>
 
@@ -1046,8 +1048,8 @@ const ServiceTemplate = ({ data }) => {
                     </div>
                   </div>
                   <div className="absolute bottom-5 left-5 z-20 w-full bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/90 to-transparent pt-8">
-                    <h3 className="text-white font-bold text-lg mb-0.5">{techStack.boxes.box2.title}</h3>
-                    <p className="text-white/40 text-xs pr-4">{techStack.boxes.box2.desc}</p>
+                    <h3 className="text-white font-bold text-lg mb-0.5 min-[1600px]:!text-[36px]">{techStack.boxes.box2.title}</h3>
+                    <p className="text-white/40 text-xs pr-4 min-[1600px]:!text-[22px]">{techStack.boxes.box2.desc}</p>
                   </div>
                 </BentoCard>
 
@@ -1060,14 +1062,14 @@ const ServiceTemplate = ({ data }) => {
                       <div className="w-2 h-2 rounded-full bg-white/20" />
                       <div className="w-2 h-2 rounded-full bg-white/20" />
                       <div className="w-2 h-2 rounded-full bg-white/20" />
-                      <div className="ml-4 text-white/30 text-[10px] font-mono">system.config</div>
+                      <div className="ml-4 text-white/30 text-[10px] min-[1600px]:!text-[20px] font-mono">system.config</div>
                     </div>
-                    <div className="p-6 font-mono text-xs leading-relaxed opacity-60 group-hover:opacity-100 transition-opacity duration-700">
+                    <div className="p-6 font-mono text-xs min-[1600px]:!text-[22px] leading-relaxed opacity-60 group-hover:opacity-100 transition-opacity duration-700">
                       <div className="text-blue-400 mt-1">const <span className="text-yellow-200">System</span> <span className="text-pink-500">=</span> <span className="text-blue-400">()</span> <span className="text-pink-500">{`=>`}</span> {`{`}</div>
                       <div className="ml-4">
                         <div className="text-pink-500">return <span className="text-blue-400">(</span></div>
                         <div className="ml-4 text-cyan-300">{`<Architecture>`}</div>
-                        <div className="ml-8 text-white font-sans text-xs my-2 text-white/60">High Performance Core Running...</div>
+                        <div className="ml-8 text-white font-sans text-xs min-[1600px]:!text-[20px] my-2 text-white/60">High Performance Core Running...</div>
                         <div className="ml-4 text-cyan-300">{`</Architecture>`}</div>
                         <div className="text-blue-400">)</div>
                       </div>
@@ -1076,8 +1078,8 @@ const ServiceTemplate = ({ data }) => {
                   </div>
 
                   <div className="absolute bottom-6 left-6 z-20 w-full bg-gradient-to-t from-[#050505] via-[#050505]/90 to-transparent pt-12 pr-6">
-                    <h3 className="text-white font-bold text-xl mb-1">{techStack.boxes.box3.title}</h3>
-                    <p className="text-white/40 text-sm max-w-[80%]">{techStack.boxes.box3.desc}</p>
+                    <h3 className="text-white font-bold text-xl mb-1 min-[1600px]:!text-[40px]">{techStack.boxes.box3.title}</h3>
+                    <p className="text-white/40 text-sm max-w-[80%] min-[1600px]:!text-[24px]">{techStack.boxes.box3.desc}</p>
                   </div>
                 </BentoCard>
 
@@ -1104,8 +1106,8 @@ const ServiceTemplate = ({ data }) => {
                     <div className="absolute w-2 h-2 bg-orange-300 rounded-full bottom-[40%] left-[45%] blur-[3px] opacity-40" />
                   </div>
                   <div className="absolute bottom-6 left-6 z-20 w-full bg-gradient-to-t from-[#050505] via-[#050505]/90 to-transparent pt-12 pr-6">
-                    <h3 className="text-white font-bold text-xl mb-1">{techStack.boxes.box4.title}</h3>
-                    <p className="text-white/40 text-sm max-w-[80%]">{techStack.boxes.box4.desc}</p>
+                    <h3 className="text-white font-bold text-xl mb-1 min-[1600px]:!text-[40px]">{techStack.boxes.box4.title}</h3>
+                    <p className="text-white/40 text-sm max-w-[80%] min-[1600px]:!text-[24px]">{techStack.boxes.box4.desc}</p>
                   </div>
                 </BentoCard>
 
@@ -1121,8 +1123,8 @@ const ServiceTemplate = ({ data }) => {
                     </div>
                   </div>
                   <div className="absolute bottom-5 left-5 z-20 w-full bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/90 to-transparent pt-8">
-                    <h3 className="text-white font-bold text-lg mb-0.5">{techStack.boxes.box5.title}</h3>
-                    <p className="text-white/40 text-xs pr-4">{techStack.boxes.box5.desc}</p>
+                    <h3 className="text-white font-bold text-lg mb-0.5 min-[1600px]:!text-[36px]">{techStack.boxes.box5.title}</h3>
+                    <p className="text-white/40 text-xs pr-4 min-[1600px]:!text-[22px]">{techStack.boxes.box5.desc}</p>
                   </div>
                 </BentoCard>
 
@@ -1140,21 +1142,21 @@ const ServiceTemplate = ({ data }) => {
                     </div>
                   </div>
                   <div className="absolute bottom-5 left-5 z-20 w-full bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/90 to-transparent pt-8">
-                    <h3 className="text-white font-bold text-lg mb-0.5">{techStack.boxes.box6.title}</h3>
-                    <p className="text-white/40 text-xs pr-4">{techStack.boxes.box6.desc}</p>
+                    <h3 className="text-white font-bold text-lg mb-0.5 min-[1600px]:!text-[36px]">{techStack.boxes.box6.title}</h3>
+                    <p className="text-white/40 text-xs pr-4 min-[1600px]:!text-[22px]">{techStack.boxes.box6.desc}</p>
                   </div>
                 </BentoCard>
 
               </div>
             ) : techStack.items ? (
-              <div className="w-full mx-auto flex flex-wrap justify-center gap-4 relative z-10">
+              <div className="w-full max-w-[1600px] xl:max-w-[1900px] min-[1600px]:max-w-[2100px] mx-auto flex flex-wrap justify-center gap-4 relative z-10">
                 {techStack.items.map((item, i) => (
                   <div key={i} className="w-full md:w-[calc(50%-0.5rem)] lg:w-[calc(25%-0.75rem)] flex">
-                    <BentoCard className="min-h-[180px] w-full" innerClassName="p-6 flex flex-col justify-start group overflow-hidden">
+                    <BentoCard className="min-h-[180px] min-[1600px]:!min-h-[250px] w-full" innerClassName="p-6 flex flex-col justify-start group overflow-hidden">
                       <div className="absolute inset-0 bg-[#0a0a0a] z-0" />
                       <div className="relative z-10">
-                        <h3 className="text-white font-bold text-lg mb-2">{item.title}</h3>
-                        <p className="text-white/40 text-sm leading-relaxed">{item.desc}</p>
+                        <h3 className="text-white font-bold text-lg mb-2 min-[1600px]:!text-[30px]">{item.title}</h3>
+                        <p className="text-white/40 text-sm leading-relaxed min-[1600px]:!text-[18px]">{item.desc}</p>
                       </div>
                     </BentoCard>
                   </div>
@@ -1164,7 +1166,7 @@ const ServiceTemplate = ({ data }) => {
           </section>
 
           {/* ── TECHNOLOGIES GRID ─────────────────────────────────── */}
-          <section className="bg-black pt-16 pb-0 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 relative overflow-hidden">
+          <section className="bg-black pt-16 pb-0 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 min-[1600px]:!px-[80px] relative overflow-hidden">
             <motion.div
               className="text-center mb-10"
               initial="hidden"
@@ -1183,7 +1185,7 @@ const ServiceTemplate = ({ data }) => {
                   hidden: { opacity: 0, y: 20 },
                   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
                 }}
-                className="text-5xl font-bold tracking-tight text-white m-0"
+                className="text-5xl font-bold tracking-tight text-white m-0 min-[1600px]:!text-[80px]"
                 style={{ fontFamily: "'Space Grotesk', sans-serif" }}
               >
                 {technologies.sectionTitle}
@@ -1191,14 +1193,14 @@ const ServiceTemplate = ({ data }) => {
             </motion.div>
 
             {/* Infinite Marquee Container */}
-            <div className="relative w-full overflow-hidden flex flex-col gap-8 md:gap-12 pt-10 pb-10">
+            <div className="relative w-full max-w-[1600px] xl:max-w-[1900px] min-[1600px]:max-w-[2100px] mx-auto overflow-hidden flex flex-col gap-8 md:gap-12 pt-10 pb-10">
               {/* Left and Right Fades */}
               <div className="absolute top-0 left-0 w-24 md:w-64 h-full bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
               <div className="absolute top-0 right-0 w-24 md:w-64 h-full bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
 
               {/* Row 1 - Scrolls Left */}
               <div
-                className="flex gap-12 md:gap-24 pr-12 md:pr-24 w-max animate-scroll-left"
+                className="flex gap-12 md:gap-24 min-[1600px]:!gap-32 pr-12 md:pr-24 min-[1600px]:!pr-32 w-max animate-scroll-left"
                 style={{ animationDuration: '100s' }}
               >
                 {[...technologies.logos, ...technologies.logos, ...technologies.logos, ...technologies.logos, ...technologies.logos, ...technologies.logos, ...technologies.logos, ...technologies.logos].map((tech, i) => (
@@ -1207,7 +1209,7 @@ const ServiceTemplate = ({ data }) => {
                     className="flex flex-col items-center justify-center gap-4"
                   >
                     <div
-                      className="rounded-[24px] flex items-center justify-center border border-white/[0.04]"
+                      className="rounded-[24px] flex items-center justify-center border border-white/[0.04] min-[1600px]:!w-[180px] min-[1600px]:!h-[180px]"
                       style={{
                         width: isMobile ? 70 : 110,
                         height: isMobile ? 70 : 110,

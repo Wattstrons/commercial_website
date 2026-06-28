@@ -6,7 +6,7 @@ const cn = (...classes) => classes.filter(Boolean).join(" ");
 function generateStars(count, starColor) {
   const shadows = [];
   for (let i = 0; i < count; i++) {
-    const x = Math.floor(Math.random() * 4000) - 2000;
+    const x = Math.floor(Math.random() * 6000) - 2000;
     const y = Math.floor(Math.random() * 4000) - 2000;
     shadows.push(`${x}px ${y}px ${starColor}`);
   }

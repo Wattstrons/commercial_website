@@ -238,6 +238,7 @@ const ServiceCard = ({ service, index }) => {
         whileHover={{ scale: 1.02 }}
         transition={{ duration: 0.4, ease: EASE }}
         onClick={handleNavigate}
+        className="min-[1600px]:!aspect-[15/10] min-[1920px]:!aspect-[14/10]"
         style={{
           rotateX,
           rotateY,
@@ -297,9 +298,10 @@ const ServiceCard = ({ service, index }) => {
           />
 
           <h3
+            className="min-[1600px]:!text-[32px]"
             style={{
               margin: 0,
-              fontSize: "clamp(20px, 1.6vw, 24px)",
+              fontSize: "clamp(20px, 1.6vw, 28px)",
               fontWeight: 700,
               color: "#ffffff",
               fontFamily: "'Space Grotesk', sans-serif",
@@ -321,9 +323,10 @@ const ServiceCard = ({ service, index }) => {
                 style={{ overflow: "hidden" }}
               >
                 <p
+                  className="min-[1600px]:!text-[18px] min-[1600px]:!leading-[1.8]"
                   style={{
                     margin: "0 0 20px",
-                    fontSize: "clamp(13px, 1vw, 14px)",
+                    fontSize: "clamp(13px, 1vw, 17px)",
                     lineHeight: 1.6,
                     color: "rgba(255, 255, 255, 0.8)",
                     fontFamily: "'Space Grotesk', sans-serif",
@@ -340,9 +343,9 @@ const ServiceCard = ({ service, index }) => {
             style={{ display: "flex", alignItems: "center", gap: 8 }}
           >
             <span
-              className="hover:opacity-80 transition-opacity cursor-pointer"
+              className="hover:opacity-80 transition-opacity cursor-pointer min-[1600px]:!text-[20px]"
               style={{
-                fontSize: 14,
+                fontSize: "clamp(14px, 1vw, 18px)",
                 fontWeight: 600,
                 color: service.accent,
                 letterSpacing: "0.02em",
@@ -359,6 +362,7 @@ const ServiceCard = ({ service, index }) => {
               <motion.svg
                 animate={{ x: hovered ? 4 : 0 }}
                 transition={{ duration: 0.3 }}
+                className="min-[1600px]:!w-6 min-[1600px]:!h-6"
                 width="18"
                 height="18"
                 viewBox="0 0 24 24"
@@ -414,6 +418,7 @@ const AnimatedBg = () => (
 // ─── Left Panel ───────────────────────────────────────────────────────────────
 const LeftPanel = () => (
   <motion.div
+    className="min-[1600px]:!flex-[0_0_20%] min-[1920px]:!flex-[0_0_15%]"
     initial="hidden"
     whileInView="visible"
     viewport={{ once: true, margin: "-50px" }}
@@ -432,7 +437,7 @@ const LeftPanel = () => (
       display: "flex",
       flexDirection: "column",
       justifyContent: "center",
-      padding: "150px 60px 0px 80px",
+      padding: "150px clamp(60px, 4vw, 100px) 0px clamp(80px, 5vw, 140px)",
       zIndex: 20,
       alignSelf: "flex-start",
     }}
@@ -445,17 +450,15 @@ const LeftPanel = () => (
       style={{ marginBottom: "32px" }}
     >
       <h2
+        className="text-3xl sm:text-4xl md:text-5xl min-[1600px]:!text-[72px] min-[1920px]:!text-[84px] min-[1600px]:!leading-[1.1] font-bold tracking-tight text-white"
         style={{
           margin: 0,
-          fontSize: "clamp(28px, 3vw, 40px)",
-          fontWeight: 700,
           lineHeight: 1.1,
           letterSpacing: "-0.02em",
-          color: "#ffffff",
           fontFamily: "'Space Grotesk', sans-serif",
         }}
       >
-        Intelligent Technology
+        <span style={{ whiteSpace: "nowrap" }}>Intelligent Technology</span>
         <br />
         <span
           style={{
@@ -469,17 +472,14 @@ const LeftPanel = () => (
     </motion.div>
 
     <motion.p
+      className="text-white/75 text-xs sm:text-sm md:text-base lg:text-lg min-[1600px]:!text-[20px] min-[1920px]:!text-[24px] tracking-tight leading-relaxed min-[1600px]:!max-w-[700px] min-[1600px]:!mb-[40px]"
       variants={{
         hidden: { opacity: 0, x: -30 },
         visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: EASE } }
       }}
       style={{
-        margin: "0 0 32px",
-        fontSize: "clamp(16px, 1.2vw, 18px)",
-        lineHeight: 1.6,
-        color: "rgba(255,255,255,0.75)",
-        maxWidth: 420,
-        fontWeight: 400,
+        margin: "0 0 clamp(20px, 1.5vw, 32px)",
+        maxWidth: 520,
         fontFamily: "'Space Grotesk', sans-serif",
       }}
     >
@@ -508,7 +508,7 @@ const LeftPanel = () => (
             hidden: { opacity: 0, x: -20 },
             visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: EASE } },
           }}
-          style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "16px" }}
+          style={{ display: "flex", alignItems: "center", gap: "clamp(12px, 1vw, 18px)", marginBottom: "clamp(16px, 1.2vw, 24px)" }}
         >
           <div
             style={{
@@ -521,8 +521,9 @@ const LeftPanel = () => (
             }}
           />
           <span
+            className="min-[1600px]:!text-[18px] min-[1920px]:!text-[20px]"
             style={{
-              fontSize: "clamp(15px, 1.1vw, 17px)",
+              fontSize: "clamp(14px, 1vw, 19px)",
               color: "rgba(255,255,255,0.85)",
               fontWeight: 500,
               fontFamily: "'Space Grotesk', sans-serif",
@@ -549,6 +550,7 @@ const RightPanel = ({ activeGroup }) => {
 
   return (
     <div
+      className="min-[1600px]:!pr-[40px] min-[1600px]:!pl-[20px] min-[1920px]:!pr-[60px]"
       style={{
         position: "sticky",
         top: 0,
@@ -557,7 +559,7 @@ const RightPanel = ({ activeGroup }) => {
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        padding: isMobile ? "30px 16px 20px" : "150px 80px 60px 20px",
+        padding: isMobile ? "30px 16px 20px" : "150px clamp(40px, 4vw, 80px) 60px clamp(20px, 2vw, 40px)",
         alignSelf: "flex-start",
         overflow: "hidden",
       }}
@@ -565,12 +567,13 @@ const RightPanel = ({ activeGroup }) => {
       <AnimatePresence mode="wait">
         <motion.div
           key={activeGroup}
+          className="min-[1600px]:!gap-x-[30px] min-[1600px]:!gap-y-[50px] min-[1920px]:!gap-x-[40px] min-[1920px]:!gap-y-[60px]"
           style={{
             display: "grid",
             gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
-            gap: isMobile ? "24px" : "50px 40px",
+            gap: isMobile ? "24px" : "clamp(40px, 3.5vw, 60px) clamp(30px, 3vw, 55px)",
             height: "auto",
-            minHeight: isMobile ? "auto" : 600,
+            minHeight: isMobile ? "auto" : "clamp(600px, 55vh, 750px)",
           }}
         >
           {GROUPS[activeGroup].map((service, i) => (
@@ -587,7 +590,7 @@ const MobileServicesView = () => {
   const navigate = useNavigate();
 
   return (
-    <section style={{ background: "transparent", padding: "30px 20px 60px", minHeight: "100vh" }}>
+    <section id="expertise" style={{ background: "transparent", padding: "30px 20px 60px", minHeight: "100vh" }}>
       <div className="crt-scan" style={{
         position: "fixed",
         top: 0, left: 0, right: 0, bottom: 0,
@@ -830,14 +833,14 @@ export default function ServicesSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="text-5xl font-bold tracking-tight mb-4 text-white"
-              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+              className="font-bold tracking-tight mb-1 text-white min-[1600px]:!text-[80px]"
+              style={{ fontSize: "clamp(32px, 5vw, 48px)", fontFamily: "'Space Grotesk', sans-serif" }}
             >
               Our Services
             </motion.h1>
             <AnimatedSplitText
               text="Building Smart Connected Systems or Intelligent Technology Solutions"
-              className="text-white text-sm sm:text-base md:text-lg text-center tracking-tight max-w-3xl leading-relaxed max-md:px-4 mx-auto flex flex-wrap justify-center"
+              className="text-white text-sm sm:text-base md:text-lg min-[1600px]:!text-[26px] text-center tracking-tight max-w-3xl min-[1600px]:!max-w-[1200px] leading-relaxed max-md:px-4 mx-auto flex flex-wrap justify-center"
               style={{
                 fontFamily: "'Space Grotesk', sans-serif",
                 letterSpacing: "0.2px"
@@ -847,7 +850,7 @@ export default function ServicesSection() {
           </div>
 
           {/* Side-by-side layout */}
-          <div className="relative z-10 flex h-screen w-full mx-auto max-w-[1600px] lg:max-w-[1600px] xl:max-w-[1900px]">
+          <div className="relative z-10 flex h-screen w-full mx-auto max-w-[1600px] lg:max-w-[1600px] xl:max-w-[1900px] 2xl:max-w-[2100px]">
             <LeftPanel />
             <RightPanel activeGroup={activeGroup} />
           </div>

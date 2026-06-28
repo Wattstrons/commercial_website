@@ -197,7 +197,7 @@ const NavBar = () => {
 
   /* ─── CSS helpers ──────────────────────────────────────────────────── */
   const navLinkClass = (isActive = false) =>
-    "view-details-btn nav-link relative flex items-center px-1.5 lg:px-2 xl:px-3 py-2 font-medium transition-all duration-300 whitespace-nowrap text-[13px] lg:text-sm xl:text-base " +
+    "view-details-btn nav-link relative flex items-center px-1.5 lg:px-2 xl:px-3 py-2 font-medium transition-all duration-300 whitespace-nowrap text-[13px] lg:text-sm xl:text-base min-[1600px]:!text-[22px] " +
     (isActive
       ? "text-[#00EDC2]"
       : "text-white hover:text-white hover:drop-shadow-[0_0_30px_#8DE05A] hover:[text-shadow:0_0_15px_#8DE05A,0_0_35px_#8DE05A]");
@@ -277,8 +277,8 @@ const NavBar = () => {
                 }
               }}
             >
-              <img src={logo} alt="logo" className="h-8 sm:h-9 lg:h-8 xl:h-10 w-auto relative z-10" />
-              <span className="text-[#00EDC2] text-base sm:text-lg lg:text-base xl:text-xl font-bold tracking-wide relative z-10 whitespace-nowrap transition-all duration-300 group-hover:[text-shadow:0_0_15px_#8DE05A,0_0_35px_#8DE05A]">
+              <img src={logo} alt="logo" className="h-8 sm:h-9 lg:h-8 xl:h-10 min-[1600px]:!h-12 w-auto relative z-10" />
+              <span className="text-[#00EDC2] text-base sm:text-lg lg:text-base xl:text-xl min-[1600px]:!text-[36px] font-bold tracking-wide relative z-10 whitespace-nowrap transition-all duration-300 group-hover:[text-shadow:0_0_15px_#8DE05A,0_0_35px_#8DE05A]">
                 WATTSTRONS
               </span>
             </Link>
@@ -292,7 +292,7 @@ const NavBar = () => {
             <div className="hidden lg:flex items-center gap-3">
               <button
                 onClick={handleGetStarted}
-                className="view-details-btn relative px-4 lg:px-5 xl:px-6 py-2 rounded-full font-medium text-[13px] lg:text-sm xl:text-base text-black bg-[#00EDC2] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_#8DE05A] whitespace-nowrap"
+                className="view-details-btn relative px-4 lg:px-5 xl:px-6 py-2 rounded-full font-medium text-[13px] lg:text-sm xl:text-base min-[1600px]:!text-[22px] text-black bg-[#00EDC2] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_#8DE05A] whitespace-nowrap"
               >
                 Start Your Project
               </button>

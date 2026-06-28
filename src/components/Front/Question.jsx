@@ -84,8 +84,8 @@ const Question = () => {
   };
 
   return (
-    <section className="bg-transparent text-white py-6 sm:py-8 md:py-10 relative z-10">
-      <div className="w-full mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
+    <section className="bg-transparent text-white py-12 sm:py-16 md:py-20 relative z-10">
+      <div className="question-container w-full max-w-[1600px] xl:max-w-[1900px] min-[1600px]:max-w-[2100px] mx-auto px-4 sm:px-6 md:px-8 lg:px-[80px] min-[1600px]:!px-[80px] min-[1920px]:!px-[100px]">
 
         {/* ================= HEADING ================= */}
         <div className="text-center max-w-3xl 2xl:max-w-[1400px] min-[1920px]:max-w-none mx-auto mb-6 sm:mb-8 md:mb-10 2xl:mb-12 overflow-hidden">
@@ -100,6 +100,7 @@ const Question = () => {
               color: "#ffffff",
               fontFamily: "'Space Grotesk', sans-serif",
             }}
+            className="min-[1600px]:!text-[80px]"
           >
             Frequently Asked Questions
           </h1>
@@ -118,7 +119,7 @@ const Question = () => {
 
           {/* Paragraph with split animation */}
           <motion.p
-            className="text-white-400 text-sm sm:text-base md:text-lg flex flex-wrap justify-center"
+            className="text-white text-sm sm:text-base md:text-lg min-[1600px]:!text-[26px] flex flex-wrap justify-center min-[1600px]:mt-6"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
@@ -150,7 +151,7 @@ const Question = () => {
 
         {/* ================= FAQ ACCORDION WITH HOVER ANIMATION ================= */}
         <motion.div
-          className="space-y-3 sm:space-y-4"
+          className="space-y-2 sm:space-y-3 min-[1600px]:space-y-4"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -179,7 +180,7 @@ const Question = () => {
               <div
                 className="
                   px-4 sm:px-5 md:px-6
-                  py-4 sm:py-5
+                  py-3 lg:py-4 xl:py-5
                   flex justify-between items-center
                   hover:bg-[#222]
                   transition-colors duration-300
@@ -189,8 +190,7 @@ const Question = () => {
                 <p
                   className="
                     text-white
-                    text-sm sm:text-base
-                    md:text-lg
+                    text-xs sm:text-sm md:text-base lg:text-lg min-[1600px]:!text-[20px] min-[1920px]:!text-[24px]
                     pr-4
                     font-medium
                   "
@@ -209,7 +209,7 @@ const Question = () => {
                     transform: openIndex === i ? 'rotate(180deg)' : 'rotate(0deg)'
                   }}
                 >
-                  <ChevronDown className="w-6 h-6 sm:w-8 sm:h-8" />
+                  <ChevronDown className="w-5 h-5 sm:w-6 sm:h-6 lg:w-5 lg:h-5 xl:w-6 xl:h-6 min-[1600px]:!w-8 min-[1600px]:!h-8" />
                 </span>
               </div>
 
@@ -229,11 +229,10 @@ const Question = () => {
                     <p
                       className="
                         text-gray-400
-                        text-xs sm:text-sm
-                        md:text-base
+                        text-xs sm:text-sm md:text-base lg:text-lg min-[1600px]:!text-[20px] min-[1920px]:!text-[24px]
                         leading-relaxed
                         px-4 sm:px-5 md:px-6
-                        pb-4 sm:pb-5
+                        pb-3 lg:pb-4 xl:pb-5
                       "
                     >
                       {item.a}
