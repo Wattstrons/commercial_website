@@ -3,9 +3,6 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
-  base: '/', // ✅ correct place
-  plugins: [
-    react(),
-    tailwindcss(),
-  ],
+  base: '/commercial_website/',
+  plugins: [react(), tailwindcss()],
 })
