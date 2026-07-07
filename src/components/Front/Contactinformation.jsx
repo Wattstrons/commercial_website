@@ -12,6 +12,8 @@ const ContactInformation = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [statusMessage, setStatusMessage] = useState({ type: "", text: "" });
 
+
+
   const floatingAnimation = {
     y: [0, -8, 0],
     transition: {
@@ -63,9 +65,9 @@ const ContactInformation = () => {
       } else {
         setStatusMessage({ type: "error", text: data.message || "Failed to send message. Please try again." });
       }
-    } catch (error) {
-      console.error("Error submitting form:", error);
-      setStatusMessage({ type: "error", text: "A network error occurred. Please try again later." });
+    } catch (err) {
+      console.error("Error submitting form:", err);
+      setStatusMessage({ type: "err", text: "A network error occurred. Please try again later." });
     } finally {
       setIsSubmitting(false);
     }
