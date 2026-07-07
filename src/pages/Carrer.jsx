@@ -238,7 +238,7 @@ const JobApplicationModal = ({ job, isOpen, onClose }) => {
     phone: "",
     experience: "",
     coverLetter: "",
-    resumeLink: "",
+    resumeFile: null,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
@@ -270,51 +270,56 @@ const JobApplicationModal = ({ job, isOpen, onClose }) => {
   };
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    if (e.target.name === 'resumeFile') {
+      const file = e.target.files[0];
+      if (file) {
+        if (file.size > 1 * 1024 * 1024) {
+          setSubmitStatus({ type: "error", message: "File size must be less than 1MB." });
+          e.target.value = null; // reset
+          setTimeout(() => setSubmitStatus(null), 3000);
+          return;
+        }
+        setFormData({ ...formData, resumeFile: file });
+      }
+    } else if (e.target.name === 'phone') {
+      // Only allow numbers and limit to 10 digits
+      const value = e.target.value.replace(/\D/g, '').slice(0, 10);
+      setFormData({ ...formData, phone: value });
+    } else {
+      setFormData({ ...formData, [e.target.name]: e.target.value });
+    }
   };
 
-  const sendToWhatsApp = async () => {
-    const phoneNumber = "9025571824";
+  const sendApplicationToAPI = async () => {
+    const data = new FormData();
+    data.append('jobTitle', job.title);
+    data.append('fullName', formData.fullName);
+    data.append('email', formData.email);
+    data.append('phone', formData.phone);
+    data.append('experience', formData.experience);
+    if (formData.resumeFile) {
+      data.append('resume', formData.resumeFile);
+    }
 
-    const message = `*NEW JOB APPLICATION* 🚀
-    
-━━━━━━━━━━━━━━━━━━━━━
-📌 *Position:* ${job.title}
-📍 *Location:* ${job.location}
-💼 *Type:* ${job.type}
-━━━━━━━━━━━━━━━━━━━━━
+    const response = await fetch('/api/career', {
+      method: 'POST',
+      body: data
+    });
 
-👤 *Candidate Details:*
-─────────────────────
-*Name:* ${formData.fullName}
-*Email:* ${formData.email}
-*Phone:* ${formData.phone}
-*Experience:* ${formData.experience || "Not specified"}
+    const result = await response.json();
 
+    if (!response.ok) {
+      throw new Error(result.message || 'Failed to submit application');
+    }
 
-
-🔗 *Resume/CV Link:*
-${formData.resumeLink || "Not provided"}
-
-━━━━━━━━━━━━━━━━━━━━━
-📅 *Applied on:* ${new Date().toLocaleString()}
-    `;
-
-    const encodedMessage = encodeURIComponent(message);
-    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
-
-    window.open(whatsappUrl, "_blank");
     return true;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.fullName || !formData.email || !formData.phone) {
-      setSubmitStatus({ type: "error", message: "Please fill in all required fields." });
+    if (!formData.fullName || !formData.email || !formData.phone || !formData.resumeFile) {
+      setSubmitStatus({ type: "error", message: "Please fill in all required fields and upload a resume." });
       setTimeout(() => setSubmitStatus(null), 3000);
       return;
     }
@@ -326,8 +331,8 @@ ${formData.resumeLink || "Not provided"}
       return;
     }
 
-    if (formData.phone.length < 10) {
-      setSubmitStatus({ type: "error", message: "Please enter a valid phone number." });
+    if (formData.phone.length !== 10) {
+      setSubmitStatus({ type: "error", message: "Phone number must be exactly 10 digits." });
       setTimeout(() => setSubmitStatus(null), 3000);
       return;
     }
@@ -335,8 +340,8 @@ ${formData.resumeLink || "Not provided"}
     setIsSubmitting(true);
 
     try {
-      await sendToWhatsApp();
-      setSubmitStatus({ type: "success", message: "Application sent successfully! ." });
+      await sendApplicationToAPI();
+      setSubmitStatus({ type: "success", message: "Application sent successfully!" });
 
       setTimeout(() => {
         setFormData({
@@ -345,7 +350,7 @@ ${formData.resumeLink || "Not provided"}
           phone: "",
           experience: "",
           coverLetter: "",
-          resumeLink: "",
+          resumeFile: null,
         });
         setSubmitStatus(null);
         setTimeout(() => {
@@ -385,11 +390,10 @@ ${formData.resumeLink || "Not provided"}
             <button
               onClick={handleShare}
               title={shareSuccess ? "Link copied!" : "Share this position"}
-              className={`p-2 rounded-full transition-all duration-300 cursor-pointer ${
-                shareSuccess
+              className={`p-2 rounded-full transition-all duration-300 cursor-pointer ${shareSuccess
                   ? "bg-[#00EDC2]/20 text-[#00EDC2]"
                   : "hover:bg-white/10 text-white/60 hover:text-[#00EDC2]"
-              }`}
+                }`}
             >
               {shareSuccess ? <Check size={18} /> : <Share2 size={18} />}
             </button>
@@ -403,7 +407,7 @@ ${formData.resumeLink || "Not provided"}
         </div>
 
         {/* Modal Body - Form */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-5">
+        <form onSubmit={handleSubmit} noValidate className="p-6 space-y-5">
           <div>
             <label className="block text-sm font-medium text-white/80 mb-2 cursor-pointer">
               Full Name <span className="text-red-400">*</span>
@@ -439,13 +443,14 @@ ${formData.resumeLink || "Not provided"}
               Phone Number <span className="text-red-400">*</span>
             </label>
             <input
-              type="tel"
+              type="text"
               name="phone"
               value={formData.phone}
               onChange={handleChange}
               required
+              maxLength="10"
               className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:border-[#00EDC2]/50 focus:ring-1 focus:ring-[#00EDC2]/50 focus:outline-none transition-colors cursor-pointer"
-              placeholder="+1234567890"
+              placeholder="1234567890"
             />
           </div>
 
@@ -472,18 +477,18 @@ ${formData.resumeLink || "Not provided"}
 
           <div>
             <label className="block text-sm font-medium text-white/80 mb-2 cursor-pointer">
-              Resume/CV Link (Google Drive, Dropbox, etc.)
+              Upload Resume/CV (PDF, DOC, DOCX - Max 1MB) <span className="text-red-400">*</span>
             </label>
             <input
-              type="url"
-              name="resumeLink"
-              value={formData.resumeLink}
+              type="file"
+              name="resumeFile"
+              accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
               onChange={handleChange}
-              className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:border-[#00EDC2]/50 focus:ring-1 focus:ring-[#00EDC2]/50 focus:outline-none transition-colors cursor-pointer"
-              placeholder="https://drive.google.com/..."
+              required
+              className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:border-[#00EDC2]/50 focus:ring-1 focus:ring-[#00EDC2]/50 focus:outline-none transition-colors cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#00EDC2]/10 file:text-[#00EDC2] hover:file:bg-[#00EDC2]/20"
             />
             <p className="text-xs text-white/40 mt-1">
-              Please upload your resume to Google Drive or any cloud service and share the link
+              Please upload a document file containing your resume
             </p>
           </div>
 
@@ -516,7 +521,7 @@ ${formData.resumeLink || "Not provided"}
           </button>
 
           <p className="text-xs text-white/40 text-center">
-            By submitting, you agree to our privacy policy. 
+            By submitting, you agree to our privacy policy.
           </p>
         </form>
       </motion.div>

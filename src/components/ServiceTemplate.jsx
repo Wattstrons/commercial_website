@@ -1,13 +1,16 @@
 import React, { useRef, useState, useEffect, useCallback } from "react";
 import { motion, useScroll, useTransform, useInView, useMotionValue, useMotionTemplate, AnimatePresence } from "framer-motion";
 import Ourprocess from "./Front/Ourprocess";
+import Section from "./layout/Section";
+import Container from "./layout/Container";
+import SectionHeader, { AnimatedSplitText } from "./layout/SectionHeader";
 
 // ── Animated helpers ──────────────────────────────────────────────────
 
 const AnimatedLetters = ({ text, className = "", style = {}, delay = 0 }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-10%" });
-  
+
   const words = text.split(" ");
   let globalCharIndex = 0;
 
@@ -44,53 +47,6 @@ const AnimatedLetters = ({ text, className = "", style = {}, delay = 0 }) => {
         </span>
       ))}
     </span>
-  );
-};
-
-const AnimatedSplitText = ({ text, delayOffset = 0.2, className = "", style = {} }) => {
-  const words = text.split(" ");
-  let charIndex = 0;
-  const totalChars = text.length;
-  const mid = Math.floor(totalChars / 2);
-
-  return (
-    <motion.p
-      className={className}
-      style={style}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
-    >
-      {words.map((word, wIdx) => {
-        const wordNode = (
-          <motion.span key={wIdx} className="inline-block whitespace-nowrap">
-            {word.split("").map((char, cIdx) => {
-              const i = charIndex++;
-              return (
-                <motion.span
-                  key={cIdx}
-                  variants={{
-                    hidden: { opacity: 0, x: i < mid ? -20 : 20 },
-                    visible: { opacity: 1, x: 0 },
-                  }}
-                  transition={{ duration: 0.3, delay: delayOffset + i * 0.01 }}
-                  className="inline-block"
-                >
-                  {char}
-                </motion.span>
-              );
-            })}
-          </motion.span>
-        );
-        charIndex++; // Account for the space character
-        return (
-          <React.Fragment key={wIdx}>
-            {wordNode}
-            {wIdx < words.length - 1 && " "}
-          </React.Fragment>
-        );
-      })}
-    </motion.p>
   );
 };
 
@@ -142,16 +98,16 @@ const BulletItem = ({ text, index }) => {
   return (
     <motion.div
       ref={ref}
-      className="flex items-center gap-3"
+      className="flex items-center gap-3 min-[1600px]:!gap-6"
       initial={{ opacity: 0, x: -30 }}
       animate={isInView ? { opacity: 1, x: 0 } : {}}
       transition={{ duration: 0.55, delay: 0.1 + index * 0.09, ease: [0.22, 1, 0.36, 1] }}
     >
       <div
-        className="w-2.5 h-2.5 rounded-full flex-shrink-0"
+        className="w-2.5 h-2.5 min-[1600px]:!w-3 min-[1600px]:!h-3 rounded-full flex-shrink-0"
         style={{ background: "#00EDC2", boxShadow: "0 0 10px rgba(0,237,194,0.4)" }}
       />
-      <span className="text-white text-base font-medium">{text}</span>
+      <span className="text-white text-base font-medium min-[1600px]:!text-[20px]">{text}</span>
     </motion.div>
   );
 };
@@ -161,12 +117,12 @@ const BentoCard = ({ className = "", innerClassName = "", children }) => {
   const mouseX = useMotionValue(-1000);
   const mouseY = useMotionValue(-1000);
   const [isHovered, setIsHovered] = useState(false);
-  
+
   const moveX = useMotionValue(0);
   const moveY = useMotionValue(0);
   const shadowX = useMotionValue(0);
   const shadowY = useMotionValue(0);
-  
+
   const hoverTransform = useMotionTemplate`translate(${moveX}px, ${moveY}px)`;
   const hoverShadow = useMotionTemplate`${shadowX}px ${shadowY}px 30px rgba(0, 0, 0, 0.7)`;
 
@@ -313,10 +269,10 @@ const QuoteSlider = ({ quotes }) => {
   }, []);
 
   // Desktop: image shrinks to 40vw.
-  const quoteWidth = useTransform(quoteScroll, [0, 0.9], isMobile ? ["100vw", "90vw"] : ["100vw", "40vw"]);
+  const quoteWidth = useTransform(quoteScroll, [0, 0.9], isMobile ? ["100%", "90%"] : ["100%", "40%"]);
   const quoteHeight = useTransform(quoteScroll, [0, 0.9], isMobile ? ["100vh", "40vh"] : ["100vh", "70vh"]);
   const quoteTop = useTransform(quoteScroll, [0, 0.9], isMobile ? ["0vh", "10vh"] : ["0vh", "15vh"]);
-  const quoteLeft = useTransform(quoteScroll, [0, 0.9], isMobile ? ["0vw", "5vw"] : ["0vw", "5vw"]);
+  const quoteLeft = useTransform(quoteScroll, [0, 0.9], isMobile ? ["0%", "5%"] : ["0%", "5%"]);
   const quoteRadius = useTransform(quoteScroll, [0, 0.9], ["0px", "0px"]);
 
   const quoteTextOpacity = useTransform(quoteScroll, [0.3, 0.9], [0, 1]);
@@ -331,8 +287,8 @@ const QuoteSlider = ({ quotes }) => {
   if (!current) return null;
 
   return (
-    <section ref={quoteRef} className="relative bg-black" style={{ height: "200vh" }}>
-      <div className="sticky top-0 w-full h-screen overflow-hidden flex items-center justify-center bg-black">
+    <Section noPadding ref={quoteRef} className="relative bg-black" style={{ height: "200vh" }}>
+      <Container className="sticky top-0 h-screen overflow-hidden flex items-center justify-center bg-black relative !px-0">
 
         {/* Animated Image */}
         <motion.div
@@ -362,7 +318,7 @@ const QuoteSlider = ({ quotes }) => {
               <motion.div
                 key={`role-${currentIndex}`}
                 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }}
-                className="text-[#00EDC2] text-xs md:text-sm font-bold tracking-widest uppercase mb-1"
+                className="text-[#00EDC2] text-xs md:text-sm min-[1600px]:!text-[20px] font-bold tracking-widest uppercase mb-1"
                 style={{ fontFamily: "'Space Grotesk', sans-serif" }}
               >
                 {current.role}
@@ -370,7 +326,7 @@ const QuoteSlider = ({ quotes }) => {
               <motion.div
                 key={`name-${currentIndex}`}
                 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}
-                className="text-white text-3xl md:text-5xl font-bold tracking-wide"
+                className="text-white text-3xl md:text-5xl min-[1600px]:!text-[64px] font-bold tracking-wide"
                 style={{ fontFamily: "'Space Grotesk', sans-serif" }}
               >
                 {current.name}
@@ -385,8 +341,8 @@ const QuoteSlider = ({ quotes }) => {
             style={{
               opacity: quoteTextOpacity,
               top: isMobile ? "50vh" : "15vh",
-              left: isMobile ? "5vw" : "45vw",
-              width: isMobile ? "90vw" : "50vw",
+              left: isMobile ? "5%" : "45%",
+              width: isMobile ? "90%" : "50%",
               height: isMobile ? "45vh" : "70vh",
             }}
             className="absolute bg-black p-8 md:py-16 md:pr-16 md:pl-8 flex flex-col justify-center pointer-events-auto"
@@ -394,7 +350,7 @@ const QuoteSlider = ({ quotes }) => {
             <AnimatedSplitText
               key={`quote-${currentIndex}`}
               text={`"${current.quote}"`}
-              className="text-white/90 text-xl md:text-3xl lg:text-4xl font-medium leading-relaxed mb-6 md:mb-8"
+              className="text-white/90 text-xl md:text-3xl lg:text-4xl min-[1600px]:!text-[56px] min-[1600px]:!leading-tight font-medium leading-relaxed mb-6 md:mb-8"
               style={{ fontFamily: "'Space Grotesk', sans-serif" }}
               delayOffset={0.2}
             />
@@ -402,8 +358,8 @@ const QuoteSlider = ({ quotes }) => {
           </motion.div>
         </div>
 
-      </div>
-    </section>
+      </Container>
+    </Section>
   );
 };
 // ── Premium CTA Component ───────────────────────────────────────────
@@ -416,258 +372,297 @@ const PremiumCTA = ({ cta, serviceName }) => {
   const [userEmail, setUserEmail] = useState("");
   const [userMessage, setUserMessage] = useState("");
   const [formError, setFormError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+
+  const handleServiceSubmit = async () => {
+    if (!userName.trim() || !userEmail.trim() || !userMessage.trim()) {
+      setFormError("Please fill in all fields before submitting.");
+      return;
+    }
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(userEmail.trim())) {
+      setFormError("Please enter a valid email address.");
+      return;
+    }
+
+    setFormError("");
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch('/api/service', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userName: userName.trim(),
+          userEmail: userEmail.trim(),
+          userMessage: userMessage.trim(),
+          serviceName: serviceName || 'General Service'
+        })
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || 'Failed to submit inquiry');
+      
+      setSubmitSuccess(true);
+      setTimeout(() => {
+        setUserName("");
+        setUserEmail("");
+        setUserMessage("");
+        setSubmitSuccess(false);
+        setIsFormOpen(false);
+        setIsSubmitting(false);
+      }, 2000);
+    } catch (err) {
+      setFormError("Failed to send inquiry. Please try again.");
+      setIsSubmitting(false);
+    }
+  };
 
   return (
-    <section id="contact-section" className="bg-black pt-0 pb-8 md:pb-12 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16" ref={ref}>
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        animate={isInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-      >
-        <div className="relative group overflow-hidden w-full mx-auto">
-          {/* Inner card content (no background/borders) */}
-          <div className="relative pt-0 pb-12 px-0">
+    <Section noPadding id="contact-section" className="bg-black pt-0 pb-8 md:pb-12" ref={ref}>
+      <Container>
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <div className="relative group overflow-hidden w-full mx-auto">
+            {/* Inner card content (no background/borders) */}
+            <div className="relative pt-0 pb-12 px-0">
 
-            {/* Orbiting rings — matches box4 style */}
-            <div className="absolute inset-0 flex items-center justify-center z-0 pointer-events-none">
-              {/* Core pulse */}
-              <motion.div
-                animate={{ scale: [1, 1.3, 1], opacity: [0.2, 0.5, 0.2] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute w-[80px] h-[80px] rounded-full"
-                style={{ background: "radial-gradient(circle, rgba(0,237,194,0.12) 0%, transparent 70%)" }}
-              />
-              {/* Ring 1 */}
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                className="absolute w-[200px] h-[200px] md:w-[300px] md:h-[300px] rounded-full border border-white/[0.03] border-t-[#00EDC2]/20"
-              />
-              {/* Ring 2 */}
-              <motion.div
-                animate={{ rotate: -360 }}
-                transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-                className="absolute w-[350px] h-[350px] md:w-[500px] md:h-[500px] rounded-full border border-dashed border-white/[0.03] border-b-[#00EDC2]/10"
-              />
-              {/* Ring 3 */}
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 45, repeat: Infinity, ease: "linear" }}
-                className="absolute w-[500px] h-[500px] md:w-[700px] md:h-[700px] rounded-full border border-white/[0.02] border-l-[#00EDC2]/5"
-              />
-              {/* Orbiting dot 1 */}
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-                className="absolute w-[200px] h-[200px] md:w-[300px] md:h-[300px]"
-                style={{ transformOrigin: "center" }}
-              >
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-[#00EDC2]/60 shadow-[0_0_8px_rgba(0,237,194,0.4)]" />
-              </motion.div>
-              {/* Orbiting dot 2 */}
-              <motion.div
-                animate={{ rotate: -360 }}
-                transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
-                className="absolute w-[350px] h-[350px] md:w-[500px] md:h-[500px]"
-                style={{ transformOrigin: "center" }}
-              >
-                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#00EDC2]/40 shadow-[0_0_6px_rgba(0,237,194,0.3)]" />
-              </motion.div>
-            </div>
-
-            {/* Bottom green ambient glow */}
-            <div className="absolute inset-x-0 bottom-0 h-[350px] bg-gradient-to-t from-[#00EDC2]/8 via-[#00EDC2]/3 to-transparent blur-2xl z-0 pointer-events-none" />
-
-            {/* Content */}
-            <div className="relative z-10 text-center max-w-4xl mx-auto">
-              {/* Title with animated letters */}
-              <h2 
-                className="font-bold text-white leading-[1.1] mb-2"
-                style={{
-                  fontSize: "clamp(32px, 5vw, 48px)",
-                  fontWeight: 700,
-                  letterSpacing: "-0.02em",
-                  color: "#ffffff",
-                  fontFamily: "'Space Grotesk', sans-serif",
-                }}
-              >
-                <AnimatedLetters
-                  text={cta?.titlePart1 || "Ready to Build Something"}
-                  delay={0.2}
+              {/* Orbiting rings — matches box4 style */}
+              <div className="absolute inset-0 flex items-center justify-center z-0 pointer-events-none">
+                {/* Core pulse */}
+                <motion.div
+                  animate={{ scale: [1, 1.3, 1], opacity: [0.2, 0.5, 0.2] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute w-[80px] h-[80px] rounded-full"
+                  style={{ background: "radial-gradient(circle, rgba(0,237,194,0.12) 0%, transparent 70%)" }}
                 />
-                <span className="block mt-2">
-                  <AnimatedLetters
-                    text={cta?.titlePart2 || "Extraordinary?"}
-                    delay={0.5}
-                    style={{
-                      color: "#00EDC2",
-                    }}
-                  />
-                </span>
-              </h2>
-
-              {/* Subtitle */}
-              <AnimatedPara
-                delay={0.7}
-                style={{
-                  fontSize: "15px",
-                  color: "rgba(255,255,255,0.45)",
-                  lineHeight: "1.8",
-                  maxWidth: "600px",
-                  margin: "0 auto",
-                  marginTop: "24px",
-                  letterSpacing: "0.3px",
-                }}
-              >
-                {cta?.subtitle || "From concept to launch, we create digital experiences that drive real business growth."}
-              </AnimatedPara>
-
-              {/* CTA Button */}
-              <motion.div
-                key="start-btn"
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                className="mt-6"
-              >
-                <button
-                  onClick={() => setIsFormOpen(true)}
-                  className="group/btn relative inline-flex items-center gap-3 px-10 py-5 rounded-2xl font-semibold text-base overflow-hidden transition-all duration-500 hover:scale-[1.03] hover:shadow-[0_0_40px_rgba(0,237,194,0.25)] active:scale-[0.98]"
-                  style={{ background: "#00EDC2", color: "#000" }}
+                {/* Ring 1 */}
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                  className="absolute w-[200px] h-[200px] md:w-[300px] md:h-[300px] rounded-full border border-white/[0.03] border-t-[#00EDC2]/20"
+                />
+                {/* Ring 2 */}
+                <motion.div
+                  animate={{ rotate: -360 }}
+                  transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                  className="absolute w-[350px] h-[350px] md:w-[500px] md:h-[500px] rounded-full border border-dashed border-white/[0.03] border-b-[#00EDC2]/10"
+                />
+                {/* Ring 3 */}
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 45, repeat: Infinity, ease: "linear" }}
+                  className="absolute w-[500px] h-[500px] md:w-[700px] md:h-[700px] rounded-full border border-white/[0.02] border-l-[#00EDC2]/5"
+                />
+                {/* Orbiting dot 1 */}
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+                  className="absolute w-[200px] h-[200px] md:w-[300px] md:h-[300px]"
+                  style={{ transformOrigin: "center" }}
                 >
-                  <div
-                    className="absolute inset-0 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-500"
-                    style={{
-                      background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)",
-                      animation: "shimmer 2s infinite",
-                    }}
-                  />
-                  <span className="relative z-10 tracking-wide">{cta?.buttonText || "Let's Talk"}</span>
-                  <motion.span
-                    className="relative z-10 text-lg"
-                    animate={{ x: [0, 4, 0] }}
-                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                  >
-                    →
-                  </motion.span>
-                </button>
-              </motion.div>
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-[#00EDC2]/60 shadow-[0_0_8px_rgba(0,237,194,0.4)]" />
+                </motion.div>
+                {/* Orbiting dot 2 */}
+                <motion.div
+                  animate={{ rotate: -360 }}
+                  transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
+                  className="absolute w-[350px] h-[350px] md:w-[500px] md:h-[500px]"
+                  style={{ transformOrigin: "center" }}
+                >
+                  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#00EDC2]/40 shadow-[0_0_6px_rgba(0,237,194,0.3)]" />
+                </motion.div>
+              </div>
 
+              {/* Bottom green ambient glow */}
+              <div className="absolute inset-x-0 bottom-0 h-[350px] bg-gradient-to-t from-[#00EDC2]/8 via-[#00EDC2]/3 to-transparent blur-2xl z-0 pointer-events-none" />
+
+              {/* Content */}
+              <div className="relative z-10 text-center max-w-4xl mx-auto">
+                {/* Title with animated letters */}
+                <h2
+                  className="font-bold text-white leading-[1.1] mb-2 min-[1600px]:!text-[80px]"
+                  style={{
+                    fontSize: "clamp(32px, 5vw, 48px)",
+                    fontWeight: 700,
+                    letterSpacing: "-0.02em",
+                    color: "#ffffff",
+                    fontFamily: "'Space Grotesk', sans-serif",
+                  }}
+                >
+                  <AnimatedLetters
+                    text={cta?.titlePart1 || "Ready to Build Something"}
+                    delay={0.2}
+                  />
+                  <span className="block mt-2">
+                    <AnimatedLetters
+                      text={cta?.titlePart2 || "Extraordinary?"}
+                      delay={0.5}
+                      style={{
+                        color: "#00EDC2",
+                      }}
+                    />
+                  </span>
+                </h2>
+
+                {/* Subtitle */}
+                <AnimatedPara
+                  delay={0.7}
+                  className="min-[1600px]:!text-[26px] min-[1600px]:!max-w-[900px]"
+                  style={{
+                    fontSize: "15px",
+                    color: "rgba(255,255,255,0.45)",
+                    lineHeight: "1.8",
+                    maxWidth: "600px",
+                    margin: "0 auto",
+                    marginTop: "24px",
+                    letterSpacing: "0.3px",
+                  }}
+                >
+                  {cta?.subtitle || "From concept to launch, we create digital experiences that drive real business growth."}
+                </AnimatedPara>
+
+                {/* CTA Button */}
+                <motion.div
+                  key="start-btn"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.6, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                  className="mt-6"
+                >
+                  <button
+                    onClick={() => setIsFormOpen(true)}
+                    className="group/btn relative inline-flex items-center gap-3 px-10 py-5 rounded-2xl font-semibold text-base overflow-hidden transition-all duration-500 hover:scale-[1.03] hover:shadow-[0_0_40px_rgba(0,237,194,0.25)] active:scale-[0.98] min-[1600px]:!text-[20px] min-[1600px]:!px-12 min-[1600px]:!py-6"
+                    style={{ background: "#00EDC2", color: "#000" }}
+                  >
+                    <div
+                      className="absolute inset-0 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-500"
+                      style={{
+                        background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)",
+                        animation: "shimmer 2s infinite",
+                      }}
+                    />
+                    <span className="relative z-10 tracking-wide">{cta?.buttonText || "Let's Talk"}</span>
+                    <motion.span
+                      className="relative z-10 text-lg min-[1600px]:!text-[24px]"
+                      animate={{ x: [0, 4, 0] }}
+                      transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                    >
+                      →
+                    </motion.span>
+                  </button>
+                </motion.div>
+
+              </div>
             </div>
           </div>
-        </div>
-      </motion.div>
+        </motion.div>
 
-      {/* Form Modal */}
-      <AnimatePresence>
-        {isFormOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
-          >
+        {/* Form Modal */}
+        <AnimatePresence>
+          {isFormOpen && (
             <motion.div
-              initial={{ scale: 0.95, opacity: 0, y: 20 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.95, opacity: 0, y: 20 }}
-              className="relative w-full max-w-lg bg-[#0a0a0a] border border-white/10 rounded-[24px] p-6 md:p-8 shadow-2xl"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
             >
-              {/* Close Button */}
-              <button
-                onClick={() => setIsFormOpen(false)}
-                className="absolute top-5 right-5 text-white/50 hover:text-white transition-colors z-10"
+              <motion.div
+                initial={{ scale: 0.95, opacity: 0, y: 20 }}
+                animate={{ scale: 1, opacity: 1, y: 0 }}
+                exit={{ scale: 0.95, opacity: 0, y: 20 }}
+                className="relative w-full max-w-lg bg-[#0a0a0a] border border-white/10 rounded-[24px] p-6 md:p-8 shadow-2xl"
               >
-                <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-
-              <h3 className="text-2xl font-bold text-white mb-2 text-center" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                Start Your Project
-              </h3>
-              <p className="text-white/50 text-sm text-center mb-6">
-                Tell us a little bit about what you need.
-              </p>
-
-              <div className="flex flex-col gap-4 text-left">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-white/70 text-sm mb-1 ml-1 font-medium">Name</label>
-                    <input
-                      type="text"
-                      value={userName}
-                      onChange={(e) => setUserName(e.target.value)}
-                      placeholder="John Doe"
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white text-sm focus:outline-none focus:border-[#00EDC2]/50 transition-colors placeholder:text-white/30"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-white/70 text-sm mb-1 ml-1 font-medium">Email</label>
-                    <input
-                      type="email"
-                      value={userEmail}
-                      onChange={(e) => setUserEmail(e.target.value)}
-                      placeholder="john@example.com"
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white text-sm focus:outline-none focus:border-[#00EDC2]/50 transition-colors placeholder:text-white/30"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-white/70 text-sm mb-1 ml-1 font-medium">Project Description</label>
-                  <textarea
-                    value={userMessage}
-                    onChange={(e) => setUserMessage(e.target.value)}
-                    placeholder="Briefly describe your project requirements..."
-                    rows={4}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white text-sm md:text-base focus:outline-none focus:border-[#00EDC2]/50 transition-colors placeholder:text-white/30 resize-none shadow-inner"
-                  />
-                </div>
-                {formError && (
-                  <div className="text-red-400 text-sm mt-1 mb-2 text-center">
-                    {formError}
-                  </div>
-                )}
+                {/* Close Button */}
                 <button
-                  onClick={() => {
-                    if (!userName.trim() || !userEmail.trim() || !userMessage.trim()) {
-                      setFormError("Please fill in all fields before submitting.");
-                      return;
-                    }
-                    setFormError("");
-
-                    const phoneNumber = cta?.whatsappNumber || "919025571824";
-                    let message = `Hello! I am interested in the *${serviceName || 'Service'}* service.`;
-                    message += `\n\n*Name:* ${userName.trim()}`;
-                    message += `\n*Email:* ${userEmail.trim()}`;
-                    message += `\n\n*Requirements:*\n${userMessage.trim()}`;
-
-                    window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
-
-                    setUserName("");
-                    setUserEmail("");
-                    setUserMessage("");
-                    setIsFormOpen(false);
-                  }}
-                  className="group/submit relative inline-flex justify-center items-center gap-2 mt-2 px-8 py-4 rounded-xl font-semibold text-sm overflow-hidden transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(0,237,194,0.2)] active:scale-[0.98]"
-                  style={{ background: "#00EDC2", color: "#000" }}
+                  onClick={() => setIsFormOpen(false)}
+                  className="absolute top-5 right-5 text-white/50 hover:text-white transition-colors z-10"
                 >
-                  <span className="relative z-10 tracking-wide">Submit & Continue to </span>
+                  <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
                 </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
-      {/* Shimmer keyframe */}
-      <style>{`
+                <h3 className="text-2xl font-bold text-white mb-2 text-center" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                  Start Your Project
+                </h3>
+                <p className="text-white/50 text-sm text-center mb-6">
+                  Tell us a little bit about what you need.
+                </p>
+
+                <div className="flex flex-col gap-4 text-left">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-white/70 text-sm mb-1 ml-1 font-medium">Name</label>
+                      <input
+                        type="text"
+                        value={userName}
+                        onChange={(e) => setUserName(e.target.value)}
+                        placeholder="John Doe"
+                        className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white text-sm focus:outline-none focus:border-[#00EDC2]/50 transition-colors placeholder:text-white/30"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-white/70 text-sm mb-1 ml-1 font-medium">Email</label>
+                      <input
+                        type="email"
+                        value={userEmail}
+                        onChange={(e) => setUserEmail(e.target.value)}
+                        placeholder="john@example.com"
+                        className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white text-sm focus:outline-none focus:border-[#00EDC2]/50 transition-colors placeholder:text-white/30"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-white/70 text-sm mb-1 ml-1 font-medium">Project Description</label>
+                    <textarea
+                      value={userMessage}
+                      onChange={(e) => setUserMessage(e.target.value)}
+                      placeholder="Briefly describe your project requirements..."
+                      rows={4}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white text-sm md:text-base focus:outline-none focus:border-[#00EDC2]/50 transition-colors placeholder:text-white/30 resize-none shadow-inner"
+                    />
+                  </div>
+                  {formError && (
+                    <div className="text-red-400 text-sm mt-1 mb-2 text-center">
+                      {formError}
+                    </div>
+                  )}
+                  {submitSuccess && (
+                    <div className="text-[#00EDC2] text-sm mt-1 mb-2 text-center font-medium bg-[#00EDC2]/10 py-2 rounded-lg border border-[#00EDC2]/30">
+                      Inquiry sent successfully! We will contact you soon.
+                    </div>
+                  )}
+                  <button
+                    onClick={handleServiceSubmit}
+                    disabled={isSubmitting || submitSuccess}
+                    className="group/submit relative inline-flex justify-center items-center gap-2 mt-2 px-8 py-4 rounded-xl font-semibold text-sm overflow-hidden transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(0,237,194,0.2)] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+                    style={{ background: "#00EDC2", color: "#000" }}
+                  >
+                    <span className="relative z-10 tracking-wide">
+                      {isSubmitting ? "Sending..." : submitSuccess ? "Sent!" : "Submit Inquiry"}
+                    </span>
+                  </button>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Shimmer keyframe */}
+        <style>{`
         @keyframes shimmer {
           0% { transform: translateX(-100%); }
           100% { transform: translateX(100%); }
         }
       `}</style>
-    </section>
+      </Container>
+    </Section>
   );
 };
 
@@ -720,7 +715,7 @@ const ServiceTemplate = ({ data }) => {
       <style>{`@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');`}</style>
 
       {/* ── HERO ──────────────────────────────────────────────── */}
-      <section ref={containerRef} className="relative w-full h-[200vh]">
+      <Section noPadding ref={containerRef} className="relative w-full h-[200vh]">
         <motion.div
           className="sticky top-0 left-0 w-full h-screen overflow-hidden bg-black flex items-center justify-center origin-top z-0"
           style={{
@@ -741,6 +736,7 @@ const ServiceTemplate = ({ data }) => {
                 loop
                 muted
                 playsInline
+                poster={hero.backgroundImage || (hero.backgroundImages && hero.backgroundImages[0]) || "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="}
                 className="w-full h-full object-cover"
               />
             ) : hero.backgroundImages && hero.backgroundImages.length > 0 ? (
@@ -767,10 +763,10 @@ const ServiceTemplate = ({ data }) => {
           </div>
 
           {/* Hero text */}
-          <div className="relative z-10 flex flex-col items-center justify-center text-center text-white px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 pointer-events-none w-full h-full">
+          <div className="relative z-10 flex flex-col items-center justify-center text-center text-white px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 min-[1600px]:!px-[80px] pointer-events-none w-full h-full">
             <div className="w-full">
               <div
-                className="font-bold tracking-wide"
+                className="font-bold tracking-wide min-[1600px]:!text-[100px] min-[1600px]:!leading-[1.1]"
                 style={{ fontSize: isMobile ? "clamp(26px, 7.5vw, 36px)" : "64px", marginBottom: "0px", lineHeight: "1.3" }}
               >
                 <AnimatedLetters text={hero.titleWord1} delay={0} />
@@ -780,7 +776,7 @@ const ServiceTemplate = ({ data }) => {
               <AnimatedWords
                 text={hero.subtitle}
                 delay={0.4}
-                className=""
+                className="min-[1600px]:!text-[26px]"
                 style={{ fontSize: isMobile ? "15px" : "18px", lineHeight: "1.8", color: "#d1d5db", whiteSpace: isMobile ? "normal" : "nowrap" }}
               />
               <motion.div
@@ -824,14 +820,14 @@ const ServiceTemplate = ({ data }) => {
                   }}
                   className="
                     relative w-full sm:w-auto
-                    px-6 sm:px-8 md:px-10
-                    py-3 sm:py-3.5 md:py-4
+                    px-6 sm:px-8 md:px-10 min-[1600px]:!px-16
+                    py-3 sm:py-3.5 md:py-4 min-[1600px]:!py-6
                     rounded-full font-semibold
                     text-black
                     border-none
                     transition-all duration-300
                     hover:scale-105
-                    text-sm sm:text-base
+                    text-sm sm:text-base min-[1600px]:!text-2xl
                     cursor-pointer
                   "
                   style={{
@@ -853,7 +849,7 @@ const ServiceTemplate = ({ data }) => {
             </div>
           </div>
         </motion.div>
-      </section>
+      </Section>
 
       <div className="relative z-20 -mt-[100vh]">
         <motion.div
@@ -865,362 +861,298 @@ const ServiceTemplate = ({ data }) => {
           }}
         >
           {/* ── ABOUT ─────────────────────────────────────────────── */}
-          <section className="py-24 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 relative z-10">
-            {/* Header */}
-            <motion.div
-              className="text-center mb-16 relative z-10"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-50px" }}
-              variants={{
-                hidden: { opacity: 0 },
-                visible: {
-                  opacity: 1,
-                  transition: { staggerChildren: 0.2, delayChildren: 0.1 }
-                }
-              }}
-            >
-              <motion.h2
-                variants={{
-                  hidden: { opacity: 0, y: 20 },
-                  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
-                }}
-                className="font-bold tracking-tight mb-4 text-white m-0"
-                style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: isMobile ? "clamp(24px, 7.5vw, 36px)" : "48px", lineHeight: "1.2" }}
-              >
-                {about.sectionTitle}
-              </motion.h2>
-              <AnimatedSplitText
-                text={about.sectionSubtitle}
-                className="mt-4 mx-auto max-w-3xl text-white text-lg tracking-wide leading-relaxed"
-                style={{
-                  fontFamily: "'Space Grotesk', sans-serif",
-                  letterSpacing: "0.2px"
-                }}
-                delayOffset={0.2}
+          <Section className="relative z-10">
+            <Container>
+              {/* Header */}
+              <SectionHeader
+                title={about.sectionTitle}
+                subtitle={about.sectionSubtitle}
+                className="text-center mb-16 relative z-10"
+                titleStyle={{ fontFamily: "'Space Grotesk', sans-serif", lineHeight: "1.2" }}
+                subtitleStyle={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "0.2px" }}
               />
-            </motion.div>
 
-            <div className="w-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+              <div className="w-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center min-[1600px]:!gap-24">
 
-              {/* Left Side Image */}
-              <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-                viewport={{ once: true }}
-                className="relative w-full h-[400px] lg:h-[500px] rounded-3xl overflow-hidden shadow-[0_0_40px_rgba(255,255,255,0.05)] border border-white/10"
-              >
-                <img
-                  src={about.image}
-                  alt={about.sectionTitle}
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
-                />
-              </motion.div>
+                {/* Left Side Image */}
+                <motion.div
+                  initial={{ opacity: 0, x: -50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  viewport={{ once: true }}
+                  className="relative w-full h-[400px] lg:h-[500px] rounded-3xl overflow-hidden shadow-[0_0_40px_rgba(255,255,255,0.05)] border border-white/10"
+                >
+                  <img
+                    src={about.image}
+                    alt={about.sectionTitle}
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                  />
+                </motion.div>
 
-              {/* Right Side Content */}
-              <motion.div
-                className="flex flex-col items-start text-left"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-50px" }}
-                variants={{
-                  hidden: { opacity: 0 },
-                  visible: {
-                    opacity: 1,
-                    transition: { staggerChildren: 0.2, delayChildren: 0.1 }
-                  }
-                }}
-              >
-                <motion.h2
+                {/* Right Side Content */}
+                <motion.div
+                  className="flex flex-col items-start text-left"
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, margin: "-50px" }}
                   variants={{
-                    hidden: { opacity: 0, y: 20 },
-                    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
-                  }}
-                  style={{
-                    fontSize: isMobile ? "30px" : "44px",
-                    fontWeight: "700", marginBottom: "16px",
-                    color: "#fff", lineHeight: "1.2",
+                    hidden: { opacity: 0 },
+                    visible: {
+                      opacity: 1,
+                      transition: { staggerChildren: 0.2, delayChildren: 0.1 }
+                    }
                   }}
                 >
-                  {about.contentTitle}
-                </motion.h2>
-                <AnimatedPara
-                  className="mt-2"
-                  style={{ fontSize: isMobile ? "15px" : "17px", color: "#cbd5e1", lineHeight: "1.8", marginBottom: "40px", maxWidth: "600px", textAlign: "left" }}
-                  delay={0.2}
-                >
-                  {about.contentDesc}
-                </AnimatedPara>
+                  <motion.h2
+                    variants={{
+                      hidden: { opacity: 0, y: 20 },
+                      visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+                    }}
+                    style={{
+                      fontSize: isMobile ? "30px" : "44px",
+                      fontWeight: "700", marginBottom: "16px",
+                      color: "#fff", lineHeight: "1.2",
+                    }}
+                    className="min-[1600px]:!text-[50px]"
+                  >
+                    {about.contentTitle}
+                  </motion.h2>
+                  <AnimatedPara
+                    className="mt-2 min-[1600px]:!text-[22px] min-[1600px]:!max-w-[1000px]"
+                    style={{ fontSize: isMobile ? "15px" : "17px", color: "#cbd5e1", lineHeight: "1.8", marginBottom: "40px", maxWidth: "600px", textAlign: "left" }}
+                    delay={0.2}
+                  >
+                    {about.contentDesc}
+                  </AnimatedPara>
 
-                <div className="flex flex-col gap-5 w-full">
-                  {about.bulletPoints.map((item, i) => (
-                    <BulletItem key={i} text={item} index={i} />
-                  ))}
-                </div>
-              </motion.div>
+                  <div className="flex flex-col gap-5 min-[1600px]:!gap-8 w-full">
+                    {about.bulletPoints.map((item, i) => (
+                      <BulletItem key={i} text={item} index={i} />
+                    ))}
+                  </div>
+                </motion.div>
 
-            </div>
-          </section>
+              </div>
+            </Container>
+          </Section>
         </motion.div>
 
         <div className="bg-black relative">
 
           {/* ── TECH STACK ─────────────────────────────────────────── */}
-          <section className="bg-black pt-[40px] pb-6 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 relative overflow-hidden">
-            <motion.div
-              className="text-center mb-5 relative z-10"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-50px" }}
-              variants={{
-                hidden: { opacity: 0 },
-                visible: {
-                  opacity: 1,
-                  transition: { staggerChildren: 0.2, delayChildren: 0.1 }
-                }
-              }}
-            >
-              <motion.h2
-                variants={{
-                  hidden: { opacity: 0, y: 20 },
-                  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
-                }}
-                className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-2 sm:mb-3 text-white m-0"
-                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-              >
-                {techStack.sectionTitle}
-              </motion.h2>
-              <AnimatedSplitText
-                text={techStack.sectionSubtitle}
-                className="text-white text-xs sm:text-sm md:text-base lg:text-lg tracking-tight leading-relaxed mt-1 mb-0"
-                style={{
-                  fontFamily: "'Space Grotesk', sans-serif",
-                  letterSpacing: "0.2px"
-                }}
-                delayOffset={0.2}
+          <Section noPadding className="bg-black pt-[40px] pb-6 relative overflow-hidden">
+            <Container>
+              <SectionHeader
+                title={techStack.sectionTitle}
+                subtitle={techStack.sectionSubtitle}
+                className="text-center mb-5 relative z-10"
+                titleStyle={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                subtitleStyle={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "0.2px" }}
               />
-            </motion.div>
 
-            {techStack.boxes ? (
-              <div className="w-full mx-auto grid grid-cols-1 md:grid-cols-4 md:auto-rows-[150px] lg:auto-rows-[170px] gap-4 relative z-10">
+              {techStack.boxes ? (
+                <div className="w-full mx-auto grid grid-cols-1 md:grid-cols-4 md:auto-rows-[150px] lg:auto-rows-[170px] min-[1600px]:!auto-rows-[250px] gap-4 relative z-10">
 
-                {/* Box 1: High Performance */}
-                <BentoCard className="md:col-span-1 md:row-span-1 min-h-[150px]" innerClassName="p-0 overflow-hidden group">
-                  <div className="absolute inset-0 bg-[#0a0a0a] z-0" />
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none pb-8">
-                    <div className="flex items-baseline opacity-80 group-hover:opacity-100 transition-opacity duration-500">
-                      <span className="text-[60px] md:text-[80px] font-bold font-sans tracking-tighter text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.15)" }}>
-                        {techStack.boxes.box1.number}
-                      </span>
-                      <span className="text-white/20 text-lg md:text-xl font-bold ml-1">
-                        {techStack.boxes.box1.subNumber}
-                      </span>
-                    </div>
-                    {/* Sparkle icon top right */}
-                    <div className="absolute top-5 right-5 text-white/30">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0l2 8 8 2-8 2-2 8-2-8-8-2 8-2z" /></svg>
-                    </div>
-                  </div>
-                  <div className="absolute bottom-5 left-5 z-20">
-                    <h3 className="text-white font-bold text-lg mb-0.5">{techStack.boxes.box1.title}</h3>
-                    <p className="text-white/40 text-xs pr-4">{techStack.boxes.box1.desc}</p>
-                  </div>
-                </BentoCard>
-
-                {/* Box 2: Core Stack Grid */}
-                <BentoCard className="md:col-span-1 md:row-span-1 min-h-[150px]" innerClassName="p-0 overflow-hidden group">
-                  <div className="absolute inset-0 bg-[#0a0a0a] z-0" />
-                  <div className="absolute inset-0 pt-5 px-6 z-10 flex justify-center">
-                    <div className="grid grid-cols-5 gap-2 opacity-60 group-hover:opacity-100 transition-opacity duration-500 w-full max-w-[85%] mt-2">
-                      {technologies.logos.slice(0, 10).map((tech, i) => (
-                        <div key={i} className="aspect-square rounded-[6px] border border-white/5 flex items-center justify-center bg-white/5" style={{ boxShadow: "inset 0 0 10px rgba(255,255,255,0.02)" }}>
-                          <img src={tech.logo} alt={tech.name} className="w-1/2 h-1/2 object-contain" />
-                        </div>
-                      ))}
-                      {Array.from({ length: Math.max(0, 10 - technologies.logos.length) }).map((_, i) => (
-                        <div key={`empty-${i}`} className="aspect-square rounded-[6px] border border-white/5 flex items-center justify-center bg-white/5" style={{ boxShadow: "inset 0 0 10px rgba(255,255,255,0.02)" }}>
-                          <div className="w-1/2 h-1/2 rounded-sm bg-white/5" />
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="absolute bottom-5 left-5 z-20 w-full bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/90 to-transparent pt-8">
-                    <h3 className="text-white font-bold text-lg mb-0.5">{techStack.boxes.box2.title}</h3>
-                    <p className="text-white/40 text-xs pr-4">{techStack.boxes.box2.desc}</p>
-                  </div>
-                </BentoCard>
-
-                {/* Box 3: Frontend Engineering */}
-                <BentoCard className="md:col-span-2 md:row-span-2 min-h-[300px]" innerClassName="p-0 overflow-hidden group">
-                  <div className="absolute inset-0 bg-gradient-to-b from-[#111] via-[#0a0a0a] to-[#050505] z-0" />
-
-                  <div className="absolute top-8 left-8 right-8 bottom-[100px] rounded-2xl border border-white/10 bg-[#050505] shadow-2xl overflow-hidden z-10 group-hover:-translate-y-1 transition-transform duration-700">
-                    <div className="h-6 bg-white/5 border-b border-white/5 flex items-center px-4 gap-2">
-                      <div className="w-2 h-2 rounded-full bg-white/20" />
-                      <div className="w-2 h-2 rounded-full bg-white/20" />
-                      <div className="w-2 h-2 rounded-full bg-white/20" />
-                      <div className="ml-4 text-white/30 text-[10px] font-mono">system.config</div>
-                    </div>
-                    <div className="p-6 font-mono text-xs leading-relaxed opacity-60 group-hover:opacity-100 transition-opacity duration-700">
-                      <div className="text-blue-400 mt-1">const <span className="text-yellow-200">System</span> <span className="text-pink-500">=</span> <span className="text-blue-400">()</span> <span className="text-pink-500">{`=>`}</span> {`{`}</div>
-                      <div className="ml-4">
-                        <div className="text-pink-500">return <span className="text-blue-400">(</span></div>
-                        <div className="ml-4 text-cyan-300">{`<Architecture>`}</div>
-                        <div className="ml-8 text-white font-sans text-xs my-2 text-white/60">High Performance Core Running...</div>
-                        <div className="ml-4 text-cyan-300">{`</Architecture>`}</div>
-                        <div className="text-blue-400">)</div>
+                  {/* Box 1: High Performance */}
+                  <BentoCard className="md:col-span-1 md:row-span-1 min-h-[150px]" innerClassName="p-0 overflow-hidden group">
+                    <div className="absolute inset-0 bg-[#0a0a0a] z-0" />
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none pb-8">
+                      <div className="flex items-baseline opacity-80 group-hover:opacity-100 transition-opacity duration-500">
+                        <span className="text-[60px] md:text-[80px] min-[1600px]:!text-[120px] font-bold font-sans tracking-tighter text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.15)" }}>
+                          {techStack.boxes.box1.number}
+                        </span>
+                        <span className="text-white/20 text-lg md:text-xl font-bold ml-1 min-[1600px]:!text-[32px]">
+                          {techStack.boxes.box1.subNumber}
+                        </span>
                       </div>
-                      <div>{`}`}</div>
-                    </div>
-                  </div>
-
-                  <div className="absolute bottom-6 left-6 z-20 w-full bg-gradient-to-t from-[#050505] via-[#050505]/90 to-transparent pt-12 pr-6">
-                    <h3 className="text-white font-bold text-xl mb-1">{techStack.boxes.box3.title}</h3>
-                    <p className="text-white/40 text-sm max-w-[80%]">{techStack.boxes.box3.desc}</p>
-                  </div>
-                </BentoCard>
-
-                {/* Box 4: Scalable Architecture */}
-                <BentoCard className="md:col-span-2 md:row-span-2 min-h-[300px]" innerClassName="p-0 overflow-hidden group">
-                  <div className="absolute inset-0 bg-[#050505] z-0" />
-                  <div className="absolute inset-0 flex items-center justify-center z-0 mt-[-40px]">
-                    <motion.div
-                      animate={{ scale: [1, 1.05, 1], opacity: [0.3, 0.6, 0.3] }}
-                      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                      className="w-[180px] h-[180px] rounded-full blur-[40px]"
-                      style={{ background: "#d4af37" }}
-                    />
-                    <div className="absolute w-[200px] h-[200px] rounded-full border border-white/5 group-hover:border-white/20 transition-colors duration-700" style={{ background: "radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%)" }} />
-                    <svg className="absolute w-[200px] h-[200px] opacity-10 group-hover:opacity-30 transition-opacity duration-700" viewBox="0 0 100 100">
-                      <circle cx="50" cy="50" r="48" fill="none" stroke="white" strokeWidth="0.5" />
-                      <path d="M 50 2 A 48 48 0 0 0 50 98 A 48 48 0 0 0 50 2" fill="none" stroke="white" strokeWidth="0.5" />
-                      <path d="M 2 50 A 48 48 0 0 0 98 50 A 48 48 0 0 0 2 50" fill="none" stroke="white" strokeWidth="0.5" />
-                      <ellipse cx="50" cy="50" rx="48" ry="24" fill="none" stroke="white" strokeWidth="0.5" />
-                      <ellipse cx="50" cy="50" rx="24" ry="48" fill="none" stroke="white" strokeWidth="0.5" />
-                    </svg>
-                    <div className="absolute w-1 h-1 bg-white rounded-full top-[30%] left-[40%] blur-[1px] opacity-80" />
-                    <div className="absolute w-1.5 h-1.5 bg-yellow-200 rounded-full top-[60%] right-[35%] blur-[2px] opacity-60" />
-                    <div className="absolute w-2 h-2 bg-orange-300 rounded-full bottom-[40%] left-[45%] blur-[3px] opacity-40" />
-                  </div>
-                  <div className="absolute bottom-6 left-6 z-20 w-full bg-gradient-to-t from-[#050505] via-[#050505]/90 to-transparent pt-12 pr-6">
-                    <h3 className="text-white font-bold text-xl mb-1">{techStack.boxes.box4.title}</h3>
-                    <p className="text-white/40 text-sm max-w-[80%]">{techStack.boxes.box4.desc}</p>
-                  </div>
-                </BentoCard>
-
-                {/* Box 5: UI/UX Design */}
-                <BentoCard className="md:col-span-1 md:row-span-1 min-h-[150px]" innerClassName="p-0 overflow-hidden group">
-                  <div className="absolute inset-0 bg-[#0a0a0a] z-0" />
-                  <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none pb-8">
-                    <div className="w-[70%] h-[40px] bg-[#111] border border-white/10 rounded-sm flex items-center justify-around px-2 shadow-[0_10px_20px_rgba(0,0,0,0.5)] group-hover:bg-[#151515] transition-colors duration-500">
-                      <div className="w-5 h-5 rounded-full border-[2px] border-white/20 bg-black flex items-center justify-center"><div className="w-1.5 h-1.5 rounded-full bg-white/10" /></div>
-                      <div className="w-5 h-5 rounded-full border-[2px] border-white/20 bg-black flex items-center justify-center"><div className="w-1.5 h-1.5 rounded-full bg-white/10" /></div>
-                      <div className="w-6 h-4 rounded-[2px] border-[1px] border-white/20 bg-black" />
-                      <div className="w-6 h-4 rounded-[2px] border-[1px] border-white/20 bg-black" />
-                    </div>
-                  </div>
-                  <div className="absolute bottom-5 left-5 z-20 w-full bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/90 to-transparent pt-8">
-                    <h3 className="text-white font-bold text-lg mb-0.5">{techStack.boxes.box5.title}</h3>
-                    <p className="text-white/40 text-xs pr-4">{techStack.boxes.box5.desc}</p>
-                  </div>
-                </BentoCard>
-
-                {/* Box 6: Mobile Solutions */}
-                <BentoCard className="md:col-span-1 md:row-span-1 min-h-[150px]" innerClassName="p-0 overflow-hidden group">
-                  <div className="absolute inset-0 bg-[#0a0a0a] z-0" />
-                  <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none pb-8" style={{ perspective: '500px' }}>
-                    <div className="w-[70%] h-[50px] bg-gradient-to-b from-[#1a1a1a] to-[#0a0a0a] border border-white/10 rounded-md flex flex-wrap gap-2 p-2 justify-center shadow-2xl group-hover:-translate-y-1 transition-transform duration-500" style={{ transform: 'rotateX(15deg)' }}>
-                      <div className="w-4 h-4 rounded-full border border-white/30 bg-black shadow-[inset_0_0_4px_rgba(255,255,255,0.2)]" />
-                      <div className="w-4 h-4 rounded-full border border-white/30 bg-black shadow-[inset_0_0_4px_rgba(255,255,255,0.2)]" />
-                      <div className="w-4 h-4 rounded-full border border-white/30 bg-black shadow-[inset_0_0_4px_rgba(255,255,255,0.2)]" />
-                      <div className="w-4 h-4 rounded-full border border-white/30 bg-black shadow-[inset_0_0_4px_rgba(255,255,255,0.2)]" />
-                      <div className="w-4 h-4 rounded-full border border-white/30 bg-black shadow-[inset_0_0_4px_rgba(255,255,255,0.2)]" />
-                      <div className="w-4 h-4 rounded-full border border-white/30 bg-black shadow-[inset_0_0_4px_rgba(255,255,255,0.2)]" />
-                    </div>
-                  </div>
-                  <div className="absolute bottom-5 left-5 z-20 w-full bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/90 to-transparent pt-8">
-                    <h3 className="text-white font-bold text-lg mb-0.5">{techStack.boxes.box6.title}</h3>
-                    <p className="text-white/40 text-xs pr-4">{techStack.boxes.box6.desc}</p>
-                  </div>
-                </BentoCard>
-
-              </div>
-            ) : techStack.items ? (
-              <div className="w-full mx-auto flex flex-wrap justify-center gap-4 relative z-10">
-                {techStack.items.map((item, i) => (
-                  <div key={i} className="w-full md:w-[calc(50%-0.5rem)] lg:w-[calc(25%-0.75rem)] flex">
-                    <BentoCard className="min-h-[180px] w-full" innerClassName="p-6 flex flex-col justify-start group overflow-hidden">
-                      <div className="absolute inset-0 bg-[#0a0a0a] z-0" />
-                      <div className="relative z-10">
-                        <h3 className="text-white font-bold text-lg mb-2">{item.title}</h3>
-                        <p className="text-white/40 text-sm leading-relaxed">{item.desc}</p>
+                      {/* Sparkle icon top right */}
+                      <div className="absolute top-5 right-5 text-white/30">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0l2 8 8 2-8 2-2 8-2-8-8-2 8-2z" /></svg>
                       </div>
-                    </BentoCard>
-                  </div>
-                ))}
-              </div>
-            ) : null}
-          </section>
+                    </div>
+                    <div className="absolute bottom-5 left-5 z-20">
+                      <h3 className="text-white font-bold text-lg mb-0.5 min-[1600px]:!text-[36px]">{techStack.boxes.box1.title}</h3>
+                      <p className="text-white/40 text-xs pr-4 min-[1600px]:!text-[22px]">{techStack.boxes.box1.desc}</p>
+                    </div>
+                  </BentoCard>
+
+                  {/* Box 2: Core Stack Grid */}
+                  <BentoCard className="md:col-span-1 md:row-span-1 min-h-[150px]" innerClassName="p-0 overflow-hidden group">
+                    <div className="absolute inset-0 bg-[#0a0a0a] z-0" />
+                    <div className="absolute inset-0 pt-5 px-6 z-10 flex justify-center">
+                      <div className="grid grid-cols-5 gap-2 opacity-60 group-hover:opacity-100 transition-opacity duration-500 w-full max-w-[85%] mt-2">
+                        {technologies.logos.slice(0, 10).map((tech, i) => (
+                          <div key={i} className="aspect-square rounded-[6px] border border-white/5 flex items-center justify-center bg-white/5" style={{ boxShadow: "inset 0 0 10px rgba(255,255,255,0.02)" }}>
+                            <img src={tech.logo} alt={tech.name} className="w-1/2 h-1/2 object-contain" />
+                          </div>
+                        ))}
+                        {Array.from({ length: Math.max(0, 10 - technologies.logos.length) }).map((_, i) => (
+                          <div key={`empty-${i}`} className="aspect-square rounded-[6px] border border-white/5 flex items-center justify-center bg-white/5" style={{ boxShadow: "inset 0 0 10px rgba(255,255,255,0.02)" }}>
+                            <div className="w-1/2 h-1/2 rounded-sm bg-white/5" />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="absolute bottom-5 left-5 z-20 w-full bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/90 to-transparent pt-8">
+                      <h3 className="text-white font-bold text-lg mb-0.5 min-[1600px]:!text-[36px]">{techStack.boxes.box2.title}</h3>
+                      <p className="text-white/40 text-xs pr-4 min-[1600px]:!text-[22px]">{techStack.boxes.box2.desc}</p>
+                    </div>
+                  </BentoCard>
+
+                  {/* Box 3: Frontend Engineering */}
+                  <BentoCard className="md:col-span-2 md:row-span-2 min-h-[300px]" innerClassName="p-0 overflow-hidden group">
+                    <div className="absolute inset-0 bg-gradient-to-b from-[#111] via-[#0a0a0a] to-[#050505] z-0" />
+
+                    <div className="absolute top-8 left-8 right-8 bottom-[100px] rounded-2xl border border-white/10 bg-[#050505] shadow-2xl overflow-hidden z-10 group-hover:-translate-y-1 transition-transform duration-700">
+                      <div className="h-6 bg-white/5 border-b border-white/5 flex items-center px-4 gap-2">
+                        <div className="w-2 h-2 rounded-full bg-white/20" />
+                        <div className="w-2 h-2 rounded-full bg-white/20" />
+                        <div className="w-2 h-2 rounded-full bg-white/20" />
+                        <div className="ml-4 text-white/30 text-[10px] min-[1600px]:!text-[20px] font-mono">system.config</div>
+                      </div>
+                      <div className="p-6 font-mono text-xs min-[1600px]:!text-[22px] leading-relaxed opacity-60 group-hover:opacity-100 transition-opacity duration-700">
+                        <div className="text-blue-400 mt-1">const <span className="text-yellow-200">System</span> <span className="text-pink-500">=</span> <span className="text-blue-400">()</span> <span className="text-pink-500">{`=>`}</span> {`{`}</div>
+                        <div className="ml-4">
+                          <div className="text-pink-500">return <span className="text-blue-400">(</span></div>
+                          <div className="ml-4 text-cyan-300">{`<Architecture>`}</div>
+                          <div className="ml-8 text-white font-sans text-xs min-[1600px]:!text-[20px] my-2 text-white/60">High Performance Core Running...</div>
+                          <div className="ml-4 text-cyan-300">{`</Architecture>`}</div>
+                          <div className="text-blue-400">)</div>
+                        </div>
+                        <div>{`}`}</div>
+                      </div>
+                    </div>
+
+                    <div className="absolute bottom-6 left-6 z-20 w-full bg-gradient-to-t from-[#050505] via-[#050505]/90 to-transparent pt-12 pr-6">
+                      <h3 className="text-white font-bold text-xl mb-1 min-[1600px]:!text-[40px]">{techStack.boxes.box3.title}</h3>
+                      <p className="text-white/40 text-sm max-w-[80%] min-[1600px]:!text-[24px]">{techStack.boxes.box3.desc}</p>
+                    </div>
+                  </BentoCard>
+
+                  {/* Box 4: Scalable Architecture */}
+                  <BentoCard className="md:col-span-2 md:row-span-2 min-h-[300px]" innerClassName="p-0 overflow-hidden group">
+                    <div className="absolute inset-0 bg-[#050505] z-0" />
+                    <div className="absolute inset-0 flex items-center justify-center z-0 mt-[-40px]">
+                      <motion.div
+                        animate={{ scale: [1, 1.05, 1], opacity: [0.3, 0.6, 0.3] }}
+                        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                        className="w-[180px] h-[180px] rounded-full blur-[40px]"
+                        style={{ background: "#d4af37" }}
+                      />
+                      <div className="absolute w-[200px] h-[200px] rounded-full border border-white/5 group-hover:border-white/20 transition-colors duration-700" style={{ background: "radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%)" }} />
+                      <svg className="absolute w-[200px] h-[200px] opacity-10 group-hover:opacity-30 transition-opacity duration-700" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="48" fill="none" stroke="white" strokeWidth="0.5" />
+                        <path d="M 50 2 A 48 48 0 0 0 50 98 A 48 48 0 0 0 50 2" fill="none" stroke="white" strokeWidth="0.5" />
+                        <path d="M 2 50 A 48 48 0 0 0 98 50 A 48 48 0 0 0 2 50" fill="none" stroke="white" strokeWidth="0.5" />
+                        <ellipse cx="50" cy="50" rx="48" ry="24" fill="none" stroke="white" strokeWidth="0.5" />
+                        <ellipse cx="50" cy="50" rx="24" ry="48" fill="none" stroke="white" strokeWidth="0.5" />
+                      </svg>
+                      <div className="absolute w-1 h-1 bg-white rounded-full top-[30%] left-[40%] blur-[1px] opacity-80" />
+                      <div className="absolute w-1.5 h-1.5 bg-yellow-200 rounded-full top-[60%] right-[35%] blur-[2px] opacity-60" />
+                      <div className="absolute w-2 h-2 bg-orange-300 rounded-full bottom-[40%] left-[45%] blur-[3px] opacity-40" />
+                    </div>
+                    <div className="absolute bottom-6 left-6 z-20 w-full bg-gradient-to-t from-[#050505] via-[#050505]/90 to-transparent pt-12 pr-6">
+                      <h3 className="text-white font-bold text-xl mb-1 min-[1600px]:!text-[40px]">{techStack.boxes.box4.title}</h3>
+                      <p className="text-white/40 text-sm max-w-[80%] min-[1600px]:!text-[24px]">{techStack.boxes.box4.desc}</p>
+                    </div>
+                  </BentoCard>
+
+                  {/* Box 5: UI/UX Design */}
+                  <BentoCard className="md:col-span-1 md:row-span-1 min-h-[150px]" innerClassName="p-0 overflow-hidden group">
+                    <div className="absolute inset-0 bg-[#0a0a0a] z-0" />
+                    <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none pb-8">
+                      <div className="w-[70%] h-[40px] bg-[#111] border border-white/10 rounded-sm flex items-center justify-around px-2 shadow-[0_10px_20px_rgba(0,0,0,0.5)] group-hover:bg-[#151515] transition-colors duration-500">
+                        <div className="w-5 h-5 rounded-full border-[2px] border-white/20 bg-black flex items-center justify-center"><div className="w-1.5 h-1.5 rounded-full bg-white/10" /></div>
+                        <div className="w-5 h-5 rounded-full border-[2px] border-white/20 bg-black flex items-center justify-center"><div className="w-1.5 h-1.5 rounded-full bg-white/10" /></div>
+                        <div className="w-6 h-4 rounded-[2px] border-[1px] border-white/20 bg-black" />
+                        <div className="w-6 h-4 rounded-[2px] border-[1px] border-white/20 bg-black" />
+                      </div>
+                    </div>
+                    <div className="absolute bottom-5 left-5 z-20 w-full bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/90 to-transparent pt-8">
+                      <h3 className="text-white font-bold text-lg mb-0.5 min-[1600px]:!text-[36px]">{techStack.boxes.box5.title}</h3>
+                      <p className="text-white/40 text-xs pr-4 min-[1600px]:!text-[22px]">{techStack.boxes.box5.desc}</p>
+                    </div>
+                  </BentoCard>
+
+                  {/* Box 6: Mobile Solutions */}
+                  <BentoCard className="md:col-span-1 md:row-span-1 min-h-[150px]" innerClassName="p-0 overflow-hidden group">
+                    <div className="absolute inset-0 bg-[#0a0a0a] z-0" />
+                    <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none pb-8" style={{ perspective: '500px' }}>
+                      <div className="w-[70%] h-[50px] bg-gradient-to-b from-[#1a1a1a] to-[#0a0a0a] border border-white/10 rounded-md flex flex-wrap gap-2 p-2 justify-center shadow-2xl group-hover:-translate-y-1 transition-transform duration-500" style={{ transform: 'rotateX(15deg)' }}>
+                        <div className="w-4 h-4 rounded-full border border-white/30 bg-black shadow-[inset_0_0_4px_rgba(255,255,255,0.2)]" />
+                        <div className="w-4 h-4 rounded-full border border-white/30 bg-black shadow-[inset_0_0_4px_rgba(255,255,255,0.2)]" />
+                        <div className="w-4 h-4 rounded-full border border-white/30 bg-black shadow-[inset_0_0_4px_rgba(255,255,255,0.2)]" />
+                        <div className="w-4 h-4 rounded-full border border-white/30 bg-black shadow-[inset_0_0_4px_rgba(255,255,255,0.2)]" />
+                        <div className="w-4 h-4 rounded-full border border-white/30 bg-black shadow-[inset_0_0_4px_rgba(255,255,255,0.2)]" />
+                        <div className="w-4 h-4 rounded-full border border-white/30 bg-black shadow-[inset_0_0_4px_rgba(255,255,255,0.2)]" />
+                      </div>
+                    </div>
+                    <div className="absolute bottom-5 left-5 z-20 w-full bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/90 to-transparent pt-8">
+                      <h3 className="text-white font-bold text-lg mb-0.5 min-[1600px]:!text-[36px]">{techStack.boxes.box6.title}</h3>
+                      <p className="text-white/40 text-xs pr-4 min-[1600px]:!text-[22px]">{techStack.boxes.box6.desc}</p>
+                    </div>
+                  </BentoCard>
+
+                </div>
+              ) : techStack.items ? (
+                <div className="w-full mx-auto flex flex-wrap justify-center gap-4 relative z-10">
+                  {techStack.items.map((item, i) => (
+                    <div key={i} className="w-full md:w-[calc(50%-0.5rem)] lg:w-[calc(25%-0.75rem)] flex">
+                      <BentoCard className="min-h-[180px] min-[1600px]:!min-h-[250px] w-full" innerClassName="p-6 flex flex-col justify-start group overflow-hidden">
+                        <div className="absolute inset-0 bg-[#0a0a0a] z-0" />
+                        <div className="relative z-10">
+                          <h3 className="text-white font-bold text-lg mb-2 min-[1600px]:!text-[30px]">{item.title}</h3>
+                          <p className="text-white/40 text-sm leading-relaxed min-[1600px]:!text-[18px]">{item.desc}</p>
+                        </div>
+                      </BentoCard>
+                    </div>
+                  ))}
+                </div>
+              ) : null}
+            </Container>
+          </Section>
 
           {/* ── TECHNOLOGIES GRID ─────────────────────────────────── */}
-          <section className="bg-black pt-16 pb-0 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 relative overflow-hidden">
-            <motion.div
-              className="text-center mb-10"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-50px" }}
-              variants={{
-                hidden: { opacity: 0 },
-                visible: {
-                  opacity: 1,
-                  transition: { staggerChildren: 0.2, delayChildren: 0.1 }
-                }
-              }}
-            >
-              <motion.h2
-                variants={{
-                  hidden: { opacity: 0, y: 20 },
-                  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
-                }}
-                className="text-5xl font-bold tracking-tight text-white m-0"
-                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-              >
-                {technologies.sectionTitle}
-              </motion.h2>
-            </motion.div>
+          <Section noPadding className="bg-black pt-0 pb-0 relative overflow-hidden">
+            <Container>
+              <SectionHeader
+                title={technologies.sectionTitle}
+                className="text-center mb-0"
+                titleStyle={{ fontFamily: "'Space Grotesk', sans-serif" }}
+              />
 
-            {/* Infinite Marquee Container */}
-            <div className="relative w-full overflow-hidden flex flex-col gap-8 md:gap-12 pt-10 pb-10">
-              {/* Left and Right Fades */}
-              <div className="absolute top-0 left-0 w-24 md:w-64 h-full bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
-              <div className="absolute top-0 right-0 w-24 md:w-64 h-full bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
+              {/* Infinite Marquee Container */}
+              <div className="relative w-full mx-auto overflow-hidden flex flex-col gap-8 md:gap-12 pt-4 pb-10">
+                {/* Left and Right Fades */}
+                <div className="absolute top-0 left-0 w-24 md:w-64 h-full bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
+                <div className="absolute top-0 right-0 w-24 md:w-64 h-full bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
 
-              {/* Row 1 - Scrolls Left */}
-              <div
-                className="flex gap-12 md:gap-24 pr-12 md:pr-24 w-max animate-scroll-left"
-                style={{ animationDuration: '100s' }}
-              >
-                {[...technologies.logos, ...technologies.logos, ...technologies.logos, ...technologies.logos, ...technologies.logos, ...technologies.logos, ...technologies.logos, ...technologies.logos].map((tech, i) => (
-                  <div
-                    key={`row1-${i}`}
-                    className="flex flex-col items-center justify-center gap-4"
-                  >
+                {/* Row 1 - Scrolls Left */}
+                <div
+                  className="flex gap-12 md:gap-24 min-[1600px]:!gap-32 pr-12 md:pr-24 min-[1600px]:!pr-32 w-max animate-scroll-left"
+                  style={{ animationDuration: '100s' }}
+                >
+                  {[...technologies.logos, ...technologies.logos, ...technologies.logos, ...technologies.logos, ...technologies.logos, ...technologies.logos, ...technologies.logos, ...technologies.logos].map((tech, i) => (
                     <div
-                      className="rounded-[24px] flex items-center justify-center border border-white/[0.04]"
-                      style={{
-                        width: isMobile ? 70 : 110,
-                        height: isMobile ? 70 : 110,
-                        background: "rgba(255,255,255,0.02)",
-                      }}
+                      key={`row1-${i}`}
+                      className="flex flex-col items-center justify-center gap-4"
                     >
-                      <img src={tech.logo} alt={tech.name} className="w-[60%] h-[60%] object-contain" />
+                      <div
+                        className="rounded-[24px] flex items-center justify-center border border-white/[0.04] min-[1600px]:!w-[180px] min-[1600px]:!h-[180px]"
+                        style={{
+                          width: isMobile ? 70 : 110,
+                          height: isMobile ? 70 : 110,
+                          background: "rgba(255,255,255,0.02)",
+                        }}
+                      >
+                        <img src={tech.logo} alt={tech.name} className="w-[60%] h-[60%] object-contain" />
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
-          </section>
+            </Container>
+          </Section>
 
           {/* ── OUR PROCESS ───────────────────────────────────────── */}
           <Ourprocess title={process.header.title} subtitle={process.header.subtitle} steps={process.steps} />

@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
+import Section from "../layout/Section";
+import Container from "../layout/Container";
+import SectionHeader from "../layout/SectionHeader";
+import Paragraph from "../layout/Paragraph";
 
 const Question = () => {
   const [openIndex, setOpenIndex] = useState(null);
@@ -42,16 +46,6 @@ const Question = () => {
     setOpenIndex(null);
   };
 
-  /* TEXT SPLIT HELPER */
-  const splitText = text => {
-    const chars = text.split("");
-    const mid = Math.floor(chars.length / 2);
-    return { chars, mid };
-  };
-
-  const paraText =
-    "Real stories from teams who streamlined their workflow and delivered more with less.";
-  const para = splitText(paraText);
 
   // Animation variants for FAQ items
   const containerVariants = {
@@ -84,73 +78,25 @@ const Question = () => {
   };
 
   return (
-    <section className="bg-transparent text-white py-6 sm:py-8 md:py-10 relative z-10">
-      <div className="w-full mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
+    <Section className="bg-transparent text-white relative z-10">
+      <Container className="question-container">
 
         {/* ================= HEADING ================= */}
-        <div className="text-center max-w-3xl 2xl:max-w-[1400px] min-[1920px]:max-w-none mx-auto mb-6 sm:mb-8 md:mb-10 2xl:mb-12 overflow-hidden">
-
-          {/* Frequently Asked - Gradient Text */}
-          <h1
-            style={{
-              fontSize: "clamp(32px, 5vw, 48px)",
-              fontWeight: 700,
-              letterSpacing: "-0.02em",
-              marginBottom: "8px",
-              color: "#ffffff",
-              fontFamily: "'Space Grotesk', sans-serif",
-            }}
-          >
-            Frequently Asked Questions
-          </h1>
-          {/* <h1 
-            style={{
-              fontSize: "clamp(32px, 5vw, 48px)",
-              fontWeight: 700,
-              letterSpacing: "-0.02em",
-              marginBottom: "16px",
-              color: "#ffffff",
-              fontFamily: "'Space Grotesk', sans-serif",
-            }}
-          >
-            Questions
-          </h1> */}
-
-          {/* Paragraph with split animation */}
-          <motion.p
-            className="text-white-400 text-sm sm:text-base md:text-lg flex flex-wrap justify-center"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            {para.chars.map((char, i) => (
-              <motion.span
-                key={i}
-                variants={{
-                  hidden: {
-                    opacity: 0,
-                    x: i < para.mid ? -30 : 30,
-                  },
-                  visible: {
-                    opacity: 1,
-                    x: 0,
-                  },
-                }}
-                transition={{
-                  duration: 0.4,
-                  delay: 0.3 + i * 0.015,
-                }}
-                className="inline-block"
-              >
-                {char === " " ? "\u00A0" : char}
-              </motion.span>
-            ))}
-          </motion.p>
-        </div>
+        <SectionHeader
+          title="Frequently Asked Questions"
+          titleTag="h1"
+          subtitle="Everything you need to know about our innovative technology solutions and intelligent products."
+          titleStyle={{
+            fontWeight: 700,
+            letterSpacing: "-0.02em",
+            color: "#ffffff",
+            fontFamily: "'Space Grotesk', sans-serif",
+          }}
+        />
 
         {/* ================= FAQ ACCORDION WITH HOVER ANIMATION ================= */}
         <motion.div
-          className="space-y-3 sm:space-y-4"
+          className="space-y-2 sm:space-y-3 min-[1600px]:space-y-4"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -179,24 +125,18 @@ const Question = () => {
               <div
                 className="
                   px-4 sm:px-5 md:px-6
-                  py-4 sm:py-5
+                  py-3 lg:py-4 xl:py-5
                   flex justify-between items-center
                   hover:bg-[#222]
                   transition-colors duration-300
                   cursor-pointer
                 "
               >
-                <p
-                  className="
-                    text-white
-                    text-sm sm:text-base
-                    md:text-lg
-                    pr-4
-                    font-medium
-                  "
+                <Paragraph
+                  className="font-medium pr-4"
                 >
                   {item.q}
-                </p>
+                </Paragraph>
 
                 <span
                   className="
@@ -209,7 +149,7 @@ const Question = () => {
                     transform: openIndex === i ? 'rotate(180deg)' : 'rotate(0deg)'
                   }}
                 >
-                  <ChevronDown className="w-6 h-6 sm:w-8 sm:h-8" />
+                  <ChevronDown className="w-5 h-5 sm:w-6 sm:h-6 lg:w-5 lg:h-5 xl:w-6 xl:h-6 min-[1600px]:!w-8 min-[1600px]:!h-8" />
                 </span>
               </div>
 
@@ -226,26 +166,19 @@ const Question = () => {
                     }}
                     className="overflow-hidden"
                   >
-                    <p
-                      className="
-                        text-gray-400
-                        text-xs sm:text-sm
-                        md:text-base
-                        leading-relaxed
-                        px-4 sm:px-5 md:px-6
-                        pb-4 sm:pb-5
-                      "
+                    <Paragraph
+                      className="!text-gray-400 px-4 sm:px-5 md:px-6 pb-3 lg:pb-4 xl:pb-5"
                     >
                       {item.a}
-                    </p>
+                    </Paragraph>
                   </motion.div>
                 )}
               </AnimatePresence>
             </motion.div>
           ))}
         </motion.div>
-      </div>
-    </section>
+      </Container>
+    </Section>
   );
 };
 

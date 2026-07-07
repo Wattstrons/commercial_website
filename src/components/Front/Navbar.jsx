@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FiMenu, FiX } from "react-icons/fi";
 import logo from "../../assets/icon/logo.png";
+import Container from "../layout/Container";
 
 const NAVBAR_HEIGHT = 80;
 
@@ -18,6 +19,8 @@ const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [scrolled, setScrolled] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const lastScrollY = useRef(0);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -92,12 +95,21 @@ const NavBar = () => {
     }
   };
 
-  /* ─── Navbar background on scroll ────────────────────────────────── */
+  /* ─── Navbar auto-hide on scroll ────────────────────────────────── */
   useEffect(() => {
     const onScroll = () => {
-      const scrollY = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop;
-      setScrolled(scrollY > 20);
+      const currentScrollY = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop;
+      
+      if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
+        setIsVisible(false); // Hide when scrolling down
+      } else {
+        setIsVisible(true);  // Show when scrolling up
+      }
+      
+      lastScrollY.current = currentScrollY;
+      setScrolled(currentScrollY > 20);
     };
+    
     window.addEventListener("scroll", onScroll, { passive: true, capture: true });
     return () => window.removeEventListener("scroll", onScroll, { capture: true });
   }, []);
@@ -197,7 +209,7 @@ const NavBar = () => {
 
   /* ─── CSS helpers ──────────────────────────────────────────────────── */
   const navLinkClass = (isActive = false) =>
-    "view-details-btn nav-link relative flex items-center px-1.5 lg:px-2 xl:px-3 py-2 font-medium transition-all duration-300 whitespace-nowrap text-[13px] lg:text-sm xl:text-base " +
+    "view-details-btn nav-link relative flex items-center px-1.5 lg:px-2 xl:px-3 py-2 font-medium transition-all duration-300 whitespace-nowrap text-[13px] lg:text-sm xl:text-base 2xl:!text-[18px] " +
     (isActive
       ? "text-[#00EDC2]"
       : "text-white hover:text-white hover:drop-shadow-[0_0_30px_#8DE05A] hover:[text-shadow:0_0_15px_#8DE05A,0_0_35px_#8DE05A]");
@@ -259,8 +271,10 @@ const NavBar = () => {
   /* ─── JSX ──────────────────────────────────────────────────────────── */
   return (
     <>
-      <nav className="fixed top-0 left-0 w-full z-50 transition-all duration-300">
-        <div className="w-full mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
+      <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+        isVisible ? "translate-y-0" : "-translate-y-full"
+      } bg-transparent`}>
+        <Container className="!px-4 sm:!px-6 md:!px-8 lg:!px-12 xl:!px-16">
           <div className="flex items-center justify-between py-3 md:py-4">
 
             {/* LOGO */}
@@ -277,8 +291,8 @@ const NavBar = () => {
                 }
               }}
             >
-              <img src={logo} alt="logo" className="h-8 sm:h-9 lg:h-8 xl:h-10 w-auto relative z-10" />
-              <span className="text-[#00EDC2] text-base sm:text-lg lg:text-base xl:text-xl font-bold tracking-wide relative z-10 whitespace-nowrap transition-all duration-300 group-hover:[text-shadow:0_0_15px_#8DE05A,0_0_35px_#8DE05A]">
+              <img src={logo} alt="logo" className="h-8 sm:h-9 lg:h-8 xl:h-10 2xl:!h-10 w-auto relative z-10" />
+              <span className="text-[#00EDC2] text-base sm:text-lg lg:text-base xl:text-xl 2xl:!text-[24px] font-bold tracking-wide relative z-10 whitespace-nowrap transition-all duration-300 group-hover:[text-shadow:0_0_15px_#8DE05A,0_0_35px_#8DE05A]">
                 WATTSTRONS
               </span>
             </Link>
@@ -292,7 +306,7 @@ const NavBar = () => {
             <div className="hidden lg:flex items-center gap-3">
               <button
                 onClick={handleGetStarted}
-                className="view-details-btn relative px-4 lg:px-5 xl:px-6 py-2 rounded-full font-medium text-[13px] lg:text-sm xl:text-base text-black bg-[#00EDC2] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_#8DE05A] whitespace-nowrap"
+                className="view-details-btn relative px-4 lg:px-5 xl:px-6 py-2 rounded-full font-medium text-[13px] lg:text-sm xl:text-base 2xl:!text-[18px] text-black bg-[#00EDC2] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_#8DE05A] whitespace-nowrap"
               >
                 Start Your Project
               </button>
@@ -307,7 +321,7 @@ const NavBar = () => {
               <FiMenu />
             </button>
           </div>
-        </div>
+        </Container>
       </nav>
 
       {/* Mobile Drawer */}

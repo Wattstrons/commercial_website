@@ -3,6 +3,13 @@ import { AnimatePresence, motion } from "framer-motion";
 import { X, ArrowRight, CheckCircle2, Cpu, Eye } from "lucide-react";
 import { BorderRotate } from "../animation/BorderRotate";
 import { GlowCard } from "../animation/spotlight-card";
+import Section from "../layout/Section";
+import Container from "../layout/Container";
+import ResponsiveGrid from "../layout/ResponsiveGrid";
+import SectionHeader from "../layout/SectionHeader";
+import Paragraph from "../layout/Paragraph";
+
+const MotionResponsiveGrid = motion(ResponsiveGrid);
 
 // Import local images
 import buckImage from "../../assets/images/buck.png";
@@ -144,87 +151,34 @@ const Featureprojects = () => {
     }
   };
 
-  // Split text animation for subtitle (like FAQ page)
-  const splitText = (text) => {
-    const chars = text.split("");
-    const mid = Math.floor(chars.length / 2);
-    return { chars, mid };
-  };
 
-  const subtitleText = "Explore our on going work across embedded systems, IoT, and software development.";
-  const subtitle = splitText(subtitleText);
 
   return (
-    <section
+    <Section
       id="projects"
-      className="min-h-screen flex flex-col justify-center bg-transparent text-white py-12 sm:py-16 md:py-20 relative overflow-hidden"
+      className="bg-transparent text-white relative z-20 overflow-hidden"
     >
-
-      <div className="w-full mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 relative z-10">
+      <Container
+        className="feature-projects-container relative z-10"
+      >
 
         {/* Header with animation when in view */}
-        <motion.div
-          className="text-center mb-12"
-          variants={headerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
-        >
-          <h1
-            style={{
-              fontSize: "clamp(32px, 5vw, 48px)",
-              fontWeight: 700,
-              letterSpacing: "-0.02em",
-              marginBottom: "8px",
-              color: "#ffffff",
-              fontFamily: "'Space Grotesk', sans-serif",
-            }}
-          >
-            Ongoing projects
-          </h1>
-
-
-          {/* Subtitle with character-by-character animation (like FAQ page) */}
-          <motion.p
-            className="text-white text-sm sm:text-base md:text-lg flex flex-wrap justify-center"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            {subtitle.chars.map((char, i) => (
-              <motion.span
-                key={i}
-                variants={{
-                  hidden: {
-                    opacity: 0,
-                    x: i < subtitle.mid ? -20 : 20,
-                  },
-                  visible: {
-                    opacity: 1,
-                    x: 0,
-                  },
-                }}
-                transition={{
-                  duration: 0.3,
-                  delay: 0.2 + i * 0.01,
-                }}
-                className="inline-block"
-              >
-                {char === " " ? "\u00A0" : char}
-              </motion.span>
-            ))}
-          </motion.p>
-        </motion.div>
+        <SectionHeader
+          title="Ongoing Projects"
+          titleTag="h1"
+          subtitle="Explore our latest innovations and smart engineering solutions being developed."
+          className="text-center mb-6"
+          titleStyle={{
+            fontWeight: 700,
+            letterSpacing: "-0.02em",
+            color: "#ffffff",
+            fontFamily: "'Space Grotesk', sans-serif",
+          }}
+        />
 
         {/* Projects Grid with staggered entrance animation (like FAQ items) */}
-        <motion.div
-          className="grid 
-grid-cols-1 
-sm:grid-cols-2 
-md:grid-cols-2 
-lg:grid-cols-3 
-xl:grid-cols-4 
-gap-5 sm:gap-6 md:gap-7 lg:gap-8"
+        <MotionResponsiveGrid
+          columns="4"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -242,39 +196,41 @@ gap-5 sm:gap-6 md:gap-7 lg:gap-8"
               <GlowCard
                 glowColor="cyan"
                 customSize={true}
-                className="project-card flex flex-col h-full w-full overflow-hidden group transition-all duration-500 ease-out bg-[#111111] p-0 gap-0"
+                className="project-card h-full w-full overflow-hidden group transition-all duration-500 ease-out bg-[#111111] p-0"
               >
-                <div className="relative h-[30vh] sm:h-[35vh] md:h-[40vh] lg:h-[45vh] 2xl:h-[50vh] p-[16px]">
-                  <div className="w-full h-full overflow-hidden rounded-[20px]">
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="w-full h-full object-cover"
-                    />
+                <div className="flex flex-col h-full w-full">
+                  <div className="relative w-full aspect-[4/3] sm:aspect-[4/3] lg:aspect-[4/3] p-[16px] shrink-0">
+                    <div className="w-full h-full overflow-hidden rounded-[20px]">
+                      <img
+                        src={project.image}
+                        alt={project.title}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
                   </div>
-                </div>
 
-                {/* Body */}
-                <div className="px-5 sm:px-6 md:px-7 pb-6 pt-4 flex flex-col gap-2 flex-1">
-                  <h3 className="text-lg font-bold text-gray-100 group-hover:text-white transition-colors leading-tight">
-                    {project.title}
-                  </h3>
-                  <p className="text-gray-400 text-xs uppercase tracking-wider">
-                    {project.subtitle}
-                  </p>
-                  <p className="text-white text-[13px] ">{project.desc}</p>
-                  {/* <div className="view-details-btn flex items-center gap-1.5 mt-2 text-[#80D25D] text-[13px] font-semibold tracking-widest group-hover:gap-2.5 transition-all duration-300">
-                    {project.cta}
-                    <ArrowRight size={11} />
-                  </div> */}
+                  {/* Body */}
+                  <div className="px-5 sm:px-6 md:px-7 pb-6 pt-4 flex flex-col gap-2 flex-1">
+                    <h3 className="text-lg min-[1600px]:text-3xl font-bold text-gray-100 group-hover:text-white transition-colors leading-tight">
+                      {project.title}
+                    </h3>
+                    {/* {project.subtitle && (
+                      <p className="text-gray-400 text-xs min-[1600px]:text-base uppercase tracking-wider">
+                        {project.subtitle}
+                      </p>
+                    )} */}
+                    <Paragraph className="flex-1">
+                      {project.desc}
+                    </Paragraph>
+                  </div>
                 </div>
               </GlowCard>
             </motion.div>
           ))}
-        </motion.div>
+        </MotionResponsiveGrid>
 
 
-      </div>
+      </Container>
 
       {/* Modal */}
       {/* <AnimatePresence>
@@ -369,7 +325,7 @@ gap-5 sm:gap-6 md:gap-7 lg:gap-8"
         .custom-modal-scroll::-webkit-scrollbar-thumb { background: #80D25D; border-radius: 10px; }
         .custom-modal-scroll::-webkit-scrollbar-thumb:hover { background: #23B0ED; }
       `}</style>
-    </section>
+    </Section>
   );
 };
 

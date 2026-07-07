@@ -1,48 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useInView, animate } from "framer-motion";
-import world from "../../assets/images/world.png";
 import { BorderRotate } from "../animation/BorderRotate";
+import world from "../../assets/images/world.png"
+import Container from "../layout/Container";
+import Section from "../layout/Section";
+import SectionHeader from "../layout/SectionHeader";
+import Paragraph from "../layout/Paragraph";
 
-const AnimatedSplitText = ({ text, delayOffset = 0.2, className = "", style = {} }) => {
-  const words = text.split(" ");
-  let globalCharIndex = 0;
-  const totalChars = text.replace(/\s+/g, "").length;
-  const mid = Math.floor(totalChars / 2);
-
-  return (
-    <motion.p
-      className={className}
-      style={style}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
-    >
-      {words.map((word, wordIndex) => {
-        const wordChars = word.split("");
-        return (
-          <span key={wordIndex} className="inline-block whitespace-nowrap mr-[0.25em]">
-            {wordChars.map((char, i) => {
-              const charIndex = globalCharIndex++;
-              return (
-                <motion.span
-                  key={charIndex}
-                  variants={{
-                    hidden: { opacity: 0, x: charIndex < mid ? -20 : 20 },
-                    visible: { opacity: 1, x: 0 },
-                  }}
-                  transition={{ duration: 0.3, delay: delayOffset + charIndex * 0.01 }}
-                  className="inline-block"
-                >
-                  {char}
-                </motion.span>
-              );
-            })}
-          </span>
-        );
-      })}
-    </motion.p>
-  );
-};
 
 // ── Placeholder globe ──
 function GlobePlaceholder() {
@@ -76,6 +40,7 @@ function NeuralCore({ isActive, setCardHovered }) {
         sm:w-[clamp(320px,60vw,600px)] sm:h-[clamp(320px,60vw,400px)]
         md:w-[clamp(320px,45vw,600px)] md:h-[clamp(320px,45vw,400px)]
         lg:w-[clamp(250px,30vw,600px)] lg:h-[clamp(250px,30vw,400px)]
+        min-[1600px]:!w-[550px] min-[1600px]:!h-[550px]
       "
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
@@ -144,6 +109,7 @@ function NeuralCore({ isActive, setCardHovered }) {
           sm:w-[280px] sm:h-[280px]
           md:w-[300px] md:h-[300px]
           lg:w-[340px] lg:h-[340px]
+          min-[1600px]:!w-[380px] min-[1600px]:!h-[380px]
         "
       >
         <img
@@ -184,23 +150,17 @@ function StaticCard({ side = "left", icon, title, body, onMouseEnter, onMouseLea
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       className={`
-        absolute
+        /* Flow naturally in the flex container on all screen sizes */
+        relative
 
         /* MOBILE & TABLET (auto layout) */
-        max-lg:relative 
         max-lg:mx-auto 
         max-sm:my-3
         sm:max-lg:my-6
-        max-lg:left-auto 
-        max-lg:right-auto 
         max-lg:transform-none
 
-        /* POSITIONING — match container padding */
-        ${isLeft
-          ? "lg:left-[80px]"
-          : "lg:right-[80px]"
-        }
-        lg:top-1/2 lg:-translate-y-1/2
+        /* DESKTOP (aligned by flex justify-between) */
+        lg:my-auto
 
         /* WIDTH CONTROL */
         max-sm:w-[92%]
@@ -208,6 +168,7 @@ function StaticCard({ side = "left", icon, title, body, onMouseEnter, onMouseLea
         lg:w-[32%] lg:max-w-[420px]
         xl:w-[32%] xl:max-w-[480px]
         2xl:w-[30%] 2xl:max-w-[550px]
+        min-[1600px]:w-[32%] min-[1600px]:max-w-[700px]
 
         /* INTERACTIVITY */
         lg:pointer-events-auto
@@ -231,25 +192,27 @@ function StaticCard({ side = "left", icon, title, body, onMouseEnter, onMouseLea
         className="
           w-full
           px-4 py-3
-          sm:px-5 sm:py-3
           md:px-6 md:py-4
+          min-[1600px]:!px-12 min-[1600px]:!py-10
           backdrop-blur-xl
           flex flex-col justify-between
-          h-[230px]
-          sm:h-[250px]
-          md:h-[260px]
-          lg:h-[280px]
+          min-h-[230px]
+          sm:min-h-[250px]
+          md:min-h-[260px]
+          lg:min-h-[280px]
+          min-[1600px]:!min-h-[360px]
+          h-full
           transition-all duration-300
         "
         backgroundColor="rgba(10,10,10,0.6)"
         borderRadius={12}
       >
         <div>
-          <div className="flex flex-col items-center justify-center gap-1 sm:gap-2 mb-3 sm:mb-4 text-center">
+          <div className="flex flex-col items-center justify-center gap-1 sm:gap-1.5 mb-2 sm:mb-3 text-center">
             <motion.span
-              className="material-symbols-outlined text-[#00ebc0]"
+              className="material-symbols-outlined text-[#00ebc0] min-[1600px]:!text-[56px]"
               style={{
-                fontSize: "clamp(32px, 5vw, 45px)",
+                fontSize: "clamp(24px, 4vw, 36px)",
                 fontVariationSettings: "'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 48"
               }}
               initial={{ scale: 0, rotate: -180 }}
@@ -264,7 +227,7 @@ function StaticCard({ side = "left", icon, title, body, onMouseEnter, onMouseLea
               {icon}
             </motion.span>
             <motion.h3
-              className="text-base sm:text-lg md:text-xl lg:text-2xl font-semibold text-white m-0"
+              className="text-[15px] sm:text-base md:text-lg lg:text-xl min-[1600px]:!text-[32px] font-semibold text-white m-0"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
@@ -272,16 +235,16 @@ function StaticCard({ side = "left", icon, title, body, onMouseEnter, onMouseLea
               {title}
             </motion.h3>
           </div>
-          <motion.p
-            className="text-white text-xs sm:text-sm md:text-base lg:text-[15px] leading-relaxed font-light m-0"
+          <Paragraph
+            useMotion={true}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
           >
             {body}
-          </motion.p>
+          </Paragraph>
         </div>
-        <div className="mt-3 sm:mt-4" />
+        <div className="mt-1 sm:mt-2" />
       </BorderRotate>
     </motion.div>
   );
@@ -386,13 +349,12 @@ function BottomStats({ setCardHovered }) {
   return (
     <motion.div
       className="
-        absolute bottom-10
-        max-lg:relative max-lg:bottom-auto max-lg:mt-8 max-lg:mb-12
-        w-full flex justify-between items-center
+        w-full z-30 relative
+        mt-auto pt-8 pb-0
+        flex justify-between items-center
         max-lg:justify-center
         gap-0 max-lg:gap-0
         max-lg:flex-wrap lg:flex-nowrap max-lg:gap-3 max-sm:gap-2
-        px-4 sm:px-6 lg:px-[80px]
       "
       variants={containerVariants}
       initial="hidden"
@@ -414,8 +376,8 @@ function BottomStats({ setCardHovered }) {
             }}
             className="
               flex-shrink-0 lg:flex-shrink
-              w-[calc(50%-0.5rem)] sm:w-[140px] md:w-[160px] lg:w-auto lg:flex-1 lg:max-w-[170px]
-              h-[80px] sm:h-[85px] md:h-[90px] lg:h-[100px]
+              w-[calc(50%-0.5rem)] sm:w-[140px] md:w-[160px] lg:w-auto lg:flex-1 lg:max-w-[170px] min-[1600px]:!max-w-[220px]
+              h-[80px] sm:h-[85px] md:h-[90px] lg:h-[100px] min-[1600px]:!h-[140px]
               px-2 py-2 sm:px-3 sm:py-2 md:px-4 md:py-3
               flex flex-col items-center justify-center
               gap-1 sm:gap-1.5 md:gap-2
@@ -429,7 +391,7 @@ function BottomStats({ setCardHovered }) {
             <motion.span
               className="
                 material-symbols-outlined text-[rgb(0,235,192)] leading-none flex-shrink-0
-                text-[22px] sm:text-[24px] md:text-[26px] lg:text-[28px]
+                text-[22px] sm:text-[24px] md:text-[26px] lg:text-[28px] min-[1600px]:!text-[40px]
               "
               whileHover={{ rotate: 360 }}
               transition={{ duration: 0.5 }}
@@ -437,11 +399,11 @@ function BottomStats({ setCardHovered }) {
               {s.icon}
             </motion.span>
             <div className="flex flex-wrap items-center justify-center gap-x-1 text-center leading-tight">
-              <span className="text-[13px] sm:text-[14px] md:text-[15px] lg:text-[16px] font-bold text-white">
+              <span className="text-[13px] sm:text-[14px] md:text-[15px] lg:text-[16px] min-[1600px]:!text-[28px] font-bold text-white">
                 <CountUpNumber value={s.label} />
               </span>
 
-              <span className="text-[11px] sm:text-[12px] md:text-[13px] text-white">
+              <span className="text-[11px] sm:text-[12px] md:text-[13px] min-[1600px]:!text-[18px] text-white">
                 {s.text}
               </span>
             </div>
@@ -505,76 +467,59 @@ const Whoweare = () => {
         @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
       `}</style>
 
-      <section
+      <Section
+        fullScreen
         id="about"
         ref={sectionRef}
-        className="bg-transparent text-white relative w-full min-h-screen"
+        className="bg-transparent text-white"
       >
-        <div className="relative flex flex-col min-h-screen w-full overflow-hidden max-lg:overflow-visible bg-transparent">
-          <main className="w-full max-w-[1600px] xl:max-w-[1900px] mx-auto flex-1 relative flex flex-col items-center justify-center overflow-hidden max-lg:overflow-visible max-lg:justify-start max-lg:py-12 sm:max-lg:py-16 md:max-lg:py-16">
-
+        <div className="relative flex flex-col min-h-screen lg:h-[100vh] lg:min-h-0 w-full overflow-hidden bg-transparent">
+          <Container className="flex-1 relative flex flex-col items-center justify-center overflow-hidden max-lg:overflow-visible max-lg:justify-start max-lg:py-12 lg:h-full lg:min-h-0">
+            <div className="relative w-full h-full flex flex-col flex-1 pt-16 pb-2 lg:pt-24 lg:pb-2 lg:min-h-0">
             {/* Heading */}
-            <motion.div
-              className="
-                absolute lg:top-[clamp(5rem,8vh,7rem)]
-                max-lg:relative max-lg:top-auto max-lg:mb-6 sm:max-lg:mb-8
-                left-0 right-0 z-40
-                flex flex-col items-center text-center
-                px-4 sm:px-6 md:px-8
-              "
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <h1
-                className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-3 sm:mb-4 text-white"
-                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-              >
-                Who We Are
-              </h1>
-
-              <AnimatedSplitText
-                text="Wattstrons represents the power of electrons—transforming energy into intelligent technology."
-                className="text-white text-xs sm:text-sm md:text-base lg:text-lg text-center tracking-tight leading-relaxed max-md:px-2 w-full flex flex-wrap justify-center"
-                style={{
-                  fontFamily: "'Space Grotesk', sans-serif",
-                  letterSpacing: "0.2px"
-                }}
-                delayOffset={0.2}
-              />
-            </motion.div>
-
-            {/* Globe */}
-            <NeuralCore
-              isActive={cardHovered}
-              setCardHovered={setCardHovered}
+            <SectionHeader
+              title="Who We Are"
+              titleTag="h1"
+              subtitle="Wattstrons represents the power of electrons—transforming energy into intelligent technology."
+              className="relative z-40 mb-4 lg:mb-6 flex flex-col items-center text-center px-4 sm:px-6 md:px-8"
+              titleStyle={{ fontFamily: "'Space Grotesk', sans-serif" }}
+              subtitleStyle={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: "0.2px" }}
             />
 
-            <div className="w-full flex max-sm:flex-col sm:max-lg:flex-row sm:max-lg:justify-center sm:max-lg:gap-4 lg:absolute lg:inset-0 lg:pointer-events-none lg:px-0 px-4 sm:px-6 lg:px-[80px] z-20">
-              <StaticCard
-                side="left"
-                icon="visibility"
-                title="Our Vision"
-                body="To become a leading innovation company that harnesses electronics and software to create smart, efficient, and sustainable technology solutions for the future."
-                onMouseEnter={() => setCardHovered(true)}
-                onMouseLeave={() => setCardHovered(false)}
-                index={0}
+            {/* Middle Section: Globe + Cards */}
+            <div className="relative flex-1 w-full flex flex-col lg:flex-row items-center justify-center min-h-0 z-20">
+              <NeuralCore
+                isActive={cardHovered}
+                setCardHovered={setCardHovered}
               />
-              <StaticCard
-                side="right"
-                icon="bolt"
-                title="Our Mission"
-                body="To design and develop high-quality electronic systems and smart engineering solutions by combining power (watts) and electrons (trons), solving real-world problems with innovation, efficiency, and reliability."
-                onMouseEnter={() => setCardHovered(true)}
-                onMouseLeave={() => setCardHovered(false)}
-                index={1}
-              />
+
+              <div className="w-full flex max-sm:flex-col sm:max-lg:flex-row sm:max-lg:justify-center sm:max-lg:gap-4 lg:absolute lg:inset-0 lg:pointer-events-none lg:px-0 lg:justify-between lg:items-center z-20 mt-8 lg:mt-0">
+                <StaticCard
+                  side="left"
+                  icon="visibility"
+                  title="Our Vision"
+                  body="To become a leading innovation company that harnesses electronics and software to create smart, efficient, and sustainable technology solutions for the future."
+                  onMouseEnter={() => setCardHovered(true)}
+                  onMouseLeave={() => setCardHovered(false)}
+                  index={0}
+                />
+                <StaticCard
+                  side="right"
+                  icon="bolt"
+                  title="Our Mission"
+                  body="To design and develop high-quality electronic systems and smart engineering solutions by combining power (watts) and electrons (trons), solving real-world problems with innovation, efficiency, and reliability."
+                  onMouseEnter={() => setCardHovered(true)}
+                  onMouseLeave={() => setCardHovered(false)}
+                  index={1}
+                />
+              </div>
             </div>
 
             <BottomStats setCardHovered={setCardHovered} />
-          </main>
+            </div>
+          </Container>
         </div>
-      </section>
+      </Section>
     </>
   );
 };

@@ -37,7 +37,7 @@ const Home = () => {
         className="relative w-full h-[200vh]"
       >
         <motion.div
-          className="sticky top-0 left-0 w-full h-screen overflow-hidden pt-16 sm:pt-20 md:pt-24 origin-top z-0"
+          className="bg-black sticky top-0 left-0 w-full h-screen overflow-hidden pt-16 sm:pt-20 md:pt-24 origin-top z-0"
           style={{ 
             scale, 
             filter,
@@ -52,6 +52,7 @@ const Home = () => {
           loop
           muted
           playsInline
+          poster="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="
           className="absolute top-0 left-0 w-full h-full object-cover"
         >
           <source src={Backgroundimage} type="video/mp4" />

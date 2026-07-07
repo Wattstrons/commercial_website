@@ -10,34 +10,11 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import ParticleCanvas from "../animation/ParticleCanvas";
+import Container from "../layout/Container";
+import Section from "../layout/Section";
+import SectionHeader from "../layout/SectionHeader";
 
-const AnimatedSplitText = ({ text, delayOffset = 0.2, className = "", style = {} }) => {
-  const chars = text.split("");
-  const mid = Math.floor(chars.length / 2);
-  return (
-    <motion.p
-      className={className}
-      style={style}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
-    >
-      {chars.map((char, i) => (
-        <motion.span
-          key={i}
-          variants={{
-            hidden: { opacity: 0, x: i < mid ? -20 : 20 },
-            visible: { opacity: 1, x: 0 },
-          }}
-          transition={{ duration: 0.3, delay: delayOffset + i * 0.01 }}
-          className="inline-block"
-        >
-          {char === " " ? "\u00A0" : char}
-        </motion.span>
-      ))}
-    </motion.p>
-  );
-};
+
 
 const WHATSAPP_NUMBER = "919876543210";
 
@@ -148,22 +125,22 @@ const AccordionItem = ({ project, isActive, onClick }) => {
         opacity: isActive ? 1 : 0.5,
       }}
     >
-      <div className="px-5 py-4 md:px-6 md:py-5 flex items-center gap-4">
+      <div className="px-4 py-3 md:px-5 md:py-4 flex items-center gap-4">
         {/* Icon */}
         <div
-          className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-500"
+          className="flex-shrink-0 w-10 h-10 min-[1600px]:!w-16 min-[1600px]:!h-16 rounded-full flex items-center justify-center transition-colors duration-500"
           style={{ background: isActive ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.03)" }}
         >
-          {Icon && <Icon size={18} color={isActive ? glowColor : "rgba(255,255,255,0.5)"} />}
+          {Icon && <Icon size={18} className="min-[1600px]:!w-8 min-[1600px]:!h-8" color={isActive ? glowColor : "rgba(255,255,255,0.5)"} />}
         </div>
 
         {/* Title */}
-        <h3 className="text-base md:text-lg font-bold flex-1 transition-colors duration-500" style={{ color: isActive ? "#fff" : "rgba(255,255,255,0.7)" }}>
+        <h3 className="text-base md:text-lg min-[1600px]:!text-[32px] font-bold flex-1 transition-colors duration-500" style={{ color: isActive ? "#fff" : "rgba(255,255,255,0.7)" }}>
           {project.title}
         </h3>
 
         {/* Number */}
-        <div className="text-lg md:text-xl font-semibold transition-colors duration-500" style={{ color: isActive ? "#ffffff" : "rgba(255,255,255,0.3)" }}>
+        <div className="text-lg md:text-xl min-[1600px]:!text-[36px] font-semibold transition-colors duration-500" style={{ color: isActive ? "#ffffff" : "rgba(255,255,255,0.3)" }}>
           {project.number}
         </div>
       </div>
@@ -176,8 +153,8 @@ const AccordionItem = ({ project, isActive, onClick }) => {
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="px-5 pb-5 pt-0 md:px-6 md:pb-6 md:pt-0">
-              <p className="text-sm md:text-[15px] leading-relaxed text-white pl-[56px] pr-4">
+            <div className="px-4 pb-4 pt-0 md:px-5 md:pb-5 md:pt-0">
+              <p className="text-[13px] md:text-[14px] min-[1600px]:!text-[20px] min-[1600px]:!pl-[80px] min-[1600px]:!leading-loose leading-relaxed text-white pl-[52px] pr-4">
                 {project.desc}
               </p>
             </div>
@@ -324,99 +301,91 @@ const Ourprocess = ({
   /* ── MOBILE ── */
   if (isMobile) {
     return (
-      <section ref={sectionRef} style={{ background: "#000", padding: "32px 16px" }}>
-        <div style={{ maxWidth: 900, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: 48 }}>
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="text-5xl font-bold tracking-tight text-white" style={{ marginBottom: 12, fontFamily: "'Space Grotesk', sans-serif" }}
-            >
-              {title}
-            </motion.h2>
-            <AnimatedSplitText
-              text={subtitle}
-              className="text-white"
-              style={{ fontSize: 15, lineHeight: 1.7, maxWidth: 520, margin: "0 auto", fontFamily: "'Space Grotesk', sans-serif" }}
-              delayOffset={0.2}
+      <Section ref={sectionRef} style={{ background: "#000" }}>
+        <Container>
+          <div style={{ maxWidth: 900, margin: "0 auto" }}>
+            <SectionHeader
+              title={title}
+              subtitle={subtitle}
+              className=""
+              titleStyle={{ fontFamily: "'Space Grotesk', sans-serif" }}
+              subtitleStyle={{ lineHeight: 1.7, fontFamily: "'Space Grotesk', sans-serif" }}
+              style={{ textAlign: "center", marginBottom: 48 }}
             />
-          </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
             {mobileStepsList}
           </div>
-        </div>
-      </section>
+          </div>
+        </Container>
+      </Section>
     );
   }
 
   /* ── DESKTOP ── */
   return (
-    <section ref={sectionRef} style={{ position: "relative", height: `${(steps.length + 1) * 100}vh`, background: "#000", overflowX: "clip" }}>
-      <div style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden", display: "flex", paddingTop: "120px" }}>
+    <Section ref={sectionRef} style={{ position: "relative", height: `${(steps.length + 1) * 100}vh`, background: "#000", overflowX: "clip" }}>
+      <Container style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden", display: "flex", paddingTop: "120px" }}>
 
         {/* Heading like Technology Stack */}
         <div
           style={{
             position: "absolute",
             top: "60px",
+            left: 0,
+            right: 0,
             width: "100%",
             textAlign: "center",
             zIndex: 20,
             pointerEvents: "none",
           }}
         >
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-5xl font-bold tracking-tight text-white"
-            style={{
-              margin: "0 auto",
+          <SectionHeader
+            title={title}
+            subtitle={subtitle}
+            className=""
+            titleStyle={{
               fontFamily: "'Space Grotesk', sans-serif",
               pointerEvents: "auto",
-              width: "fit-content",
             }}
-          >
-            {title}
-          </motion.h2>
-          <div style={{ pointerEvents: "auto", width: "fit-content", margin: "0 auto" }}>
-            <AnimatedSplitText
-              text={subtitle}
-              className="text-white"
-              style={{
-                margin: "5px 0 10px 0",
-                fontSize: "18px",
-                letterSpacing: "0.3px",
-                padding: "10px 0",
-                fontFamily: "'Space Grotesk', sans-serif"
-              }}
-              delayOffset={0.2}
-            />
-          </div>
+            subtitleStyle={{
+              letterSpacing: "0.3px",
+              fontFamily: "'Space Grotesk', sans-serif",
+              pointerEvents: "auto",
+            }}
+          />
         </div>
 
         {/* LEFT — Particle */}
-        <div style={{ flex: "0 0 50%", position: "relative", overflow: "hidden", zIndex: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <motion.div 
+          initial={{ opacity: 0, x: -100 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          style={{ flex: "0 0 50%", position: "relative", overflow: "hidden", zIndex: 0, display: "flex", alignItems: "center", justifyContent: "center" }}
+        >
           <motion.div
-            style={{ width: "100%", height: "65vh", minHeight: "500px" }}
+            style={{ width: "100%", height: "65vh", minHeight: "500px", marginTop: "60px" }}
             animate={{ y: [-15, 15, -15] }}
             transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
           >
             {memoizedParticleCanvas}
           </motion.div>
-        </div>
+        </motion.div>
 
         {/* RIGHT — Accordion List */}
-        <div style={{ flex: "0 0 50%", position: "relative", display: "flex", alignItems: "center", justifyContent: "center", padding: "0 clamp(24px,4vw,64px)", zIndex: 10 }}>
-          <div style={{ width: "100%", height: "65vh", minHeight: "500px", maxWidth: 560, display: "flex", flexDirection: "column", justifyContent: "space-between", gap: "12px" }}>
+        <motion.div 
+          initial={{ opacity: 0, x: 100 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          style={{ flex: "0 0 50%", position: "relative", display: "flex", alignItems: "center", justifyContent: "center", padding: "0 clamp(24px,4vw,64px)", zIndex: 10 }}
+        >
+          <div className="min-[1600px]:!max-w-[800px] min-[1600px]:!gap-6" style={{ width: "100%", height: "auto", maxWidth: 640, display: "flex", flexDirection: "column", gap: "10px", marginTop: "40px", maxHeight: "75vh", overflowY: "auto", paddingRight: "8px" }}>
             {desktopAccordionList}
           </div>
-        </div>
-      </div>
-    </section>
+        </motion.div>
+      </Container>
+    </Section>
   );
 };
 

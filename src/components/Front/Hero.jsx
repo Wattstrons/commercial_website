@@ -2,6 +2,9 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import Container from "../layout/Container";
+import Section from "../layout/Section";
+import Paragraph from "../layout/Paragraph";
 
 const Hero = () => {
   const location = useLocation();
@@ -22,22 +25,16 @@ const Hero = () => {
     " Intelligent Systems",
   ];
 
-  // We explicitly extract words to map over them and apply staggering
-  const words = headingLines.flatMap((line) => line.split(" "));
-
   return (
-    <section
+    <Section
+      noPadding
       className="
-        w-full
-        h-full
-        flex-1
+        w-full h-full flex-1
         min-h-[calc(60vh-60px)]
         sm:min-h-[calc(70vh-70px)]
         md:min-h-[calc(78vh-80px)]
         lg:min-h-[calc(82vh-80px)]
-        flex flex-col
-        overflow-x-hidden
-        relative
+        flex flex-col overflow-x-hidden relative
       "
     >
       <div
@@ -49,50 +46,16 @@ const Hero = () => {
           lg:min-h-[calc(82vh-80px)]
           overflow-hidden cursor-default
           flex items-center justify-center
-          px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-24
           py-8 sm:py-10 md:py-12 lg:py-0
         "
       >
-        <div className="relative z-10 w-full max-w-7xl mx-auto">
-          <style>{`
-            @keyframes crtFlicker {
-              0% { opacity: 1; }
-              50% { opacity: 0.98; }
-              100% { opacity: 1; }
-            }
-            .hero-content {
-              animation: crtFlicker 0.15s infinite;
-            }
-            /* Ultrawide screens */
-            @media (min-width: 1920px) {
-              .hero-heading {
-                font-size: clamp(4rem, 5vw, 6rem) !important;
-              }
-              .hero-description {
-                font-size: 1.25rem !important;
-              }
-            }
-            /* Large desktops */
-            @media (min-width: 1280px) and (max-width: 1919px) {
-              .hero-heading {
-                font-size: clamp(3rem, 4.5vw, 4.5rem) !important;
-              }
-            }
-            /* Very small phones (< 360px) */
-            @media (max-width: 359px) {
-              .hero-heading {
-                font-size: 1.5rem !important;
-              }
-              .hero-word {
-                margin-right: 0.2rem !important;
-                padding-left: 0.1rem !important;
-                padding-right: 0.1rem !important;
-              }
-            }
-          `}</style>
-
-          <div className="w-full max-w-7xl mx-auto text-center hero-content">
-            {/* The float animation starts after the text finishes appearing (approx 1.5s delay) */}
+        <Container className="relative z-10">
+          <div
+            className="
+              w-full max-w-7xl mx-auto text-center
+              animate-[crtFlicker_0.15s_infinite]
+            "
+          >
             <motion.div
               initial={{ y: 0 }}
               animate={{ y: [0, -10, 0] }}
@@ -100,29 +63,41 @@ const Hero = () => {
             >
               <div className="inline-block transition-transform duration-500 ease-out hover:scale-105 transform-gpu cursor-default">
                 <h1
-                  className="text-white mb-3 sm:mb-4 md:mb-6 leading-tight hero-heading"
-                  style={{
-                    fontSize: "clamp(1.6rem, 5vw, 4.5rem)",
-                    textShadow: "0 0 5px rgba(0,237,194,0.5)"
-                  }}
+                  className="
+                    text-white mb-3 sm:mb-4 md:mb-6 leading-tight
+                    text-[clamp(1.6rem,5vw,4.5rem)]
+                    [text-shadow:0_0_5px_rgba(0,237,194,0.5)]
+                    min-[1920px]:text-[clamp(4rem,5vw,6rem)]
+                    min-[1280px]:max-[1919px]:text-[clamp(3rem,4.5vw,4.5rem)]
+                    max-[359px]:!text-2xl
+                  "
                 >
                   {headingLines.map((line, lineIdx) => (
                     <div key={lineIdx} className="block">
                       {line.split(" ").map((word, wordIdx) => {
-                        // Calculate a unique index for staggering
-                        const globalIndex = lineIdx === 0 ? wordIdx : headingLines[0].split(" ").length + wordIdx;
+                        const globalIndex =
+                          lineIdx === 0
+                            ? wordIdx
+                            : headingLines[0].split(" ").length + wordIdx;
                         return (
                           <motion.span
                             key={globalIndex}
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.3, delay: globalIndex * 0.05, ease: "easeOut" }}
+                            transition={{
+                              duration: 0.3,
+                              delay: globalIndex * 0.05,
+                              ease: "easeOut",
+                            }}
                             className={`
-                              inline-block hero-word
+                              inline-block
                               mr-1 sm:mr-2 px-0.5 sm:px-1 md:px-2
-                              ${word.includes("Intelligent") || word.includes("Systems")
+                              max-[359px]:!mr-[0.2rem] max-[359px]:!px-[0.1rem]
+                              ${word.includes("Intelligent") ||
+                                word.includes("Systems")
                                 ? "text-[rgb(0,237,194)]"
-                                : "text-white"}
+                                : "text-white"
+                              }
                             `}
                           >
                             {word}
@@ -136,21 +111,21 @@ const Hero = () => {
 
               <div
                 className="
-                  text-gray-300 max-w-4xl mx-auto
+                  max-w-4xl 2xl:max-w-none mx-auto
                   mb-6 sm:mb-8 md:mb-10 lg:mb-12
                   px-2 sm:px-4
-                  text-sm sm:text-base md:text-lg
-                  hero-description
                 "
               >
-                <motion.span
+                <Paragraph
+                  useMotion={true}
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: 0.4, ease: "easeOut" }}
-                  className="block transform-gpu whitespace-nowrap text-sm lg:text-base"
+                  className="block transform-gpu 2xl:text-center 2xl:w-full"
                 >
-                  We design and engineer hardware and software solutions that transform ideas into intelligent, real-world products.
-                </motion.span>
+                  We design and engineer hardware and software solutions that
+                  transform ideas into intelligent, real-world products.
+                </Paragraph>
               </div>
 
               <motion.div
@@ -215,9 +190,9 @@ const Hero = () => {
               </motion.div>
             </motion.div>
           </div>
-        </div>
+        </Container>
       </div>
-    </section>
+    </Section>
   );
 };
 
