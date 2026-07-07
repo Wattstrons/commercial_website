@@ -14,6 +14,9 @@ const ContactInformation = () => {
 
 
 
+
+  
+
   const floatingAnimation = {
     y: [0, -8, 0],
     transition: {
