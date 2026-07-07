@@ -391,7 +391,7 @@ const PremiumCTA = ({ cta, serviceName }) => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('/api/service', {
+      const response = await fetch('https://commercial-backend-ozzm.onrender.com/api/service', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
