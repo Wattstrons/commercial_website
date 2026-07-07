@@ -301,7 +301,7 @@ const JobApplicationModal = ({ job, isOpen, onClose }) => {
       data.append('resume', formData.resumeFile);
     }
 
-    const response = await fetch('https://commercial-backend-ozzm.onrender.com/api/career', {
+    const response = await fetch('https://commercial-backend-two.vercel.app/api/career', {
       method: 'POST',
       body: data
     });
