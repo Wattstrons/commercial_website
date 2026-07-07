@@ -7,6 +7,7 @@ import SectionHeader, { AnimatedSplitText } from "./layout/SectionHeader";
 
 // ── Animated helpers ──────────────────────────────────────────────────
 
+
 const AnimatedLetters = ({ text, className = "", style = {}, delay = 0 }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-10%" });
