@@ -18,315 +18,345 @@ import learnKitImage from "../../assets/images/Kit32.png";
 import fuelImage from "../../assets/images/fuel.png";
 
 const Featureprojects = () => {
-  const [selectedProject, setSelectedProject] = useState(null);
-  const [hoveredCard, setHoveredCard] = useState(null);
+    const [selectedProject, setSelectedProject] = useState(null);
+    const [hoveredCard, setHoveredCard] = useState(null);
 
-  const projects = [
+    const projects = [
 
-    {
-      id: 1,
-      title: "LearnKit32",
-      image: learnKitImage,
-      desc: "A hands-on embedded systems and IoT development platform designed for practical electronics, sensor interfacing, and real-world applications.",
-      highlights: ["Integrated sensors", "Education oriented", "Rapid prototyping"],
-      tech: ["IoT", "Embedded C", "ESP32"],
-      icon: "🎓",
-      cta: "View Details",
-    },
-    {
-      id: 2,
-      title: "Terndra",
-      image: buckImage,
-      desc: "An intelligent vehicle monitoring platform focused on real-time tracking, smart alerts, route monitoring, and connected fleet analytics.",
-      highlights: ["High efficiency & compact design", "Multiple voltage levels", "Industrial reliability"],
-      tech: ["Power Electronics", "DC-DC Conversion", "PCB Design"],
-      icon: "⚡",
-      cta: "View Details",
-    },
-    {
-      id: 3,
-      title: "Gardrix",
-      image: irrigationImage,
-      desc: "A responsive irrigation automation system designed for intelligent watering, environmental monitoring, and smart plant care automation.",
-      highlights: ["Sensor-driven logic", "Remote monitoring", "Water optimization"],
-      tech: ["IoT Sensors", "Cloud Integration", "MQTT"],
-      icon: "🌱",
-      cta: "View Details",
-    },
-    {
-      id: 4,
-      title: "Gledkon",
-      image: fuelImage,
-      desc: "A smart financial tracking platform focused on expense monitoring, spending analysis, monthly bill maintain and personalized financial insights.",
-      highlights: ["Real-time alerts", "Theft logic", "Fleet scalability"],
-      tech: ["GSM/GPRS", "Ultrasonic Sensing", "C++"],
-      icon: "🛡️",
-      cta: "View Details",
-    },
-  ];
-
-
-
-  // Animation variants for container
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.3,
-      },
-    },
-  };
-
-  // Animation variants for cards (similar to FAQ items)
-  const cardVariants = {
-    hidden: {
-      opacity: 0,
-      y: 30,
-      scale: 0.95
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 12
-      }
-    },
-  };
-
-  // Header animation variants
-  const headerVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut"
-      }
-    }
-  };
-
-  // Button animation variants
-  const buttonVariants = {
-    hidden: { opacity: 0, scale: 0.9 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        duration: 0.5,
-        delay: 0.5
-      }
-    },
-    hover: {
-      scale: 1.05,
-      transition: { duration: 0.2 }
-    },
-    tap: { scale: 0.98 }
-  };
-
-  // Image zoom variants (only on hover)
-  const imageVariants = {
-    initial: { scale: 1 },
-    hover: {
-      scale: 1.1,
-      transition: { duration: 0.5, ease: "easeOut" }
-    }
-  };
-
-  // Glow animation for background blobs
-  const glowAnimation = {
-    animate: {
-      scale: [1, 1.2, 1],
-      opacity: [0.1, 0.15, 0.1],
-      transition: {
-        duration: 4,
-        repeat: Infinity,
-        ease: "easeInOut"
-      }
-    }
-  };
+        {
+            id: 1,
+            title: "LearnKit32",
+            image: learnKitImage,
+            desc: "A hands-on embedded systems and IoT development platform designed for practical electronics, sensor interfacing, and real-world applications.",
+            highlights: ["Integrated sensors", "Education oriented", "Rapid prototyping"],
+            tech: ["IoT", "Embedded C", "ESP32"],
+            icon: "🎓",
+            cta: "View Details",
+        },
+        {
+            id: 2,
+            title: "Terndra",
+            image: buckImage,
+            desc: "An intelligent vehicle monitoring platform focused on real-time tracking, smart alerts, route monitoring, and connected fleet analytics.",
+            highlights: ["High efficiency & compact design", "Multiple voltage levels", "Industrial reliability"],
+            tech: ["Power Electronics", "DC-DC Conversion", "PCB Design"],
+            icon: "⚡",
+            cta: "View Details",
+        },
+        {
+            id: 3,
+            title: "Gardrix",
+            image: irrigationImage,
+            desc: "A responsive irrigation automation system designed for intelligent watering, environmental monitoring, and smart plant care automation.",
+            highlights: ["Sensor-driven logic", "Remote monitoring", "Water optimization"],
+            tech: ["IoT Sensors", "Cloud Integration", "MQTT"],
+            icon: "🌱",
+            cta: "View Details",
+        },
+        {
+            id: 4,
+            title: "Gledkon",
+            image: fuelImage,
+            desc: "A smart financial tracking platform focused on expense monitoring, spending analysis, monthly bill maintain and personalized financial insights.",
+            highlights: ["Real-time alerts", "Theft logic", "Fleet scalability"],
+            tech: ["GSM/GPRS", "Ultrasonic Sensing", "C++"],
+            icon: "🛡️",
+            cta: "View Details",
+        },
+    ];
 
 
 
-  return (
-    <Section
-      id="projects"
-      className="bg-transparent text-white relative z-20 overflow-hidden"
-    >
-      <Container
-        className="feature-projects-container relative z-10"
-      >
+    // Animation variants for container
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.15,
+                delayChildren: 0.3,
+            },
+        },
+    };
 
-        {/* Header with animation when in view */}
-        <SectionHeader
-          title="Ongoing Projects"
-          titleTag="h1"
-          subtitle="Explore our latest innovations and smart engineering solutions being developed."
-          className="text-center mb-6"
-          titleStyle={{
-            fontWeight: 700,
-            letterSpacing: "-0.02em",
-            color: "#ffffff",
-            fontFamily: "'Space Grotesk', sans-serif",
-          }}
-        />
-
-        {/* Projects Grid with staggered entrance animation (like FAQ items) */}
-        <MotionResponsiveGrid
-          columns="4"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
-        >
-          {projects.map((project, idx) => (
-            <motion.div
-              key={project.id}
-              variants={cardVariants}
-              onHoverStart={() => setHoveredCard(project.id)}
-              onHoverEnd={() => setHoveredCard(null)}
-              onClick={() => setSelectedProject(project)}
-              className="h-full"
-            >
-              <GlowCard
-                glowColor="cyan"
-                customSize={true}
-                className="project-card h-full w-full overflow-hidden group transition-all duration-500 ease-out bg-[#111111] p-0"
-              >
-                <div className="flex flex-col h-full w-full">
-                  <div className="relative w-full aspect-[4/3] sm:aspect-[4/3] lg:aspect-[4/3] p-[16px] shrink-0">
-                    <div className="w-full h-full overflow-hidden rounded-[20px]">
-                      <img
-                        src={project.image}
-                        alt={project.title}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Body */}
-                  <div className="px-5 sm:px-6 md:px-7 pb-6 pt-4 flex flex-col gap-2 flex-1">
-                    <h3 className="text-lg min-[1600px]:text-3xl font-bold text-gray-100 group-hover:text-white transition-colors leading-tight">
-                      {project.title}
-                    </h3>
-                    {/* {project.subtitle && (
-                      <p className="text-gray-400 text-xs min-[1600px]:text-base uppercase tracking-wider">
-                        {project.subtitle}
-                      </p>
-                    )} */}
-                    <Paragraph className="flex-1">
-                      {project.desc}
-                    </Paragraph>
-                  </div>
-                </div>
-              </GlowCard>
-            </motion.div>
-          ))}
-        </MotionResponsiveGrid>
-
-
-      </Container>
-
-      {/* Modal */}
-      {/* <AnimatePresence>
-        {selectedProject && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setSelectedProject(null)}
-              className="absolute inset-0 bg-black/90 backdrop-blur-xl"
-            />
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0, y: 100 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.8, opacity: 0, y: 100 }}
-              transition={{
+    // Animation variants for cards (similar to FAQ items)
+    const cardVariants = {
+        hidden: {
+            opacity: 0,
+            y: 30,
+            scale: 0.95
+        },
+        visible: {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            transition: {
                 type: "spring",
-                damping: 25,
-                stiffness: 300
-              }}
-              className="relative w-full max-w-5xl lg:max-w-6xl xl:max-w-7xl bg-[#0A0A0A] border border-white/10 rounded-[2rem] md:rounded-[3rem] overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[90vh]"
+                stiffness: 100,
+                damping: 12
+            }
+        },
+    };
+
+    // Header animation variants
+    const headerVariants = {
+        hidden: { opacity: 0, y: 30 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                duration: 0.6,
+                ease: "easeOut"
+            }
+        }
+    };
+
+    // Button animation variants
+    const buttonVariants = {
+        hidden: { opacity: 0, scale: 0.9 },
+        visible: {
+            opacity: 1,
+            scale: 1,
+            transition: {
+                duration: 0.5,
+                delay: 0.5
+            }
+        },
+        hover: {
+            scale: 1.05,
+            transition: { duration: 0.2 }
+        },
+        tap: { scale: 0.98 }
+    };
+
+    // Image zoom variants (only on hover)
+    const imageVariants = {
+        initial: { scale: 1 },
+        hover: {
+            scale: 1.1,
+            transition: { duration: 0.5, ease: "easeOut" }
+        }
+    };
+
+    // Glow animation for background blobs
+    const glowAnimation = {
+        animate: {
+            scale: [1, 1.2, 1],
+            opacity: [0.1, 0.15, 0.1],
+            transition: {
+                duration: 4,
+                repeat: Infinity,
+                ease: "easeInOut"
+            }
+        }
+    };
+
+
+
+    return (
+        <Section
+            id="projects"
+            className="bg-transparent text-white relative z-20 overflow-hidden !pb-8 md:!pb-12 lg:!pb-16"
+        >
+            <Container
+                className="feature-projects-container relative z-10"
             >
-              <button
-                onClick={() => setSelectedProject(null)}
-                className="absolute top-5 right-5 z-50 p-2.5 bg-black/50 hover:bg-white/10 rounded-full transition-colors border border-white/10 backdrop-blur-md"
-              >
-                <X size={18} />
-              </button>
 
-              <div className="w-full md:w-[45%] h-56 sm:h-64 md:h-auto relative flex-shrink-0">
-                <img
-                  src={selectedProject.image}
-                  className="w-full h-full object-cover opacity-50 saturate-[0.4]"
-                  alt={selectedProject.title}
+                {/* Header with animation when in view */}
+                <SectionHeader
+                    title="Ongoing Projects"
+                    titleTag="h1"
+                    subtitle="Explore our latest innovations and smart engineering solutions being developed."
+                    className="text-center mb-6"
+                    titleStyle={{
+                        fontWeight: 700,
+                        letterSpacing: "-0.02em",
+                        color: "#ffffff",
+                        fontFamily: "'Space Grotesk', sans-serif",
+                    }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-[#0A0A0A] via-transparent to-transparent" />
-              </div>
 
-              <div className="flex-1 p-6 md:p-10 overflow-y-auto custom-modal-scroll">
-                <div className="text-4xl mb-3">{selectedProject.icon}</div>
-                <h2 className="text-2xl md:text-3xl font-bold mb-1 bg-gradient-to-r from-[#80D25D] to-[#23B0ED] bg-clip-text text-transparent">
-                  {selectedProject.title}
-                </h2>
-              
-                <p className="text-gray-100 text-xs mb-4 uppercase tracking-widest">{selectedProject.subtitle}</p>
-                <p className="text-gray-100 text-sm leading-relaxed mb-6">{selectedProject.desc}</p>
+                {/* Projects Grid with staggered entrance animation (like FAQ items) */}
+                <MotionResponsiveGrid
+                    columns="4"
+                    variants={containerVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: "-50px" }}
+                    className="ongoing-projects-grid"
+                >
+                    {projects.map((project, idx) => (
+                        <motion.div
+                            key={project.id}
+                            variants={cardVariants}
+                            onHoverStart={() => setHoveredCard(project.id)}
+                            onHoverEnd={() => setHoveredCard(null)}
+                            onClick={() => setSelectedProject(project)}
+                            className="h-full flex flex-col"
+                        >
+                            <GlowCard
+                                glowColor="cyan"
+                                customSize={true}
+                                className="project-card h-full flex-1 w-full overflow-hidden group transition-all duration-500 ease-out bg-[#111111] p-0 flex flex-col"
+                            >
+                                <div className="flex flex-col h-full w-full">
+                                    <div className="relative w-full aspect-[4/3] sm:aspect-[4/3] lg:aspect-[4/3] p-[16px] shrink-0">
+                                        <div className="w-full h-full overflow-hidden rounded-[20px]">
+                                            <img
+                                                src={project.image}
+                                                alt={project.title}
+                                                className="w-full h-full object-cover"
+                                            />
+                                        </div>
+                                    </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                  <div>
-                    <h4 className="text-[#80D25D] font-bold uppercase tracking-widest text-[10px] mb-3">Key Features</h4>
-                    <ul className="space-y-2">
-                      {selectedProject.highlights?.map((item, idx) => (
-                        <li key={idx} className="flex items-center gap-2 text-gray-400 text-sm">
-                          <CheckCircle2 size={13} className="text-[#80D25D] flex-shrink-0" />
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div>
-                    <h4 className="text-[#23B0ED] font-bold uppercase tracking-widest text-[10px] mb-3">Technologies</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {selectedProject.tech?.map((t, idx) => (
-                        <span key={idx} className="px-2.5 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-gray-300 flex items-center gap-1.5">
-                          <Cpu size={10} /> {t}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
+                                    {/* Body */}
+                                    <div className="px-5 sm:px-6 md:px-7 pb-6 pt-4 flex flex-col gap-2 flex-1">
+                                        <h3 className="text-lg font-bold text-gray-100 group-hover:text-white transition-colors leading-tight">
+                                            {project.title}
+                                        </h3>
+                                        {/* {project.subtitle && (
+ <p className="text-gray-400 text-xs uppercase tracking-wider">
+ {project.subtitle}
+ </p>
+ )} */}
+                                        <Paragraph className="flex-1 text-white text-[13px] sm:text-[14px] lg:text-[15px]">
+                                            {project.desc}
+                                        </Paragraph>
+                                    </div>
+                                </div>
+                            </GlowCard>
+                        </motion.div>
+                    ))}
+                </MotionResponsiveGrid>
 
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <button className="flex-1 px-5 py-3 bg-gradient-to-r from-[#80D25D] to-[#23B0ED] text-black font-bold rounded-xl flex items-center justify-center gap-2 hover:opacity-90 transition-opacity text-sm">
-                    View Case Study <ArrowRight size={15} />
-                  </button>
-                  <button className="flex-1 px-5 py-3 bg-white/5 border border-white/10 text-white font-bold rounded-xl hover:bg-white/10 transition-colors text-sm">
-                    Source Code
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence> */}
 
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
-        
-        .custom-modal-scroll::-webkit-scrollbar { width: 5px; }
-        .custom-modal-scroll::-webkit-scrollbar-track { background: rgba(255,255,255,0.04); border-radius: 10px; }
-        .custom-modal-scroll::-webkit-scrollbar-thumb { background: #80D25D; border-radius: 10px; }
-        .custom-modal-scroll::-webkit-scrollbar-thumb:hover { background: #23B0ED; }
-      `}</style>
-    </Section>
-  );
+            </Container>
+
+            {/* Modal */}
+            {/* <AnimatePresence>
+ {selectedProject && (
+ <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
+ <motion.div
+ initial={{ opacity: 0 }}
+ animate={{ opacity: 1 }}
+ exit={{ opacity: 0 }}
+ onClick={() => setSelectedProject(null)}
+ className="absolute inset-0 bg-black/90 backdrop-blur-xl"
+ />
+ <motion.div
+ initial={{ scale: 0.8, opacity: 0, y: 100 }}
+ animate={{ scale: 1, opacity: 1, y: 0 }}
+ exit={{ scale: 0.8, opacity: 0, y: 100 }}
+ transition={{
+ type: "spring",
+ damping: 25,
+ stiffness: 300
+ }}
+ className="relative w-full max-w-5xl lg:max-w-6xl xl:max-w-7xl bg-[#0A0A0A] border border-white/10 rounded-[2rem] md:rounded-[3rem] overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[90vh]"
+ >
+ <button
+ onClick={() => setSelectedProject(null)}
+ className="absolute top-5 right-5 z-50 p-2.5 bg-black/50 hover:bg-white/10 rounded-full transition-colors border border-white/10 backdrop-blur-md"
+ >
+ <X size={18} />
+ </button>
+
+ <div className="w-full md:w-[45%] h-56 sm:h-64 md:h-auto relative flex-shrink-0">
+ <img
+ src={selectedProject.image}
+ className="w-full h-full object-cover opacity-50 saturate-[0.4]"
+ alt={selectedProject.title}
+ />
+ <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-[#0A0A0A] via-transparent to-transparent" />
+ </div>
+
+ <div className="flex-1 p-6 md:p-10 overflow-y-auto custom-modal-scroll">
+ <div className="text-4xl mb-3">{selectedProject.icon}</div>
+ <h2 className="text-2xl md:text-3xl font-bold mb-1 bg-gradient-to-r from-[#80D25D] to-[#23B0ED] bg-clip-text text-transparent">
+ {selectedProject.title}
+ </h2>
+ 
+ <p className="text-gray-100 text-xs mb-4 uppercase tracking-widest">{selectedProject.subtitle}</p>
+ <p className="text-gray-100 text-sm leading-relaxed mb-6">{selectedProject.desc}</p>
+
+ <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+ <div>
+ <h4 className="text-[#80D25D] font-bold uppercase tracking-widest text-[10px] mb-3">Key Features</h4>
+ <ul className="space-y-2">
+ {selectedProject.highlights?.map((item, idx) => (
+ <li key={idx} className="flex items-center gap-2 text-gray-400 text-sm">
+ <CheckCircle2 size={13} className="text-[#80D25D] flex-shrink-0" />
+ {item}
+ </li>
+ ))}
+ </ul>
+ </div>
+ <div>
+ <h4 className="text-[#23B0ED] font-bold uppercase tracking-widest text-[10px] mb-3">Technologies</h4>
+ <div className="flex flex-wrap gap-2">
+ {selectedProject.tech?.map((t, idx) => (
+ <span key={idx} className="px-2.5 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-gray-300 flex items-center gap-1.5">
+ <Cpu size={10} /> {t}
+ </span>
+ ))}
+ </div>
+ </div>
+ </div>
+
+ <div className="flex flex-col sm:flex-row gap-3">
+ <button className="flex-1 px-5 py-3 bg-gradient-to-r from-[#80D25D] to-[#23B0ED] text-black font-bold rounded-xl flex items-center justify-center gap-2 hover:opacity-90 transition-opacity text-sm">
+ View Case Study <ArrowRight size={15} />
+ </button>
+ <button className="flex-1 px-5 py-3 bg-white/5 border border-white/10 text-white font-bold rounded-xl hover:bg-white/10 transition-colors text-sm">
+ Source Code
+ </button>
+ </div>
+ </div>
+ </motion.div>
+ </div>
+ )}
+ </AnimatePresence> */}
+
+            <style>{`
+ @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+ 
+ .custom-modal-scroll::-webkit-scrollbar { width: 5px; }
+ .custom-modal-scroll::-webkit-scrollbar-track { background: rgba(255,255,255,0.04); border-radius: 10px; }
+ .custom-modal-scroll::-webkit-scrollbar-thumb { background: #80D25D; border-radius: 10px; }
+ .custom-modal-scroll::-webkit-scrollbar-thumb:hover { background: #23B0ED; }
+
+ /* Custom CSS for Ongoing Projects to fix overflow and reflow on ultra-wide 4XL/5XL screens */
+ @media (min-width: 1920px) {
+    .feature-projects-container {
+        max-width: 94% !important;
+    }
+    .ongoing-projects-grid {
+        width: 100% !important;
+        display: grid !important;
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+        gap: clamp(2rem, 3vw, 4rem) !important;
+    }
+    .ongoing-projects-grid > div {
+        min-width: 0 !important;
+        width: 100% !important;
+    }
+ }
+
+ @media (min-width: 2560px) {
+    .feature-projects-container {
+        max-width: 88% !important;
+    }
+ }
+
+ @media (min-width: 3200px) {
+    .feature-projects-container {
+        max-width: 80% !important;
+    }
+ }
+ `}</style>
+        </Section>
+    );
 };
 
 export default Featureprojects;
