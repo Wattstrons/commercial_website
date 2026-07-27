@@ -17,31 +17,31 @@ import PortalDevelopment from './pages/Servicesprovided/Portaldevelopment'
 import Career from './pages/Carrer'
 
 const App = () => {
-  return (
-    <>
-      <CustomCursor />
-      <RippleBackground />
-      <NavBar />
-       <ScrollToTop />
+ return (
+ <>
+ <CustomCursor />
+ <RippleBackground />
+ <NavBar />
+ <ScrollToTop />
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-         <Route path="/careers" element={<Career />} />
+ <Routes>
+ <Route path="/" element={<Home />} />
+ <Route path="/careers" element={<Career />} />
 
-          {/* Services Routes */}
-  <Route path="/services/AI_IntelligentAutomation" element={<AI_IntelligentAutomation />} />
-  <Route path="/services/embedded-system-design" element={<Embeddedsystemdesign />} />
-  <Route path="/services/product-prototype-hardware-development" element={<Productprototype_hardwaredevelopment />} />
-  <Route path="/services/iot-application-development" element={<IoTApplicationDevelopment />} />
-  <Route path="/services/IndustrialEnclosure-ProductDesign" element={<IndustrialEnclosure_ProductDesign />} />
-  <Route path="/services/pcb-design-circuit-development" element={<PCBDesignCircuitDevelopment />} />
-  <Route path="/services/software-solutions" element={<SoftwareSolutions />} />
-  <Route path="/services/Portal-development" element={<PortalDevelopment />} />
-      
-      </Routes>
-      <Footer />
-    </>
-  )
+ {/* Services Routes */}
+ <Route path="/services/AI_IntelligentAutomation" element={<AI_IntelligentAutomation />} />
+ <Route path="/services/embedded-system-design" element={<Embeddedsystemdesign />} />
+ <Route path="/services/product-prototype-hardware-development" element={<Productprototype_hardwaredevelopment />} />
+ <Route path="/services/iot-application-development" element={<IoTApplicationDevelopment />} />
+ <Route path="/services/IndustrialEnclosure-ProductDesign" element={<IndustrialEnclosure_ProductDesign />} />
+ <Route path="/services/pcb-design-circuit-development" element={<PCBDesignCircuitDevelopment />} />
+ <Route path="/services/software-solutions" element={<SoftwareSolutions />} />
+ <Route path="/services/Portal-development" element={<PortalDevelopment />} />
+ 
+ </Routes>
+ <Footer />
+ </>
+ )
 }
 
 export default App
