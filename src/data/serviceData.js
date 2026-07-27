@@ -56,7 +56,7 @@ import {
 } from "lucide-react";
 
 import embeddedAboutUsImg from "../assets/ourservice/embeddedaboutus.png";
-import iNstinImg from "../assets/ourservice/i_nstin.png";
+import iNstinImg from "../assets/ourservice/i_nstin.jpeg";
 import iotAboutUsImg from "../assets/ourservice/iotaboutus.png";
 import pcbAboutUsImg from "../assets/ourservice/pcbaboutus.png";
 import productAboutUsImg from "../assets/ourservice/productaboutus.png";
@@ -327,7 +327,7 @@ export const iotApplicationDevelopmentData = {
     titleWord2: "Service",
     subtitle: "Connecting devices, data, and intelligence to create smarter products and operations.",
     backgroundImage: "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=2070&q=80",
-    backgroundImages: [iot1, iot2, iot3]
+    backgroundImages: [iot3, iot2, iot1]
   },
   about: {
     sectionTitle: "Connected Intelligence & Automation",
