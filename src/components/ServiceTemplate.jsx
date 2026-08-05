@@ -987,7 +987,7 @@ const ServiceTemplate = ({ data }) => {
                                             <div className="grid grid-cols-5 gap-2 opacity-60 group-hover:opacity-100 transition-opacity duration-500 w-full max-w-[85%] mt-2">
                                                 {technologies.logos.slice(0, 10).map((tech, i) => (
                                                     <div key={i} className="aspect-square rounded-[6px] border border-white/5 flex items-center justify-center bg-white/5" style={{ boxShadow: "inset 0 0 10px rgba(255,255,255,0.02)" }}>
-                                                        <img src={tech.logo} alt={tech.name} className="w-1/2 h-1/2 object-contain" loading="lazy" decoding="async" />
+                                                        <img src={tech.logo} alt={tech.name} className="w-1/2 h-1/2 object-contain" decoding="async" />
                                                     </div>
                                                 ))}
                                                 {Array.from({ length: Math.max(0, 10 - technologies.logos.length) }).map((_, i) => (
@@ -1149,7 +1149,7 @@ const ServiceTemplate = ({ data }) => {
                                                     background: "rgba(255,255,255,0.02)",
                                                 }}
                                             >
-                                                <img src={tech.logo} alt={tech.name} className="w-[60%] h-[60%] object-contain" loading="lazy" decoding="async" />
+                                                <img src={tech.logo} alt={tech.name} className="w-[60%] h-[60%] object-contain" decoding="async" />
                                             </div>
                                         </div>
                                     ))}
