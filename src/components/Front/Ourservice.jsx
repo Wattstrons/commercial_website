@@ -447,7 +447,6 @@ const MobileServicesView = () => {
                                         <img
                                             src={service.image}
                                             alt={service.title}
-                                            loading="lazy"
                                             className="h-full w-full object-cover"
                                         />
                                     </div>
