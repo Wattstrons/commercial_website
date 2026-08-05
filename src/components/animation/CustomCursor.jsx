@@ -5,17 +5,17 @@
  * Drop this once inside App.jsx — it handles everything itself.
  */
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 export default function CustomCursor() {
-  const dotRef   = useRef(null);
-  const ringRef  = useRef(null);
-  const mouse    = useRef({ x: -200, y: -200 });
-  const ring     = useRef({ x: -200, y: -200 });
-  const raf      = useRef(null);
-  const [clicking, setClicking] = useState(false);
+  const dotRef = useRef(null);
+  const ringRef = useRef(null);
+  const mouse = useRef({ x: -200, y: -200 });
+  const ring = useRef({ x: -200, y: -200 });
+  const raf = useRef(null);
   const visibleRef = useRef(false);
   const isHoveringRef = useRef(false);
+  const isMoving = useRef(false);
 
   useEffect(() => {
     // ── track raw mouse ──────────────────────────────────────────────
@@ -23,39 +23,77 @@ export default function CustomCursor() {
       mouse.current.x = e.clientX;
       mouse.current.y = e.clientY;
       visibleRef.current = true;
-      
-      // Check if hovering over a clickable element
-      const target = e.target;
-      const isClickable = target.closest('.view-details-btn, .cursor-pointer, a, button');
-      isHoveringRef.current = !!isClickable;
+      isMoving.current = true;
+
+      // Wake up animation loop if it's sleeping
+      if (!raf.current) {
+        raf.current = requestAnimationFrame(animate);
+      }
     };
 
-    const onDown = () => setClicking(true);
-    const onUp   = () => setClicking(false);
-    const onLeave = () => visibleRef.current = false;
-    const onEnter = () => visibleRef.current = true;
+    const onMouseOver = (e) => {
+      const target = e.target;
+      if (target.closest('.view-details-btn, .cursor-pointer, a, button')) {
+        isHoveringRef.current = true;
+      }
+    };
 
-    window.addEventListener("mousemove",  onMove);
-    window.addEventListener("mousedown",  onDown);
-    window.addEventListener("mouseup",    onUp);
-    document.addEventListener("mouseleave", onLeave);
-    document.addEventListener("mouseenter", onEnter);
+    const onMouseOut = (e) => {
+      isHoveringRef.current = false;
+    };
+
+    const onDown = () => {
+      if (ringRef.current) ringRef.current.classList.add("is-clicking");
+      if (dotRef.current) dotRef.current.classList.add("is-clicking");
+    };
+
+    const onUp = () => {
+      if (ringRef.current) ringRef.current.classList.remove("is-clicking");
+      if (dotRef.current) dotRef.current.classList.remove("is-clicking");
+    };
+
+    const onLeave = () => {
+      visibleRef.current = false;
+      if (!raf.current) raf.current = requestAnimationFrame(animate); // force update
+    };
+
+    const onEnter = () => {
+      visibleRef.current = true;
+      if (!raf.current) raf.current = requestAnimationFrame(animate); // force update
+    };
+
+    window.addEventListener("mousemove", onMove, { passive: true });
+    window.addEventListener("mouseover", onMouseOver, { passive: true });
+    window.addEventListener("mouseout", onMouseOut, { passive: true });
+    window.addEventListener("mousedown", onDown, { passive: true });
+    window.addEventListener("mouseup", onUp, { passive: true });
+    document.addEventListener("mouseleave", onLeave, { passive: true });
+    document.addEventListener("mouseenter", onEnter, { passive: true });
 
     // ── animation loop: dot snaps, ring lags ────────────────────────
     const animate = () => {
-      // Only animate custom cursor when NOT hovering clickable elements
+      let needsNextFrame = false;
+
       if (!isHoveringRef.current) {
         if (dotRef.current) {
-          dotRef.current.style.transform = `translate(${mouse.current.x}px, ${mouse.current.y}px)`;
+          dotRef.current.style.transform = `translate3d(${mouse.current.x}px, ${mouse.current.y}px, 0)`;
           dotRef.current.style.opacity = visibleRef.current ? 1 : 0;
         }
 
-        ring.current.x += (mouse.current.x - ring.current.x) * 0.12;
-        ring.current.y += (mouse.current.y - ring.current.y) * 0.12;
+        const dx = mouse.current.x - ring.current.x;
+        const dy = mouse.current.y - ring.current.y;
+
+        ring.current.x += dx * 0.12;
+        ring.current.y += dy * 0.12;
 
         if (ringRef.current) {
-          ringRef.current.style.transform = `translate(${ring.current.x}px, ${ring.current.y}px)`;
+          ringRef.current.style.transform = `translate3d(${ring.current.x}px, ${ring.current.y}px, 0)`;
           ringRef.current.style.opacity = visibleRef.current ? 1 : 0;
+        }
+
+        // If ring is still catching up, keep animating
+        if (Math.abs(dx) > 0.1 || Math.abs(dy) > 0.1) {
+          needsNextFrame = true;
         }
       } else {
         // Hide custom cursor when hovering view details
@@ -63,18 +101,25 @@ export default function CustomCursor() {
         if (ringRef.current) ringRef.current.style.opacity = 0;
       }
 
-      raf.current = requestAnimationFrame(animate);
+      if (needsNextFrame || isMoving.current) {
+        isMoving.current = false; // Reset flag so it sleeps if no new mousemove fires
+        raf.current = requestAnimationFrame(animate);
+      } else {
+        raf.current = null; // Sleep
+      }
     };
 
     raf.current = requestAnimationFrame(animate);
 
     return () => {
-      window.removeEventListener("mousemove",  onMove);
-      window.removeEventListener("mousedown",  onDown);
-      window.removeEventListener("mouseup",    onUp);
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseover", onMouseOver);
+      window.removeEventListener("mouseout", onMouseOut);
+      window.removeEventListener("mousedown", onDown);
+      window.removeEventListener("mouseup", onUp);
       document.removeEventListener("mouseleave", onLeave);
       document.removeEventListener("mouseenter", onEnter);
-      cancelAnimationFrame(raf.current);
+      if (raf.current) cancelAnimationFrame(raf.current);
     };
   }, []);
 
@@ -105,46 +150,56 @@ export default function CustomCursor() {
         html, body {
           cursor: none;
         }
+
+        /* Custom Cursor Base Styles */
+        .custom-cursor-ring {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 36px;
+          height: 36px;
+          margin-left: -18px;
+          margin-top: -18px;
+          border: 1.5px solid #22c55e;
+          border-radius: 50%;
+          pointer-events: none;
+          z-index: 99999;
+          transition: width 0.15s ease, height 0.15s ease, margin 0.15s ease, opacity 0.3s ease;
+          will-change: transform;
+        }
+        .custom-cursor-ring.is-clicking {
+          width: 28px;
+          height: 28px;
+          margin-left: -14px;
+          margin-top: -14px;
+        }
+
+        .custom-cursor-dot {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 8px;
+          height: 8px;
+          margin-left: -4px;
+          margin-top: -4px;
+          background: #22c55e;
+          border-radius: 50%;
+          pointer-events: none;
+          z-index: 99999;
+          transition: width 0.1s ease, height 0.1s ease, margin 0.1s ease, opacity 0.3s ease;
+          will-change: transform;
+        }
+        .custom-cursor-dot.is-clicking {
+          width: 6px;
+          height: 6px;
+          margin-left: -3px;
+          margin-top: -3px;
+        }
       `}</style>
 
       {/* Custom cursor - visible by default, hidden on clickable elements */}
-      <div
-        ref={ringRef}
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: clicking ? "28px" : "36px",
-          height: clicking ? "28px" : "36px",
-          marginLeft: clicking ? "-14px" : "-18px",
-          marginTop: clicking ? "-14px" : "-18px",
-          border: "1.5px solid #22c55e",
-          borderRadius: "50%",
-          pointerEvents: "none",
-          zIndex: 99999,
-          transition: "width 0.15s ease, height 0.15s ease, margin 0.15s ease, opacity 0.3s ease",
-          willChange: "transform",
-        }}
-      />
-
-      <div
-        ref={dotRef}
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: clicking ? "6px" : "8px",
-          height: clicking ? "6px" : "8px",
-          marginLeft: clicking ? "-3px" : "-4px",
-          marginTop: clicking ? "-3px" : "-4px",
-          background: "#22c55e",
-          borderRadius: "50%",
-          pointerEvents: "none",
-          zIndex: 99999,
-          transition: "width 0.1s ease, height 0.1s ease, margin 0.1s ease, opacity 0.3s ease",
-          willChange: "transform",
-        }}
-      />
+      <div ref={ringRef} className="custom-cursor-ring" />
+      <div ref={dotRef} className="custom-cursor-dot" />
     </>
   );
 }
