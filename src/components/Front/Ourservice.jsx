@@ -333,7 +333,7 @@ const LeftPanel = () => (
                 transition: { staggerChildren: 0.2, delayChildren: 0.1 }
             }
         }}
-        className="sticky top-0 z-20 flex h-screen [flex:0.85] flex-col justify-center self-start pt-[120px] xl:pt-[150px] pr-[clamp(40px,3vw,60px)] pb-0 pl-0"
+        className="sticky top-0 z-20 flex h-screen [flex:0.85] flex-col justify-center self-start pt-[120px] xl:pt-[150px] 2xl:pt-[120px] pr-[clamp(40px,3vw,60px)] pb-0 pl-0"
     >
         <motion.div
             variants={{
@@ -409,7 +409,7 @@ const RightPanel = ({ activeGroup }) => {
 
     return (
         <div
-            className={`sticky top-0 z-0 flex h-screen [flex:1.15] flex-col justify-center self-start overflow-hidden ${isMobile ? "px-0 pt-[30px] pb-5" : "pt-[120px] xl:pt-[150px] pr-0 pb-5 pl-[clamp(20px,2vw,40px)]"
+            className={`sticky top-0 z-0 flex h-screen [flex:1.15] flex-col justify-center self-start overflow-hidden ${isMobile ? "px-0 pt-[30px] pb-5" : "pt-[120px] xl:pt-[150px] 2xl:pt-[120px] pr-0 pb-5 pl-[clamp(20px,2vw,40px)]"
                 }`}
         >
             <AnimatePresence mode="wait">
@@ -587,7 +587,7 @@ export default function ServicesSection() {
                     <AnimatedBg />
 
                     {/* Centered heading */}
-                    <div className="pointer-events-none absolute inset-x-0 top-[15px] xl:top-[20px] 2xl:top-[65px] z-40 flex flex-col items-center px-6 text-center">
+                    <div className="pointer-events-none absolute inset-x-0 top-[15px] xl:top-[20px] 2xl:top-[45px] z-40 flex flex-col items-center px-6 text-center">
                         <SectionHeader
                             title="Our Services"
 
