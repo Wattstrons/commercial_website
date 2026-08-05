@@ -71,11 +71,9 @@ export function StarsBackground({
 const lastUpdate = React.useRef(0);
 
 const handleMouseMove = useCallback((e)=>{
-
     const now = performance.now();
-
-    if(now-lastUpdate.current<16) return;
-
+    // Throttle to 100ms (10fps for background parallax) to prevent layout thrashing with hundreds of box-shadows
+    if(now-lastUpdate.current<100) return;
     lastUpdate.current=now;
 
     const centerX=window.innerWidth/2;
@@ -102,19 +100,19 @@ const handleMouseMove = useCallback((e)=>{
         <div className="sticky top-0 w-full h-screen overflow-hidden">
           <motion.div style={{ x: springX, y: springY }} className="absolute inset-0">
             <StarLayer
-              count={500}
+              count={300}
               size={1}
               duration={speed}
               starColor={starColor}
             />
             <StarLayer
-              count={250}
+              count={150}
               size={2}
               duration={speed * 2}
               starColor={starColor}
             />
             <StarLayer
-              count={150}
+              count={50}
               size={3}
               duration={speed * 3}
               starColor={starColor}
