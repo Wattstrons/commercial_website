@@ -100,19 +100,19 @@ const handleMouseMove = useCallback((e)=>{
         <div className="sticky top-0 w-full h-screen overflow-hidden">
           <motion.div style={{ x: springX, y: springY }} className="absolute inset-0">
             <StarLayer
-              count={300}
+              count={500}
               size={1}
               duration={speed}
               starColor={starColor}
             />
             <StarLayer
-              count={150}
+              count={200}
               size={2}
               duration={speed * 2}
               starColor={starColor}
             />
             <StarLayer
-              count={50}
+              count={100}
               size={3}
               duration={speed * 3}
               starColor={starColor}
