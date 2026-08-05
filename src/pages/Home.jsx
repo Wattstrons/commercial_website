@@ -1,102 +1,104 @@
-import React, { useRef, useMemo, memo } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-
-import Whoweare from "../components/Front/Whoweare";
-import Ourservice from "../components/Front/Ourservice";
-import Hero from "../components/Front/Hero";
-import Featureprojects from "../components/Front/FeatureProjects";
-import Question from "../components/Front/Question";
-import ContactInformation from "../components/Front/Contactinformation";
-// import { StarsBackground } from "../components/animation/StarsBackground";
-
+import React, { useRef } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import Whoweare from '../components/Front/Whoweare'
 import Backgroundimage from "../assets/images/Backgroundimage.mp4";
-
-const MemoHero = memo(Hero);
+import Ourservice from "../components/Front/Ourservice"
+import Hero from '../components/Front/Hero' // Fixed path - added 'Front/'
+// import Featureprojects from '../components/Front/FeatureProjects' 
+import Question from '../components/Front/Question' // Fixed path - added 'Front/'
+import ContactInformation from '../components/Front/Contactinformation' // Fixed path - added 'Front/'
+import { StarsBackground } from '../components/animation/StarsBackground'
 
 const Home = () => {
-  const containerRef = useRef(null);
+ const containerRef = useRef(null);
 
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"],
-  });
+ const { scrollYProgress } = useScroll({
+ target: containerRef,
+ offset: ["start start", "end start"]
+ });
 
-  const scale = useMemo(
-    () => useTransform(scrollYProgress, [0, 0.5], [1, 0.85]),
-    [scrollYProgress]
-  );
+ // Hero goes backward
+ const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.85]);
+ const filter = useTransform(scrollYProgress, [0, 0.5], ["blur(0px)", "blur(8px)"]);
+ const y = useTransform(scrollYProgress, [0, 0.5], ["0vh", "-5vh"]);
 
-  const y = useMemo(
-    () => useTransform(scrollYProgress, [0, 0.5], ["0vh", "-5vh"]),
-    [scrollYProgress]
-  );
+ // Incoming Whoweare layer animations
+ const overlayBorderRadius = useTransform(scrollYProgress, [0, 0.5], ["40px", "0px"]);
+ const overlayBoxShadow = useTransform(scrollYProgress, [0, 0.5], [
+ "0px -20px 40px rgba(0, 0, 0, 0)",
+ "0px -30px 60px rgba(0, 0, 0, 0.6)"
+ ]);
 
-  const overlayOpacity = useMemo(
-    () => useTransform(scrollYProgress, [0, 0.5], [0, 0.7]),
-    [scrollYProgress]
-  );
+ return (
+ <div>
+ <section
+ id="home"
+ ref={containerRef}
+ className="relative w-full h-[200vh]"
+ >
+ <motion.div
+ className="bg-black sticky top-0 left-0 w-full h-screen overflow-hidden pt-16 sm:pt-20 md:pt-24 origin-top z-0"
+ style={{ 
+ scale, 
+ filter,
+ y,
+ willChange: "transform, filter",
+ transformStyle: "preserve-3d"
+ }}
+ >
+ {/* Background Video */}
+ <video
+ autoPlay
+ loop
+ muted
+ playsInline
+ poster="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="
+ className="absolute top-0 left-0 w-full h-full object-cover"
+ >
+ <source src={Backgroundimage} type="video/mp4" />
+ </video>
 
-  return (
-    <div className="w-full">
-      {/* Hero */}
-      <section
-        id="home"
-        ref={containerRef}
-        className="relative w-full h-[200vh]"
-      >
-        <motion.div
-          layout={false}
-          className="sticky top-0 left-0 w-full h-screen overflow-hidden bg-black pt-16 sm:pt-20 md:pt-24 origin-top"
-          style={{
-            willChange: "transform",
-          }}
-        >
-          {/* Background Video */}
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            className="absolute inset-0 w-full h-full object-cover will-change-transform"
-          >
-            <source src={Backgroundimage} type="video/mp4" />
-          </video>
+ {/* Dark Overlay */}
+ <div className="absolute "></div>
 
-          {/* Overlay */}
-          <motion.div
-            className="absolute inset-0 bg-black pointer-events-none"
-            style={{
-              opacity: overlayOpacity,
-            }}
-          />
+ {/* Content Container */}
+ <div className="relative z-10 w-full h-full flex flex-col">
+ <div className="flex-1 w-full flex flex-col">
+ <Hero />
+ </div>
+ </div>
+ </motion.div>
+ </section>
 
-          {/* Hero Content */}
-          <div className="relative z-10 h-full flex items-center">
-            <MemoHero />
-          </div>
-        </motion.div>
-      </section>
+ {/* 
+ This wrapper brings the content up to overlap the 200vh Hero section.
+ CRITICAL: No overflow-hidden here, or it breaks Ourservice.jsx's sticky positioning! 
+ */}
+ <div className="relative z-20 -mt-[100vh]">
+ <StarsBackground>
+ {/* We apply the cinematic clipping and shadow ONLY to Whoweare */}
+ <motion.div
+ className="bg-transparent relative overflow-hidden"
+ style={{
+ borderTopLeftRadius: overlayBorderRadius,
+ borderTopRightRadius: overlayBorderRadius,
+ boxShadow: overlayBoxShadow
+ }}
+ >
+ <Whoweare />
+ </motion.div>
+ 
+ {/* Remaining sections are rendered normally without overflow clipping */}
+ <div className="bg-transparent relative">
+ <Ourservice />
+ {/* <Featureprojects /> */}
+ <Question />
+ <ContactInformation />
+ </div>
+ </StarsBackground>
+ </div>
+ </div>
+ )
+}
 
-      {/* Remaining Sections */}
-      <div className="relative z-20 -mt-[100vh]">
-        {/* <StarsBackground> */}
-        <div className="relative w-full bg-black">
-          <div className="relative overflow-hidden rounded-t-[40px]">
-            <Whoweare />
-          </div>
-
-          <div className="relative">
-            <Ourservice />
-            {/* <Featureprojects /> */}
-            <Question />
-            <ContactInformation />
-          </div>
-        </div>
-        {/* </StarsBackground> */}
-      </div>
-    </div>
-  );
-};
-
-export default Home;
+export default Home
