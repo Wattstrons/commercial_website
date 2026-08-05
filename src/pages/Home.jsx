@@ -4,7 +4,7 @@ import Whoweare from '../components/Front/Whoweare'
 import Backgroundimage from "../assets/images/Backgroundimage.mp4";
 import Ourservice from "../components/Front/Ourservice"
 import Hero from '../components/Front/Hero' // Fixed path - added 'Front/'
-// import Featureprojects from '../components/Front/FeatureProjects' 
+import Featureprojects from '../components/Front/FeatureProjects' // Fixed path - added 'Front/'
 import Question from '../components/Front/Question' // Fixed path - added 'Front/'
 import ContactInformation from '../components/Front/Contactinformation' // Fixed path - added 'Front/'
 import { StarsBackground } from '../components/animation/StarsBackground'
@@ -19,15 +19,8 @@ const Home = () => {
 
  // Hero goes backward
  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.85]);
- const filter = useTransform(scrollYProgress, [0, 0.5], ["blur(0px)", "blur(8px)"]);
+ const overlayOpacity = useTransform(scrollYProgress, [0, 0.5], [0, 0.7]);
  const y = useTransform(scrollYProgress, [0, 0.5], ["0vh", "-5vh"]);
-
- // Incoming Whoweare layer animations
- const overlayBorderRadius = useTransform(scrollYProgress, [0, 0.5], ["40px", "0px"]);
- const overlayBoxShadow = useTransform(scrollYProgress, [0, 0.5], [
- "0px -20px 40px rgba(0, 0, 0, 0)",
- "0px -30px 60px rgba(0, 0, 0, 0.6)"
- ]);
 
  return (
  <div>
@@ -40,9 +33,8 @@ const Home = () => {
  className="bg-black sticky top-0 left-0 w-full h-screen overflow-hidden pt-16 sm:pt-20 md:pt-24 origin-top z-0"
  style={{ 
  scale, 
- filter,
  y,
- willChange: "transform, filter",
+ willChange: "transform",
  transformStyle: "preserve-3d"
  }}
  >
@@ -59,7 +51,7 @@ const Home = () => {
  </video>
 
  {/* Dark Overlay */}
- <div className="absolute "></div>
+ <motion.div className="absolute inset-0 bg-black pointer-events-none" style={{ opacity: overlayOpacity }}></motion.div>
 
  {/* Content Container */}
  <div className="relative z-10 w-full h-full flex flex-col">
@@ -77,16 +69,11 @@ const Home = () => {
  <div className="relative z-20 -mt-[100vh]">
  <StarsBackground>
  {/* We apply the cinematic clipping and shadow ONLY to Whoweare */}
- <motion.div
- className="bg-transparent relative overflow-hidden"
- style={{
- borderTopLeftRadius: overlayBorderRadius,
- borderTopRightRadius: overlayBorderRadius,
- boxShadow: overlayBoxShadow
- }}
+ <div
+ className="bg-transparent relative overflow-hidden rounded-t-[40px]"
  >
  <Whoweare />
- </motion.div>
+ </div>
  
  {/* Remaining sections are rendered normally without overflow clipping */}
  <div className="bg-transparent relative">
