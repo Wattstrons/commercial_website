@@ -7,7 +7,7 @@ import Hero from "../components/Front/Hero";
 import Featureprojects from "../components/Front/FeatureProjects";
 import Question from "../components/Front/Question";
 import ContactInformation from "../components/Front/Contactinformation";
-import { StarsBackground } from "../components/animation/StarsBackground";
+// import { StarsBackground } from "../components/animation/StarsBackground";
 
 import Backgroundimage from "../assets/images/Backgroundimage.mp4";
 
@@ -80,7 +80,8 @@ const Home = () => {
 
       {/* Remaining Sections */}
       <div className="relative z-20 -mt-[100vh]">
-        <StarsBackground>
+        {/* <StarsBackground> */}
+        <div className="relative w-full bg-black">
           <div className="relative overflow-hidden rounded-t-[40px]">
             <Whoweare />
           </div>
@@ -91,7 +92,8 @@ const Home = () => {
             <Question />
             <ContactInformation />
           </div>
-        </StarsBackground>
+        </div>
+        {/* </StarsBackground> */}
       </div>
     </div>
   );
