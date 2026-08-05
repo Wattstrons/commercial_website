@@ -9,7 +9,7 @@ const defaultGradientColors = {
 const BorderRotate = ({
   children,
   className = '',
-  animationMode = 'auto-rotate',
+  animationMode = 'rotate-on-hover',
   animationSpeed = 10,
   gradientColors = defaultGradientColors,
   backgroundColor = 'transparent',
