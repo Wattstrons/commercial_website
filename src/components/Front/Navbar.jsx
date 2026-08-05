@@ -346,7 +346,7 @@ const NavBar = () => {
  }
  }}
  >
- <img src={logo} alt="logo" className="h-8 sm:h-9 lg:h-8 xl:h-10 2xl:!h-10 w-auto relative z-10" />
+ <img src={logo} alt="logo" fetchPriority="high" decoding="sync" className="h-8 sm:h-9 lg:h-8 xl:h-10 2xl:!h-10 w-auto relative z-10" />
  <span className="text-[#00EDC2] text-base sm:text-lg lg:text-base xl:text-xl 2xl:!text-[24px] font-bold tracking-wide relative z-10 whitespace-nowrap transition-all duration-300 group-hover:[text-shadow:0_0_15px_#8DE05A,0_0_35px_#8DE05A]">
  WATTSTRONS
  </span>
@@ -398,7 +398,7 @@ const NavBar = () => {
  >
  <div className="flex items-center justify-between p-4 border-b border-white/10">
  <div className="flex items-center gap-2">
- <img src={logo} alt="logo" className="h-8 w-auto" />
+ <img src={logo} alt="logo" fetchPriority="high" decoding="sync" className="h-8 w-auto" />
  <span className="text-[#00EDC2] text-lg font-semibold">WATTSTRONS</span>
  </div>
  <button
