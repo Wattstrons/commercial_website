@@ -4,7 +4,7 @@ import Whoweare from '../components/Front/Whoweare'
 import Backgroundimage from "../assets/images/Backgroundimage.mp4";
 import Ourservice from "../components/Front/Ourservice"
 import Hero from '../components/Front/Hero' // Fixed path - added 'Front/'
-import Featureprojects from '../components/Front/FeatureProjects' // Fixed path - added 'Front/'
+// import Featureprojects from '../components/Front/FeatureProjects' 
 import Question from '../components/Front/Question' // Fixed path - added 'Front/'
 import ContactInformation from '../components/Front/Contactinformation' // Fixed path - added 'Front/'
 import { StarsBackground } from '../components/animation/StarsBackground'
@@ -91,7 +91,7 @@ const Home = () => {
  {/* Remaining sections are rendered normally without overflow clipping */}
  <div className="bg-transparent relative">
  <Ourservice />
- <Featureprojects />
+ {/* <Featureprojects /> */}
  <Question />
  <ContactInformation />
  </div>
