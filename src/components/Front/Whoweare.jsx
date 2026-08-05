@@ -45,16 +45,14 @@ function NeuralCore({ isActive, setCardHovered }) {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{
-                type: "spring",
-                stiffness: 100,
-                damping: 12,
-                duration: 0.3
+                duration: 0.6,
+                ease: "easeOut"
             }}
         >
             {/* Layer 3: solid square, counter-clockwise */}
             <svg
                 className="
- absolute animate-[spinCCW_15s_linear_infinite] drop-shadow-[0_0_6px_rgba(0,235,192,0.4)]
+ absolute animate-[spinCCW_15s_linear_infinite]
  w-[70%] h-[85%]
  sm:w-[65%] sm:h-[85%]
  "
@@ -69,7 +67,7 @@ function NeuralCore({ isActive, setCardHovered }) {
             {/* Layer 2: dotted square, clockwise */}
             <svg
                 className="
- absolute animate-[spinCW_20s_linear_infinite] drop-shadow-[0_0_6px_rgba(0,235,192,0.5)]
+ absolute animate-[spinCW_20s_linear_infinite]
  w-[85%] h-[80%]
  sm:w-[85%] sm:h-[80%]
  "
@@ -85,7 +83,7 @@ function NeuralCore({ isActive, setCardHovered }) {
             {/* Layer 1: static square with midpoint dots */}
             <svg
                 className="
- absolute drop-shadow-[0_0_8px_rgba(0,235,192,0.8)]
+ absolute
  w-[110%] h-[120%]
  sm:w-[105%] sm:h-[125%]
  "
@@ -115,6 +113,8 @@ function NeuralCore({ isActive, setCardHovered }) {
                 <img
                     src={world}
                     alt=""
+                    loading="lazy"
+                    decoding="async"
                     className={`w-full h-full object-cover transition-all duration-500 ${isActive ? 'grayscale-0' : 'grayscale'}`}
                 />
             </div>
@@ -137,9 +137,8 @@ function StaticCard({ side = "left", icon, title, body, onMouseEnter, onMouseLea
             x: 0,
             scale: 1,
             transition: {
-                type: "spring",
-                stiffness: 100,
-                damping: 12,
+                duration: 0.6,
+                ease: "easeOut",
                 delay: index * 0.08
             }
         }
@@ -181,7 +180,7 @@ function StaticCard({ side = "left", icon, title, body, onMouseEnter, onMouseLea
             variants={cardVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
+            viewport={{ once: true, margin: "150px" }}
             whileHover={{
                 scale: 1.08,
                 transition: { duration: 0.2 }
@@ -193,7 +192,6 @@ function StaticCard({ side = "left", icon, title, body, onMouseEnter, onMouseLea
  px-4 py-3
  md:px-6 md:py-4
  
- backdrop-blur-xl
  flex flex-col justify-between
  min-h-[230px]
  sm:min-h-[250px]
@@ -217,9 +215,8 @@ function StaticCard({ side = "left", icon, title, body, onMouseEnter, onMouseLea
                             initial={{ scale: 0, rotate: -180 }}
                             animate={{ scale: 1, rotate: 0 }}
                             transition={{
-                                type: "spring",
-                                stiffness: 200,
-                                damping: 15,
+                                duration: 0.5,
+                                ease: "easeOut",
                                 delay: 0.3
                             }}
                         >
@@ -285,22 +282,25 @@ function CountUpNumber({ value }) {
     const suffix = value.replace(/\d+/, "");
     const target = numMatch ? parseInt(numMatch[0], 10) : 0;
 
-    const [count, setCount] = useState(0);
     const ref = useRef(null);
-    const isInView = useInView(ref, { once: true, margin: "-50px" });
+    const isInView = useInView(ref, { once: true, margin: "150px" });
 
     useEffect(() => {
         if (isInView && target > 0) {
             const controls = animate(0, target, {
                 duration: 1.5,
                 ease: "easeOut",
-                onUpdate: (val) => setCount(Math.floor(val)),
+                onUpdate: (val) => {
+                    if (ref.current) {
+                        ref.current.textContent = `${Math.floor(val)}${suffix}`;
+                    }
+                },
             });
             return () => controls.stop();
         }
-    }, [isInView, target]);
+    }, [isInView, target, suffix]);
 
-    return <span ref={ref}>{target > 0 ? `${count}${suffix}` : value}</span>;
+    return <span ref={ref}>{target > 0 ? `0${suffix}` : value}</span>;
 }
 
 function BottomStats({ setCardHovered }) {
@@ -326,9 +326,8 @@ function BottomStats({ setCardHovered }) {
             y: 0,
             scale: 1,
             transition: {
-                type: "spring",
-                stiffness: 100,
-                damping: 12
+                duration: 0.6,
+                ease: "easeOut"
             }
         },
     };
@@ -441,35 +440,18 @@ const Whoweare = () => {
     const sectionRef = useRef(null);
 
     useEffect(() => {
-        const style = document.createElement('style');
-        style.textContent = `
- @keyframes spinCW { 
- from { transform: rotate(0deg); } 
- to { transform: rotate(360deg); } 
- }
- @keyframes spinCCW { 
- from { transform: rotate(0deg); } 
- to { transform: rotate(-360deg); } 
- }
- `;
-        document.head.appendChild(style);
-        return () => document.head.removeChild(style);
+        // Styles moved to index.css
     }, []);
 
     return (
         <>
-            <style>{`
- @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
- @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
- `}</style>
-
             <Section
                 id="about"
                 ref={sectionRef}
                 noPadding
                 className="bg-transparent text-white"
             >
-                <div className="relative w-full bg-transparent min-h-screen flex flex-col justify-center pt-16 pb-6 lg:pt-[80px] lg:pb-8">
+                <div className="relative w-full bg-transparent flex flex-col pt-16 pb-6 lg:pt-[80px] lg:pb-8">
                     <Container className="relative flex flex-col items-center">
                         <div className="relative w-full flex flex-col">
                             {/* Heading */}
