@@ -53,7 +53,6 @@ const Hero = () => {
                     <div
                         className="
  w-full max-w-7xl mx-auto text-center
- animate-[crtFlicker_0.15s_infinite]
  "
                     >
                         <div className="animate-float">
