@@ -44,7 +44,7 @@ const Home = () => {
  loop
  muted
  playsInline
- poster="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="
+ preload="auto"
  className="absolute top-0 left-0 w-full h-full object-cover"
  >
  <source src={Backgroundimage} type="video/mp4" />
