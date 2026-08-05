@@ -587,7 +587,8 @@ export default function ServicesSection() {
                     <AnimatedBg />
 
                     {/* Centered heading */}
-                    <div className="pointer-events-none absolute inset-x-0 top-[55px] xl:top-[60px] z-40 flex flex-col items-center px-6 text-center">
+                    <div className="pointer-events-none absolute inset-x-0 top-[55px] xl:top-[60px] 2xl:top-[100px] 
+                    z-40 flex flex-col items-center px-6 text-center">
                         <SectionHeader
                             title="Our Services"
 
