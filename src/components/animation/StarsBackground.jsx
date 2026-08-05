@@ -16,7 +16,7 @@ function generateStars(count, starColor) {
 function StarLayer({
   count = 1000,
   size = 1,
-  duration = 50,
+  transition = { repeat: Infinity, duration: 50, ease: "linear" },
   starColor = "#fff",
   className,
   ...props
@@ -24,12 +24,11 @@ function StarLayer({
   const boxShadow = useMemo(() => generateStars(count, starColor), [count, starColor]);
 
   return (
-    <div
+    <motion.div
       data-slot="star-layer"
-      className={cn("animate-stars absolute top-0 left-0 w-full h-[2000px]", className)}
-      style={{
-        "--star-duration": `${duration}s`,
-      }}
+      animate={{ y: [0, -2000] }}
+      transition={transition}
+      className={cn("absolute top-0 left-0 w-full h-[2000px]", className)}
       {...props}
     >
       <div
@@ -48,17 +47,37 @@ function StarLayer({
           boxShadow: boxShadow,
         }}
       />
-    </div>
+    </motion.div>
   );
 }
 
 export function StarsBackground({
   children,
   className,
+  factor = 0.05,
   speed = 50,
+  transition = { stiffness: 50, damping: 20 },
   starColor = "#fff",
   ...props
 }) {
+  const offsetX = useMotionValue(1);
+  const offsetY = useMotionValue(1);
+
+  const springX = useSpring(offsetX, transition);
+  const springY = useSpring(offsetY, transition);
+
+  const handleMouseMove = useCallback(
+    (e) => {
+      const centerX = window.innerWidth / 2;
+      const centerY = window.innerHeight / 2;
+      const newOffsetX = -(e.clientX - centerX) * factor;
+      const newOffsetY = -(e.clientY - centerY) * factor;
+      offsetX.set(newOffsetX);
+      offsetY.set(newOffsetY);
+    },
+    [offsetX, offsetY, factor]
+  );
+
   return (
     <div
       data-slot="stars-background"
@@ -66,35 +85,44 @@ export function StarsBackground({
         "relative w-full bg-black",
         className
       )}
+      onMouseMove={handleMouseMove}
       {...props}
     >
       {/* Background stars container */}
       <div className="absolute inset-0 pointer-events-none">
         {/* Sticky wrapper to keep stars visible during scroll */}
         <div className="sticky top-0 w-full h-screen overflow-hidden">
-          <div className="absolute inset-0">
+          <motion.div style={{ x: springX, y: springY }} className="absolute inset-0">
             <StarLayer
-              count={500}
+              count={1000}
               size={1}
-              duration={speed}
+              transition={{ repeat: Infinity, duration: speed, ease: "linear" }}
+              starColor={starColor}
+            />
+            <StarLayer
+              count={400}
+              size={2}
+              transition={{
+                repeat: Infinity,
+                duration: speed * 2,
+                ease: "linear",
+              }}
               starColor={starColor}
             />
             <StarLayer
               count={200}
-              size={2}
-              duration={speed * 2}
-              starColor={starColor}
-            />
-            <StarLayer
-              count={100}
               size={3}
-              duration={speed * 3}
+              transition={{
+                repeat: Infinity,
+                duration: speed * 3,
+                ease: "linear",
+              }}
               starColor={starColor}
             />
-          </div>
+          </motion.div>
         </div>
       </div>
-
+      
       {/* Foreground content */}
       <div className="relative z-10 w-full">
         {children}
