@@ -434,10 +434,10 @@ const MobileServicesView = () => {
     const navigate = useNavigate();
 
     return (
-        <Section id="expertise" className="bg-transparent min-h-screen !py-8">
+        <Section id="expertise" className="bg-transparent min-h-screen !py-8 relative overflow-hidden">
             <Container>
                 <div
-                    className="crt-scan pointer-events-none fixed inset-0 z-10 [background-size:100%_4px]"
+                    className="crt-scan pointer-events-none absolute inset-0 z-10 [background-size:100%_4px]"
                     style={{
                         background: "linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.15) 50%)",
                     }}
@@ -587,8 +587,7 @@ export default function ServicesSection() {
                     <AnimatedBg />
 
                     {/* Centered heading */}
-                    <div className="pointer-events-none absolute inset-x-0 top-[55px] xl:top-[60px] 2xl:top-[100px] 
-                    z-40 flex flex-col items-center px-6 text-center">
+                    <div className="pointer-events-none absolute inset-x-0 top-[15px] xl:top-[20px] 2xl:top-[65px] z-40 flex flex-col items-center px-6 text-center">
                         <SectionHeader
                             title="Our Services"
 
