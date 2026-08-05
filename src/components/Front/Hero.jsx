@@ -81,7 +81,7 @@ const Hero = () => {
                                                         animate={{ opacity: 1, y: 0 }}
                                                         transition={{
                                                             duration: 0.3,
-                                                            delay: globalIndex * 0.05,
+                                                            delay: globalIndex * 0.02, // Sped up from 0.05
                                                             ease: "easeOut",
                                                         }}
                                                         className={`
@@ -115,7 +115,7 @@ const Hero = () => {
                                     useMotion={true}
                                     initial={{ opacity: 0, y: 16 }}
                                     animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.4, delay: 0.4, ease: "easeOut" }}
+                                    transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }} // Sped up from 0.4
                                     className="block transform-gpu 2xl:text-center 2xl:w-full !text-[clamp(13px,1.2vw,18px)]"
                                 >
                                     We design and engineer hardware and software solutions that
@@ -126,7 +126,7 @@ const Hero = () => {
                             <motion.div
                                 initial={{ opacity: 0, scale: 0.75 }}
                                 animate={{ opacity: 1, scale: 1 }}
-                                transition={{ duration: 0.4, delay: 0.8, ease: "easeOut" }}
+                                transition={{ duration: 0.4, delay: 0.4, ease: "easeOut" }} // Sped up from 0.8
                                 className="
  flex flex-col sm:flex-row flex-wrap
  items-center justify-center
