@@ -48,8 +48,6 @@ const Home = () => {
           layout={false}
           className="sticky top-0 left-0 w-full h-screen overflow-hidden bg-black pt-16 sm:pt-20 md:pt-24 origin-top"
           style={{
-            scale,
-            y,
             willChange: "transform",
           }}
         >
