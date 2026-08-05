@@ -128,14 +128,22 @@ const BentoCard = ({ className = "", innerClassName = "", children }) => {
 
     // Global mouse tracking for border glow — works across ALL cards
     useEffect(() => {
+        let rafId = null;
         const handleGlobalMouseMove = (e) => {
             if (!cardRef.current) return;
-            const { left, top } = cardRef.current.getBoundingClientRect();
-            mouseX.set(e.clientX - left);
-            mouseY.set(e.clientY - top);
+            if (rafId) cancelAnimationFrame(rafId);
+            
+            rafId = requestAnimationFrame(() => {
+                const { left, top } = cardRef.current.getBoundingClientRect();
+                mouseX.set(e.clientX - left);
+                mouseY.set(e.clientY - top);
+            });
         };
-        window.addEventListener("mousemove", handleGlobalMouseMove);
-        return () => window.removeEventListener("mousemove", handleGlobalMouseMove);
+        window.addEventListener("mousemove", handleGlobalMouseMove, { passive: true });
+        return () => {
+            window.removeEventListener("mousemove", handleGlobalMouseMove);
+            if (rafId) cancelAnimationFrame(rafId);
+        };
     }, [mouseX, mouseY]);
 
     // Card-specific mouse tracking for movement (only when hovered)
@@ -731,6 +739,7 @@ const ServiceTemplate = ({ data }) => {
                                 loop
                                 muted
                                 playsInline
+                                preload="auto"
                                 poster={hero.backgroundImage || (hero.backgroundImages && hero.backgroundImages[0]) || "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="}
                                 className="w-full h-full object-cover"
                             />
@@ -740,11 +749,11 @@ const ServiceTemplate = ({ data }) => {
                                     key={currentImageIndex}
                                     src={hero.backgroundImages[currentImageIndex]}
                                     alt="Service Hero"
-                                    className="absolute inset-0 w-full h-full object-cover"
-                                    initial={{ x: "100%" }}
-                                    animate={{ x: 0 }}
-                                    exit={{ x: "-100%" }}
-                                    transition={{ duration: 1.2, ease: [0.25, 1, 0.5, 1] }}
+                                    className="w-full h-full object-cover absolute inset-0"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    transition={{ duration: 1.5 }}
                                 />
                             </AnimatePresence>
                         ) : (
@@ -766,11 +775,11 @@ const ServiceTemplate = ({ data }) => {
                             >
                                 <AnimatedLetters text={hero.titleWord1} delay={0} />
                                 {isMobile ? <br /> : " "}
-                                {hero.titleWord2 && <AnimatedLetters text={hero.titleWord2} delay={0.15} />}
+                                {hero.titleWord2 && <AnimatedLetters text={hero.titleWord2} delay={0.05} />}
                             </div>
                             <AnimatedWords
                                 text={hero.subtitle}
-                                delay={0.4}
+                                delay={0.15}
                                 className=""
                                 style={{ fontSize: isMobile ? "15px" : "18px", lineHeight: "1.8", color: "#d1d5db", whiteSpace: isMobile ? "normal" : "nowrap" }}
                             />
