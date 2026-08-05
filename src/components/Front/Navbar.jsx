@@ -101,111 +101,82 @@ const NavBar = () => {
  }
  };
 
-  const isVisibleRef = useRef(true);
-  const scrolledRef = useRef(false);
-
-  /* ─── Unified Scroll Handler (Auto-hide & Scroll Spy) ────────────────── */
+  /* ─── Navbar auto-hide on scroll ────────────────────────────────── */
   useEffect(() => {
-    let idleTimer = null;
-    let ticking = false;
-    let sectionPositions = [];
+  let idleTimer = null;
 
-    // Cache section positions to avoid getBoundingClientRect on every scroll
-    const updateSectionPositions = () => {
-      if (!isHomePage) return;
-      const positions = [];
-      const sections = navItems.filter((i) => i.scrollId);
-      
-      for (let i = 0; i < sections.length; i++) {
-        const el = document.getElementById(sections[i].scrollId);
-        if (el) {
-          const top = el.getBoundingClientRect().top + (window.scrollY || document.documentElement.scrollTop);
-          positions.push({ id: sections[i].scrollId, top });
-        }
-      }
-      sectionPositions = positions.sort((a, b) => a.top - b.top);
-    };
+  const onScroll = () => {
+  if (isScrollingRef.current) {
+  setIsVisible(true);
+  lastScrollY.current = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop;
+  return;
+  }
 
-    updateSectionPositions();
-    setTimeout(updateSectionPositions, 100);
-    window.addEventListener("resize", updateSectionPositions, { passive: true });
+  const currentScrollY = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop;
+  
+  if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
+  setIsVisible(false); // Hide when scrolling down
+  } else {
+  setIsVisible(true); // Show when scrolling up
+  }
+  
+  lastScrollY.current = currentScrollY;
+  setScrolled(currentScrollY > 20);
 
-    const handleScrollUpdate = () => {
-      const currentScrollY = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop;
-      
-      // 1. Auto-hide & Scrolled State Logic
-      if (isScrollingRef.current) {
-        if (!isVisibleRef.current) {
-          isVisibleRef.current = true;
-          setIsVisible(true);
-        }
-        lastScrollY.current = currentScrollY;
-      } else {
-        let newIsVisible = isVisibleRef.current;
-        if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
-          newIsVisible = false;
-        } else {
-          newIsVisible = true;
-        }
-        if (newIsVisible !== isVisibleRef.current) {
-          isVisibleRef.current = newIsVisible;
-          setIsVisible(newIsVisible);
-        }
-        lastScrollY.current = currentScrollY;
-      }
+  if (idleTimer) clearTimeout(idleTimer);
 
-      // Update scrolled state
-      const newScrolled = currentScrollY > 20;
-      if (newScrolled !== scrolledRef.current) {
-        scrolledRef.current = newScrolled;
-        setScrolled(newScrolled);
-      }
+  // If not at the very top, hide the navbar when the user stops scrolling
+  if (currentScrollY > 100) {
+  idleTimer = setTimeout(() => {
+  setIsVisible(false);
+  }, 5000); // Hides 5 seconds after scrolling stops
+  }
+  };
+  
+  window.addEventListener("scroll", onScroll, { passive: true, capture: true });
+  return () => {
+  window.removeEventListener("scroll", onScroll, { capture: true });
+  if (idleTimer) clearTimeout(idleTimer);
+  };
+  }, []);
 
-      // Idle timeout to hide navbar
-      if (idleTimer) clearTimeout(idleTimer);
-      if (currentScrollY > 100 && !isScrollingRef.current) {
-        idleTimer = setTimeout(() => {
-          if (isVisibleRef.current) {
-            isVisibleRef.current = false;
-            setIsVisible(false);
-          }
-        }, 5000);
-      }
+ /* ─── Scroll spy — stable listener, no activeSection in deps ────── */
+ useEffect(() => {
+ if (!isHomePage) return;
 
-      // 2. Scroll Spy Logic
-      if (isHomePage && !isScrollingRef.current && sectionPositions.length > 0) {
-        const scrollPos = currentScrollY + NAVBAR_HEIGHT + 40;
-        let detected = "home";
-        for (let i = sectionPositions.length - 1; i >= 0; i--) {
-          if (scrollPos >= sectionPositions[i].top) {
-            detected = sectionPositions[i].id;
-            break;
-          }
-        }
-        if (detected !== activeSectionRef.current) {
-          activeSectionRef.current = detected;
-          setActiveSection(detected);
-        }
-      }
-      ticking = false;
-    };
+ const onScroll = () => {
+ // Skip during programmatic scroll
+ if (isScrollingRef.current) return;
 
-    const onScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(handleScrollUpdate);
-        ticking = true;
-      }
-    };
+ const currentScrollY = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop;
+ const scrollPos = currentScrollY + NAVBAR_HEIGHT + 40;
+ const sections = navItems.filter((i) => i.scrollId);
 
-    window.addEventListener("scroll", onScroll, { passive: true, capture: true });
-    onScroll();
+ let detected = "home";
+ // Walk from bottom so the last one whose top ≤ scrollPos wins
+ for (let i = sections.length - 1; i >= 0; i--) {
+ const el = document.getElementById(sections[i].scrollId);
+ if (el) {
+ const elTop = el.getBoundingClientRect().top + currentScrollY;
+ if (scrollPos >= elTop) {
+ detected = sections[i].scrollId;
+ break;
+ }
+ }
+ }
 
-    return () => {
-      window.removeEventListener("scroll", onScroll, { capture: true });
-      window.removeEventListener("resize", updateSectionPositions);
-      if (idleTimer) clearTimeout(idleTimer);
-    };
-  }, [isHomePage]);
+ if (detected !== activeSectionRef.current) {
+ activeSectionRef.current = detected;
+ setActiveSection(detected);
+ }
+ };
+
+ window.addEventListener("scroll", onScroll, { passive: true, capture: true });
+ // Run once to set correct section on mount / route change
+ onScroll();
+
+ return () => window.removeEventListener("scroll", onScroll, { capture: true });
+ }, [isHomePage]); // ← Only isHomePage — stable listener
 
  /* ─── Hash navigation (e.g. /#about) ─────────────────────────────── */
  useEffect(() => {
@@ -346,7 +317,7 @@ const NavBar = () => {
  }
  }}
  >
- <img src={logo} alt="logo" fetchPriority="high" decoding="sync" className="h-8 sm:h-9 lg:h-8 xl:h-10 2xl:!h-10 w-auto relative z-10" />
+ <img src={logo} alt="logo" className="h-8 sm:h-9 lg:h-8 xl:h-10 2xl:!h-10 w-auto relative z-10" />
  <span className="text-[#00EDC2] text-base sm:text-lg lg:text-base xl:text-xl 2xl:!text-[24px] font-bold tracking-wide relative z-10 whitespace-nowrap transition-all duration-300 group-hover:[text-shadow:0_0_15px_#8DE05A,0_0_35px_#8DE05A]">
  WATTSTRONS
  </span>
@@ -398,7 +369,7 @@ const NavBar = () => {
  >
  <div className="flex items-center justify-between p-4 border-b border-white/10">
  <div className="flex items-center gap-2">
- <img src={logo} alt="logo" fetchPriority="high" decoding="sync" className="h-8 w-auto" />
+ <img src={logo} alt="logo" className="h-8 w-auto" />
  <span className="text-[#00EDC2] text-lg font-semibold">WATTSTRONS</span>
  </div>
  <button
