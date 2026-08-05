@@ -311,12 +311,7 @@ const AnimatedBg = () => (
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 overflow-hidden"
     >
-        <div
-            className="crt-scan pointer-events-none absolute inset-0 opacity-40 [background-size:100%_4px]"
-            style={{
-                background: "linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.15) 50%)",
-            }}
-        />
+        {/* CRT Scanline has been removed to stop the black scanning effect */}
     </div>
 );
 
@@ -436,12 +431,7 @@ const MobileServicesView = () => {
     return (
         <Section id="expertise" className="bg-transparent min-h-screen !py-8 relative overflow-hidden">
             <Container>
-                <div
-                    className="crt-scan pointer-events-none absolute inset-0 z-10 [background-size:100%_4px]"
-                    style={{
-                        background: "linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.15) 50%)",
-                    }}
-                />
+                {/* CRT Scanline has been removed from mobile view as well */}
 
                 <div className="crt-flicker">
                     <div className="mb-12 text-center">
