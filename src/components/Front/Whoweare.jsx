@@ -113,7 +113,6 @@ function NeuralCore({ isActive, setCardHovered }) {
                 <img
                     src={world}
                     alt=""
-                    loading="lazy"
                     decoding="async"
                     className={`w-full h-full object-cover transition-all duration-500 ${isActive ? 'grayscale-0' : 'grayscale'}`}
                 />
