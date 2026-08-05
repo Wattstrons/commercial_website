@@ -454,6 +454,7 @@ const MobileServicesView = () => {
                                         <img
                                             src={service.image}
                                             alt={service.title}
+                                            decoding="async"
                                             className="h-full w-full object-cover"
                                         />
                                     </div>
