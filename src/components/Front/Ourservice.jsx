@@ -30,21 +30,6 @@ const FontLoader = () => (
  * {
  font-family: 'Space Grotesk', sans-serif;
  }
-
- @keyframes scan {
- 0% { transform: translateY(-100%); }
- 100% { transform: translateY(100%); }
- }
- @keyframes crtFlicker {
- 0%, 100% { opacity: 1; }
- 50% { opacity: 0.98; }
- }
- .crt-scan {
- animation: scan 8s linear infinite;
- }
- .crt-flicker {
- animation: crtFlicker 0.15s infinite;
- }
  `}</style>
 );
 
@@ -433,7 +418,7 @@ const MobileServicesView = () => {
             <Container>
                 {/* CRT Scanline has been removed from mobile view as well */}
 
-                <div className="crt-flicker">
+                <div>
                     <div className="mb-12 text-center">
                         <h1 className="mb-4 text-[clamp(32px,7vw,42px)] font-bold tracking-[-0.02em] text-white">
                             Our Services
