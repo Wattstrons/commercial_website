@@ -165,11 +165,18 @@ const ServiceCard = ({ service, index }) => {
     const tX = useSpring(useTransform(rawX, [-0.5, 0.5], [-6, 6]), springCfg);
     const tY = useSpring(useTransform(rawY, [-0.5, 0.5], [-6, 6]), springCfg);
 
+    const rafId = useRef(null);
+
     const handleMove = useCallback((e) => {
-        const r = ref.current?.getBoundingClientRect();
-        if (!r) return;
-        rawX.set((e.clientX - r.left) / r.width - 0.5);
-        rawY.set((e.clientY - r.top) / r.height - 0.5);
+        if (rafId.current) cancelAnimationFrame(rafId.current);
+        
+        rafId.current = requestAnimationFrame(() => {
+            const r = ref.current?.getBoundingClientRect();
+            if (!r) return;
+            rawX.set((e.clientX - r.left) / r.width - 0.5);
+            rawY.set((e.clientY - r.top) / r.height - 0.5);
+            rafId.current = null;
+        });
     }, [rawX, rawY]);
 
     const handleLeave = useCallback(() => {
