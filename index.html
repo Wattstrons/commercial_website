@@ -3,33 +3,15 @@
 
 <head>
   <meta charset="UTF-8" />
-<link rel="icon" href="/favicon.ico" sizes="any">
-<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
-<link rel="shortcut icon" href="/favicon.ico">
-<link rel="apple-touch-icon" href="/favicon-48x48.png">
+  <link rel="icon" type="image/png" href="/logo.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Wattstrons</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <title>wattstrons</title>
 </head>
 
 <body>
   <div id="root"></div>
-
-  <script>
-    (function (l) {
-      if (l.search[1] === "/") {
-        var decoded = l.search
-          .slice(1)
-          .split("&")
-          .map(function (s) {
-            return s.replace(/~and~/g, "&");
-          })
-          .join("?");
-
-        window.history.replaceState(null, null, decoded);
-      }
-    })(window.location);
-  </script>
-
   <script type="module" src="/src/main.jsx"></script>
 </body>
 
