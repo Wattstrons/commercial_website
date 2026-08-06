@@ -2,44 +2,47 @@ import { useEffect, useRef } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
 const ParticleCanvas = ({ projects, active }) => {
-  const canvasRef = useRef(null);
-  const animationRef = useRef(null);
+ const canvasRef = useRef(null);
+ const animationRef = useRef(null);
 
-  const particlesMap = useRef({});
-  const currentIndex = useRef(active);
+ const particlesMap = useRef({});
+ const currentIndex = useRef(active);
 
-  const mouse = useRef({ x: 0, y: 0, active: false });
-  const opacityRef = useRef(0);
+ const mouse = useRef({ x: 0, y: 0, active: false });
+ const opacityRef = useRef(0);
 
-  /* 🎛️ MOTION CONTROL */
-  const MOTION_SCALE = 0.28;
-  const FORCE_SCALE = 0.35;
-  const VERTICAL_SCALE = 0.78;
-  const MORPH_SPEED = 0.12;
+ /* 🎛️ MOTION CONTROL */
+ const MOTION_SCALE = 0.28;
+ const FORCE_SCALE = 0.35;
+ const VERTICAL_SCALE = 0.78;
+ const MORPH_SPEED = 0.12;
 
-  /* 3D ROTATION */
-  const rotationRef = useRef({ x: 0, y: 0 });
+ /* 3D ROTATION */
+ const rotationRef = useRef({ x: 0, y: 0 });
 
-  /* 📐 CANVAS SIZE */
-  const CANVAS_WIDTH = 1400;
-  const CANVAS_HEIGHT = 1200;
-  const CONTENT_WIDTH = 900;
-  const OFFSET = (CANVAS_WIDTH - CONTENT_WIDTH) / 2;
-  const CX = CANVAS_WIDTH / 2;
-  const CY = CANVAS_HEIGHT / 2;
-  const RADIUS = CONTENT_WIDTH / 2;
+ /* 📐 CANVAS SIZE */
+ const CANVAS_WIDTH = 1400;
+ const CANVAS_HEIGHT = 1200;
+ const CONTENT_WIDTH = 900;
+ const OFFSET = (CANVAS_WIDTH - CONTENT_WIDTH) / 2;
+ const CX = CANVAS_WIDTH / 2;
+ const CY = CANVAS_HEIGHT / 2;
+ const RADIUS = CONTENT_WIDTH / 2;
 
-  const isMobile = window.innerWidth < 768;
-  const ICON_DENSITY = isMobile ? 12 : 8;
+ const isMobile = window.innerWidth < 768;
+ const ICON_DENSITY = isMobile ? 12 : 8;
 
-  const activeParticles = useRef([]);
+ const activeParticles = useRef([]);
 
-  useEffect(() => {
+ useEffect(() => {
     const canvas = canvasRef.current;
+    if (!canvas) return;
     const ctx = canvas.getContext("2d");
 
     canvas.width = CANVAS_WIDTH;
     canvas.height = CANVAS_HEIGHT;
+
+    let isVisible = false; // Will be set by IntersectionObserver
 
     /* 🖱️ MOUSE - Improved tracking */
     const onMove = (e) => {
@@ -70,9 +73,9 @@ const ParticleCanvas = ({ projects, active }) => {
       };
     };
 
-    canvas.addEventListener("mousemove", onMove);
-    canvas.addEventListener("mouseleave", onLeave);
-    canvas.addEventListener("mouseenter", onEnter);
+    canvas.addEventListener("mousemove", onMove, { passive: true });
+    canvas.addEventListener("mouseleave", onLeave, { passive: true });
+    canvas.addEventListener("mouseenter", onEnter, { passive: true });
 
     /* 🔧 CREATE PARTICLES */
     const createParticles = (src, density, size) =>
@@ -125,10 +128,10 @@ const ParticleCanvas = ({ projects, active }) => {
           const range = maxY - minY || 1;
           
           raw.forEach(p => {
-             const normalizedY = (p.ty - minY) / range;
-             const targetHeight = CONTENT_WIDTH * 0.8;
-             const centeredY = (normalizedY * targetHeight) + (CANVAS_HEIGHT - targetHeight) / 2;
-             
+            const normalizedY = (p.ty - minY) / range;
+            const targetHeight = CONTENT_WIDTH * 0.8;
+            const centeredY = (normalizedY * targetHeight) + (CANVAS_HEIGHT - targetHeight) / 2;
+            
             p.ty = centeredY;
             p.oy = centeredY;
             
@@ -145,14 +148,14 @@ const ParticleCanvas = ({ projects, active }) => {
       for (let i = 0; i < projects.length; i++) {
         let iconUrl = "";
         if (typeof projects[i].icon === 'function' || typeof projects[i].icon === 'object') {
-             const Icon = projects[i].icon;
-             const svgString = renderToStaticMarkup(
-               <Icon size={800} color="white" strokeWidth={2} />
-             );
-             const encoded = encodeURIComponent(svgString);
-             iconUrl = `data:image/svg+xml;charset=utf-8,${encoded}`;
+          const Icon = projects[i].icon;
+          const svgString = renderToStaticMarkup(
+            <Icon size={800} color="white" strokeWidth={2} />
+          );
+          const encoded = encodeURIComponent(svgString);
+          iconUrl = `data:image/svg+xml;charset=utf-8,${encoded}`;
         } else {
-             iconUrl = projects[i].icon;
+          iconUrl = projects[i].icon;
         }
 
         const iconPts = await createParticles(
@@ -164,33 +167,35 @@ const ParticleCanvas = ({ projects, active }) => {
       }
       
       if (activeParticles.current.length === 0 && particlesMap.current[0]) {
-         activeParticles.current = particlesMap.current[0].map(p => ({
-             ...p,
-             x: p.tx, 
-             y: p.ty,
-             z: p.tz
-         }));
+        activeParticles.current = particlesMap.current[0].map(p => ({
+          ...p,
+          x: p.tx, 
+          y: p.ty,
+          z: p.tz
+        }));
       }
     };
 
     /* 🎬 LOOP */
     const animate = () => {
+      if (!isVisible) {
+        animationRef.current = null;
+        return;
+      }
+
       ctx.restore();
       ctx.save();
 
       ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
       opacityRef.current = Math.min(opacityRef.current + 0.02, 1);
-
-      // Auto-rotation removed to keep it constant
-      // rotationRef.current.y += 0.005; 
       
       // Mouse interaction for rotation - only when mouse is active
       if (mouse.current.active) {
-         const targetRotY = (mouse.current.x - CX) * 0.0005;
-         const targetRotX = (mouse.current.y - CY) * 0.0005;
-         rotationRef.current.y += (targetRotY - rotationRef.current.y) * 0.1;
-         rotationRef.current.x += (targetRotX - rotationRef.current.x) * 0.1;
+        const targetRotY = (mouse.current.x - CX) * 0.0005;
+        const targetRotX = (mouse.current.y - CY) * 0.0005;
+        rotationRef.current.y += (targetRotY - rotationRef.current.y) * 0.1;
+        rotationRef.current.x += (targetRotX - rotationRef.current.x) * 0.1;
       }
 
       const targetParticles =
@@ -198,35 +203,35 @@ const ParticleCanvas = ({ projects, active }) => {
       
       // Update active particles to match target count
       while (activeParticles.current.length < targetParticles.length) {
-          const randIdx = Math.floor(Math.random() * targetParticles.length);
-          const p = targetParticles[randIdx];
-          activeParticles.current.push({
-              ...p,
-              x: Math.random() * CANVAS_WIDTH,
-              y: Math.random() * CANVAS_HEIGHT,
-              z: Math.random() * 200 - 100,
-          });
+        const randIdx = Math.floor(Math.random() * targetParticles.length);
+        const p = targetParticles[randIdx];
+        activeParticles.current.push({
+          ...p,
+          x: Math.random() * CANVAS_WIDTH,
+          y: Math.random() * CANVAS_HEIGHT,
+          z: Math.random() * 200 - 100,
+        });
       }
       if (activeParticles.current.length > targetParticles.length) {
-          activeParticles.current.length = targetParticles.length;
+        activeParticles.current.length = targetParticles.length;
       }
 
       // Update targets
       for (let i = 0; i < activeParticles.current.length; i++) {
-          const target = targetParticles[i];
-          if (target) {
-              activeParticles.current[i].tx = target.tx;
-              activeParticles.current[i].ty = target.ty;
-              activeParticles.current[i].tz = target.tz;
-              activeParticles.current[i].ox = target.tx;
-              activeParticles.current[i].oy = target.ty;
-              activeParticles.current[i].oz = target.tz;
-          }
+        const target = targetParticles[i];
+        if (target) {
+          activeParticles.current[i].tx = target.tx;
+          activeParticles.current[i].ty = target.ty;
+          activeParticles.current[i].tz = target.tz;
+          activeParticles.current[i].ox = target.tx;
+          activeParticles.current[i].oy = target.ty;
+          activeParticles.current[i].oz = target.tz;
+        }
       }
 
       // Define gradient colors
       const colorStart = [0, 237, 194]; // RGB for #00EDC2
-      const colorEnd = [0, 237, 194];   // RGB for #00EDC2
+      const colorEnd = [0, 237, 194]; // RGB for #00EDC2
 
       activeParticles.current.forEach(p => {
         // Morphing Logic
@@ -301,18 +306,18 @@ const ParticleCanvas = ({ projects, active }) => {
         
         // Enhanced mouse interaction for sizing
         if (mouse.current.active) {
-             const dxM = screenX - mouse.current.x;
-             const dyM = screenY - mouse.current.y;
-             const distM = Math.sqrt(dxM * dxM + dyM * dyM);
-             if (distM < 120) {
-                 drawSize *= (1.5 + (120 - distM) / 80);
-                 ctx.shadowColor = `rgba(${r}, ${g}, ${b}, 0.5)`;
-                 ctx.shadowBlur = 15;
-             } else {
-                 ctx.shadowBlur = 0;
-             }
-        } else {
+          const dxM = screenX - mouse.current.x;
+          const dyM = screenY - mouse.current.y;
+          const distM = Math.sqrt(dxM * dxM + dyM * dyM);
+          if (distM < 120) {
+            drawSize *= (1.5 + (120 - distM) / 80);
+            ctx.shadowColor = `rgba(${r}, ${g}, ${b}, 0.5)`;
+            ctx.shadowBlur = 15;
+          } else {
             ctx.shadowBlur = 0;
+          }
+        } else {
+          ctx.shadowBlur = 0;
         }
 
         ctx.arc(screenX, screenY, drawSize, 0, Math.PI * 2);
@@ -323,34 +328,46 @@ const ParticleCanvas = ({ projects, active }) => {
     };
 
     ctx.save();
-    animate();
     preload();
 
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        isVisible = entry.isIntersecting;
+        if (isVisible && !animationRef.current) {
+          animate();
+        }
+      },
+      { threshold: 0 }
+    );
+    observer.observe(canvas);
+
     return () => {
-      cancelAnimationFrame(animationRef.current);
+      observer.disconnect();
+      if (animationRef.current) cancelAnimationFrame(animationRef.current);
       canvas.removeEventListener("mousemove", onMove);
       canvas.removeEventListener("mouseleave", onLeave);
       canvas.removeEventListener("mouseenter", onEnter);
     };
   }, [projects]);
 
-  useEffect(() => {
-    currentIndex.current = active;
-  }, [active]);
+ useEffect(() => {
+ currentIndex.current = active;
+ }, [active]);
 
-  return (
-    <canvas
-      ref={canvasRef}
-      className="cursor-none" // Hide default cursor for custom interaction
-      style={{ 
-        display: "block", 
-        width: "100%", 
-        height: "100%", 
-        objectFit: "contain",
-        pointerEvents: "auto"
-      }}
-    />
-  );
+ return (
+ <canvas
+ ref={canvasRef}
+ className="cursor-none" // Hide default cursor for custom interaction
+ style={{ 
+ display: "block", 
+ width: "100%", 
+ height: "100%", 
+ objectFit: "contain",
+ pointerEvents: "auto"
+ }}
+ />
+ );
 };
 
 export default ParticleCanvas;
