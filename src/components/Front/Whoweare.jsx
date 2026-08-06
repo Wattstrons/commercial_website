@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useInView, animate } from "framer-motion";
+import { Users, FolderOpen, Award, Code, Globe, Eye, Zap } from "lucide-react";
 import { BorderRotate } from "../animation/BorderRotate";
-import world from "../../assets/images/world.png"
+import world from "../../assets/images/world.webp"
 import Container from "../layout/Container";
 import Section from "../layout/Section";
 import SectionHeader from "../layout/SectionHeader";
@@ -45,16 +46,14 @@ function NeuralCore({ isActive, setCardHovered }) {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{
-                type: "spring",
-                stiffness: 100,
-                damping: 12,
-                duration: 0.3
+                duration: 0.6,
+                ease: "easeOut"
             }}
         >
             {/* Layer 3: solid square, counter-clockwise */}
             <svg
                 className="
- absolute animate-[spinCCW_15s_linear_infinite] drop-shadow-[0_0_6px_rgba(0,235,192,0.4)]
+ absolute animate-[spinCCW_15s_linear_infinite]
  w-[70%] h-[85%]
  sm:w-[65%] sm:h-[85%]
  "
@@ -69,7 +68,7 @@ function NeuralCore({ isActive, setCardHovered }) {
             {/* Layer 2: dotted square, clockwise */}
             <svg
                 className="
- absolute animate-[spinCW_20s_linear_infinite] drop-shadow-[0_0_6px_rgba(0,235,192,0.5)]
+ absolute animate-[spinCW_20s_linear_infinite]
  w-[85%] h-[80%]
  sm:w-[85%] sm:h-[80%]
  "
@@ -85,7 +84,7 @@ function NeuralCore({ isActive, setCardHovered }) {
             {/* Layer 1: static square with midpoint dots */}
             <svg
                 className="
- absolute drop-shadow-[0_0_8px_rgba(0,235,192,0.8)]
+ absolute
  w-[110%] h-[120%]
  sm:w-[105%] sm:h-[125%]
  "
@@ -115,6 +114,7 @@ function NeuralCore({ isActive, setCardHovered }) {
                 <img
                     src={world}
                     alt=""
+                    decoding="async"
                     className={`w-full h-full object-cover transition-all duration-500 ${isActive ? 'grayscale-0' : 'grayscale'}`}
                 />
             </div>
@@ -137,9 +137,8 @@ function StaticCard({ side = "left", icon, title, body, onMouseEnter, onMouseLea
             x: 0,
             scale: 1,
             transition: {
-                type: "spring",
-                stiffness: 100,
-                damping: 12,
+                duration: 0.6,
+                ease: "easeOut",
                 delay: index * 0.08
             }
         }
@@ -181,7 +180,7 @@ function StaticCard({ side = "left", icon, title, body, onMouseEnter, onMouseLea
             variants={cardVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
+            viewport={{ once: true, margin: "150px" }}
             whileHover={{
                 scale: 1.08,
                 transition: { duration: 0.2 }
@@ -193,7 +192,6 @@ function StaticCard({ side = "left", icon, title, body, onMouseEnter, onMouseLea
  px-4 py-3
  md:px-6 md:py-4
  
- backdrop-blur-xl
  flex flex-col justify-between
  min-h-[230px]
  sm:min-h-[250px]
@@ -208,23 +206,18 @@ function StaticCard({ side = "left", icon, title, body, onMouseEnter, onMouseLea
             >
                 <div>
                     <div className="flex flex-col items-center justify-center gap-1 sm:gap-1.5 mb-2 sm:mb-3 text-center">
-                        <motion.span
-                            className="material-symbols-outlined text-[#00ebc0] "
-                            style={{
-                                fontSize: "clamp(24px, 4vw, 36px)",
-                                fontVariationSettings: "'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 48"
-                            }}
+                        <motion.div
+                            className="text-[#00ebc0] flex items-center justify-center"
                             initial={{ scale: 0, rotate: -180 }}
                             animate={{ scale: 1, rotate: 0 }}
                             transition={{
-                                type: "spring",
-                                stiffness: 200,
-                                damping: 15,
+                                duration: 0.5,
+                                ease: "easeOut",
                                 delay: 0.3
                             }}
                         >
                             {icon}
-                        </motion.span>
+                        </motion.div>
                         <motion.h3
                             className="text-[15px] sm:text-base md:text-lg lg:text-xl font-semibold text-white m-0"
                             initial={{ opacity: 0, y: 10 }}
@@ -252,31 +245,30 @@ function StaticCard({ side = "left", icon, title, body, onMouseEnter, onMouseLea
 // ── 5 Bottom Stat Boxes with Connector Lines ──
 const STATS = [
     {
-        icon: "groups",
+        icon: <Users size={28} strokeWidth={2} />,
         label: "25+",
         text: "Clients"
     },
     {
-        icon: "folder_copy",
+        icon: <FolderOpen size={28} strokeWidth={2} />,
         label: "40+",
         text: "Projects"
     },
     {
-        icon: "workspace_premium",
+        icon: <Award size={28} strokeWidth={2} />,
         label: "3+",
         text: "Years Experience"
     },
     {
-        icon: "code",
+        icon: <Code size={28} strokeWidth={2} />,
         label: "24/7",
         text: "Support"
     },
     {
-        icon: "public",
+        icon: <Globe size={28} strokeWidth={2} />,
         label: "99.9%",
         text: "Satisfaction"
     },
-
 ];
 
 // ── CountUpNumber Component ──
@@ -285,22 +277,25 @@ function CountUpNumber({ value }) {
     const suffix = value.replace(/\d+/, "");
     const target = numMatch ? parseInt(numMatch[0], 10) : 0;
 
-    const [count, setCount] = useState(0);
     const ref = useRef(null);
-    const isInView = useInView(ref, { once: true, margin: "-50px" });
+    const isInView = useInView(ref, { once: true, margin: "150px" });
 
     useEffect(() => {
         if (isInView && target > 0) {
             const controls = animate(0, target, {
                 duration: 1.5,
                 ease: "easeOut",
-                onUpdate: (val) => setCount(Math.floor(val)),
+                onUpdate: (val) => {
+                    if (ref.current) {
+                        ref.current.textContent = `${Math.floor(val)}${suffix}`;
+                    }
+                },
             });
             return () => controls.stop();
         }
-    }, [isInView, target]);
+    }, [isInView, target, suffix]);
 
-    return <span ref={ref}>{target > 0 ? `${count}${suffix}` : value}</span>;
+    return <span ref={ref}>{target > 0 ? `0${suffix}` : value}</span>;
 }
 
 function BottomStats({ setCardHovered }) {
@@ -326,9 +321,8 @@ function BottomStats({ setCardHovered }) {
             y: 0,
             scale: 1,
             transition: {
-                type: "spring",
-                stiffness: 100,
-                damping: 12
+                duration: 0.6,
+                ease: "easeOut"
             }
         },
     };
@@ -384,16 +378,13 @@ function BottomStats({ setCardHovered }) {
  hover:bg-[rgba(0,235,192,0.04)]
  "
                     >
-                        <motion.span
-                            className="
- material-symbols-outlined text-[rgb(0,235,192)] leading-none flex-shrink-0
- text-[22px] sm:text-[24px] md:text-[26px] lg:text-[28px] 
- "
+                        <motion.div
+                            className="text-[rgb(0,235,192)] leading-none flex-shrink-0 flex items-center justify-center"
                             whileHover={{ rotate: 360 }}
                             transition={{ duration: 0.5 }}
                         >
                             {s.icon}
-                        </motion.span>
+                        </motion.div>
                         <div className="flex flex-nowrap items-center justify-center gap-x-1.5 text-center leading-tight whitespace-nowrap">
                             <span className="text-[14px] sm:text-[15px] lg:text-[16px] font-bold text-white">
                                 <CountUpNumber value={s.label} />
@@ -441,35 +432,18 @@ const Whoweare = () => {
     const sectionRef = useRef(null);
 
     useEffect(() => {
-        const style = document.createElement('style');
-        style.textContent = `
- @keyframes spinCW { 
- from { transform: rotate(0deg); } 
- to { transform: rotate(360deg); } 
- }
- @keyframes spinCCW { 
- from { transform: rotate(0deg); } 
- to { transform: rotate(-360deg); } 
- }
- `;
-        document.head.appendChild(style);
-        return () => document.head.removeChild(style);
+        // Styles moved to index.css
     }, []);
 
     return (
         <>
-            <style>{`
- @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
- @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
- `}</style>
-
             <Section
                 id="about"
                 ref={sectionRef}
                 noPadding
                 className="bg-transparent text-white"
             >
-                <div className="relative w-full bg-transparent min-h-screen flex flex-col justify-center pt-16 pb-6 lg:pt-[80px] lg:pb-8">
+                <div className="relative w-full bg-transparent flex flex-col pt-16 pb-6 lg:pt-[80px] lg:pb-8">
                     <Container className="relative flex flex-col items-center">
                         <div className="relative w-full flex flex-col">
                             {/* Heading */}
@@ -492,7 +466,7 @@ const Whoweare = () => {
                                 <div className="w-full flex max-sm:flex-col sm:max-xl:flex-row sm:max-xl:justify-center sm:max-xl:gap-6 xl:absolute xl:inset-0 xl:pointer-events-none xl:px-0 xl:justify-between xl:items-center z-20 mt-8 xl:mt-0">
                                     <StaticCard
                                         side="left"
-                                        icon="visibility"
+                                        icon={<Eye size={32} strokeWidth={2} />}
                                         title="Our Vision"
                                         body="To become a leading innovation company that harnesses electronics and software to create smart, efficient, and sustainable technology solutions for the future."
                                         onMouseEnter={() => setCardHovered(true)}
@@ -501,7 +475,7 @@ const Whoweare = () => {
                                     />
                                     <StaticCard
                                         side="right"
-                                        icon="bolt"
+                                        icon={<Zap size={32} strokeWidth={2} />}
                                         title="Our Mission"
                                         body="To design and develop high-quality electronic systems and smart engineering solutions by combining power (watts) and electrons (trons), solving real-world problems with innovation, efficiency, and reliability."
                                         onMouseEnter={() => setCardHovered(true)}
