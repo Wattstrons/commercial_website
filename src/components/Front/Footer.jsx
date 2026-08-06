@@ -2,8 +2,29 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Link as ScrollLink } from "react-scroll";
 import logo from "../../assets/icon/logo.png";
-import { FaInstagram, FaLinkedin, FaWhatsapp } from "react-icons/fa";
 import Container from "../layout/Container";
+
+const InstagramIcon = ({ size, className }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+  </svg>
+);
+
+const LinkedinIcon = ({ size, className }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+    <rect x="2" y="9" width="4" height="12"></rect>
+    <circle cx="4" cy="4" r="2"></circle>
+  </svg>
+);
+
+const WhatsappIcon = ({ size, className }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+  </svg>
+);
 
 const Footer = () => {
  const location = useLocation();
@@ -109,9 +130,9 @@ const Footer = () => {
  </h3>
  <ul className="space-y-3 sm:space-y-4">
  {[
- { name: "Instagram", icon: <FaInstagram size={16} className=" " />, url: "https://www.instagram.com/wattstrons_10823?igsh=cG50MWpmd3Nvb201" },
- // { name: "LinkedIn", icon: <FaLinkedin size={16} className=" " />, url: "#" },
- { name: "WhatsApp", icon: <FaWhatsapp size={16} className=" " />, url: "https://wa.me/message/4IYHDIYZ6ZUQM1" },
+ { name: "Instagram", icon: <InstagramIcon size={16} className=" " />, url: "https://www.instagram.com/wattstrons_10823?igsh=cG50MWpmd3Nvb201" },
+ // { name: "LinkedIn", icon: <LinkedinIcon size={16} className=" " />, url: "#" },
+ { name: "WhatsApp", icon: <WhatsappIcon size={16} className=" " />, url: "https://wa.me/message/4IYHDIYZ6ZUQM1" },
  ].map((social) => (
  <li key={social.name}>
  <a
