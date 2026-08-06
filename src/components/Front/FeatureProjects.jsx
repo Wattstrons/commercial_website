@@ -182,7 +182,7 @@ const Featureprojects = () => {
                     variants={containerVariants}
                     initial="hidden"
                     whileInView="visible"
-                    viewport={{ once: true, margin: "-50px" }}
+                    viewport={{ once: true, margin: "150px" }}
                     className="ongoing-projects-grid"
                 >
                     {projects.map((project, idx) => (
