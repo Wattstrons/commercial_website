@@ -1,104 +1,87 @@
-import React, { useRef } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
-import Whoweare from '../components/Front/Whoweare'
+import React, { useRef, useMemo, lazy, Suspense } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+
+import Hero from "../components/Front/Hero";
+// Lazy-load below-the-fold components
+const Whoweare = lazy(() => import("../components/Front/Whoweare"));
+const Ourservice = lazy(() => import("../components/Front/Ourservice"));
+const Question = lazy(() => import("../components/Front/Question"));
+const ContactInformation = lazy(() => import("../components/Front/Contactinformation"));
+
 import Backgroundimage from "../assets/images/Backgroundimage.mp4";
-import Ourservice from "../components/Front/Ourservice"
-import Hero from '../components/Front/Hero' // Fixed path - added 'Front/'
-// import Featureprojects from '../components/Front/FeatureProjects' 
-import Question from '../components/Front/Question' // Fixed path - added 'Front/'
-import ContactInformation from '../components/Front/Contactinformation' // Fixed path - added 'Front/'
-import { StarsBackground } from '../components/animation/StarsBackground'
 
 const Home = () => {
- const containerRef = useRef(null);
+  const containerRef = useRef(null);
 
- const { scrollYProgress } = useScroll({
- target: containerRef,
- offset: ["start start", "end start"]
- });
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"],
+  });
 
- // Hero goes backward
- const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.85]);
- const filter = useTransform(scrollYProgress, [0, 0.5], ["blur(0px)", "blur(8px)"]);
- const y = useTransform(scrollYProgress, [0, 0.5], ["0vh", "-5vh"]);
+  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.85]);
+  const y = useTransform(scrollYProgress, [0, 0.5], ["0vh", "-5vh"]);
+  const overlayOpacity = useTransform(scrollYProgress, [0, 0.5], [0, 0.7]);
 
- // Incoming Whoweare layer animations
- const overlayBorderRadius = useTransform(scrollYProgress, [0, 0.5], ["40px", "0px"]);
- const overlayBoxShadow = useTransform(scrollYProgress, [0, 0.5], [
- "0px -20px 40px rgba(0, 0, 0, 0)",
- "0px -30px 60px rgba(0, 0, 0, 0.6)"
- ]);
+  return (
+    <div className="w-full">
+      {/* Hero */}
+      <section
+        id="home"
+        ref={containerRef}
+        className="relative w-full h-[200vh]"
+      >
+        <motion.div
+          layout={false}
+          className="sticky top-0 left-0 w-full h-screen overflow-hidden bg-black pt-16 sm:pt-20 md:pt-24 origin-top"
+          style={{
+            willChange: "transform",
+          }}
+        >
+          {/* Background Video */}
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            className="absolute inset-0 w-full h-full object-cover will-change-transform"
+          >
+            <source src={Backgroundimage} type="video/mp4" />
+          </video>
 
- return (
- <div>
- <section
- id="home"
- ref={containerRef}
- className="relative w-full h-[200vh]"
- >
- <motion.div
- className="bg-black sticky top-0 left-0 w-full h-screen overflow-hidden pt-16 sm:pt-20 md:pt-24 origin-top z-0"
- style={{ 
- scale, 
- filter,
- y,
- willChange: "transform, filter",
- transformStyle: "preserve-3d"
- }}
- >
- {/* Background Video */}
- <video
- autoPlay
- loop
- muted
- playsInline
- poster="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="
- className="absolute top-0 left-0 w-full h-full object-cover"
- >
- <source src={Backgroundimage} type="video/mp4" />
- </video>
+          {/* Overlay */}
+          <motion.div
+            className="absolute inset-0 bg-black pointer-events-none"
+            style={{
+              opacity: overlayOpacity,
+            }}
+          />
 
- {/* Dark Overlay */}
- <div className="absolute "></div>
+          {/* Hero Content */}
+          <div className="relative z-10 h-full flex items-center">
+            <Hero />
+          </div>
+        </motion.div>
+      </section>
 
- {/* Content Container */}
- <div className="relative z-10 w-full h-full flex flex-col">
- <div className="flex-1 w-full flex flex-col">
- <Hero />
- </div>
- </div>
- </motion.div>
- </section>
+      {/* Remaining Sections */}
+      <div className="relative z-20 -mt-[100vh]">
+        <div className="relative w-full bg-black">
+          <Suspense fallback={<div className="min-h-screen bg-black"></div>}>
+            <div className="relative overflow-hidden rounded-t-[40px]">
+              <Whoweare />
+            </div>
 
- {/* 
- This wrapper brings the content up to overlap the 200vh Hero section.
- CRITICAL: No overflow-hidden here, or it breaks Ourservice.jsx's sticky positioning! 
- */}
- <div className="relative z-20 -mt-[100vh]">
- <StarsBackground>
- {/* We apply the cinematic clipping and shadow ONLY to Whoweare */}
- <motion.div
- className="bg-transparent relative overflow-hidden"
- style={{
- borderTopLeftRadius: overlayBorderRadius,
- borderTopRightRadius: overlayBorderRadius,
- boxShadow: overlayBoxShadow
- }}
- >
- <Whoweare />
- </motion.div>
- 
- {/* Remaining sections are rendered normally without overflow clipping */}
- <div className="bg-transparent relative">
- <Ourservice />
- {/* <Featureprojects /> */}
- <Question />
- <ContactInformation />
- </div>
- </StarsBackground>
- </div>
- </div>
- )
-}
+            <div className="relative">
+              <Ourservice />
+              <Question />
+              <ContactInformation />
+            </div>
+          </Suspense>
+        </div>
+      </div>
+    </div>
+  );
+};
 
-export default Home
+export default Home;
