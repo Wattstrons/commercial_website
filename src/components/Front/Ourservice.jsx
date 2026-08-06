@@ -13,14 +13,14 @@ import Section from "../layout/Section";
 import SectionHeader from "../layout/SectionHeader";
 import Paragraph from "../layout/Paragraph";
 
-import boardImageEmbedded from "../../assets/ourservice/embedded.png";
-import boardImageIoT from "../../assets/ourservice/Iot.png";
-import boardImagePCB from "../../assets/ourservice/PCBDesigning.png";
-import boardImageApp from "../../assets/ourservice/prototyping.png";
-import boardImageEdgeAI from "../../assets/ourservice/ESD.png";
-import boardImageIndustrial from "../../assets/ourservice/softwaredevelopment.jpg";
-import boardImageSensing from "../../assets/ourservice/portaldevelopment.jpg";
-import boardImageSecurity from "../../assets/ourservice/IndustrialEnclosure_ProductDesign.png";
+import boardImageEmbedded from "../../assets/ourservice/embedded.webp";
+import boardImageIoT from "../../assets/ourservice/Iot.webp";
+import boardImagePCB from "../../assets/ourservice/PCBDesigning.webp";
+import boardImageApp from "../../assets/ourservice/prototyping.webp";
+import boardImageEdgeAI from "../../assets/ourservice/ESD.webp";
+import boardImageIndustrial from "../../assets/ourservice/softwaredevelopment.webp";
+import boardImageSensing from "../../assets/ourservice/portaldevelopment.webp";
+import boardImageSecurity from "../../assets/ourservice/IndustrialEnclosure_ProductDesign.webp";
 
 // ─── Font Loader with CRT effect and Space Grotesk ───────────────────────────
 const FontLoader = () => (
@@ -29,21 +29,6 @@ const FontLoader = () => (
 
  * {
  font-family: 'Space Grotesk', sans-serif;
- }
-
- @keyframes scan {
- 0% { transform: translateY(-100%); }
- 100% { transform: translateY(100%); }
- }
- @keyframes crtFlicker {
- 0%, 100% { opacity: 1; }
- 50% { opacity: 0.98; }
- }
- .crt-scan {
- animation: scan 8s linear infinite;
- }
- .crt-flicker {
- animation: crtFlicker 0.15s infinite;
  }
  `}</style>
 );
@@ -180,11 +165,18 @@ const ServiceCard = ({ service, index }) => {
     const tX = useSpring(useTransform(rawX, [-0.5, 0.5], [-6, 6]), springCfg);
     const tY = useSpring(useTransform(rawY, [-0.5, 0.5], [-6, 6]), springCfg);
 
+    const rafId = useRef(null);
+
     const handleMove = useCallback((e) => {
-        const r = ref.current?.getBoundingClientRect();
-        if (!r) return;
-        rawX.set((e.clientX - r.left) / r.width - 0.5);
-        rawY.set((e.clientY - r.top) / r.height - 0.5);
+        if (rafId.current) cancelAnimationFrame(rafId.current);
+        
+        rafId.current = requestAnimationFrame(() => {
+            const r = ref.current?.getBoundingClientRect();
+            if (!r) return;
+            rawX.set((e.clientX - r.left) / r.width - 0.5);
+            rawY.set((e.clientY - r.top) / r.height - 0.5);
+            rafId.current = null;
+        });
     }, [rawX, rawY]);
 
     const handleLeave = useCallback(() => {
@@ -311,12 +303,7 @@ const AnimatedBg = () => (
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 overflow-hidden"
     >
-        <div
-            className="crt-scan pointer-events-none absolute inset-0 opacity-40 [background-size:100%_4px]"
-            style={{
-                background: "linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.15) 50%)",
-            }}
-        />
+        {/* CRT Scanline has been removed to stop the black scanning effect */}
     </div>
 );
 
@@ -333,7 +320,7 @@ const LeftPanel = () => (
                 transition: { staggerChildren: 0.2, delayChildren: 0.1 }
             }
         }}
-        className="sticky top-0 z-20 flex h-screen [flex:0.85] flex-col justify-center self-start pt-[120px] xl:pt-[150px] pr-[clamp(40px,3vw,60px)] pb-0 pl-0"
+        className="sticky top-0 z-20 flex h-screen [flex:0.85] flex-col justify-center self-start pt-[120px] xl:pt-[150px] 2xl:pt-[120px] pr-[clamp(40px,3vw,60px)] pb-0 pl-0"
     >
         <motion.div
             variants={{
@@ -409,7 +396,7 @@ const RightPanel = ({ activeGroup }) => {
 
     return (
         <div
-            className={`sticky top-0 z-0 flex h-screen [flex:1.15] flex-col justify-center self-start overflow-hidden ${isMobile ? "px-0 pt-[30px] pb-5" : "pt-[120px] xl:pt-[150px] pr-0 pb-5 pl-[clamp(20px,2vw,40px)]"
+            className={`sticky top-0 z-0 flex h-screen [flex:1.15] flex-col justify-center self-start overflow-hidden ${isMobile ? "px-0 pt-[30px] pb-5" : "pt-[120px] xl:pt-[150px] 2xl:pt-[120px] pr-0 pb-5 pl-[clamp(20px,2vw,40px)]"
                 }`}
         >
             <AnimatePresence mode="wait">
@@ -434,16 +421,11 @@ const MobileServicesView = () => {
     const navigate = useNavigate();
 
     return (
-        <Section id="expertise" className="bg-transparent min-h-screen !py-8">
+        <Section id="expertise" className="bg-transparent min-h-screen !py-8 relative overflow-hidden">
             <Container>
-                <div
-                    className="crt-scan pointer-events-none fixed inset-0 z-10 [background-size:100%_4px]"
-                    style={{
-                        background: "linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.15) 50%)",
-                    }}
-                />
+                {/* CRT Scanline has been removed from mobile view as well */}
 
-                <div className="crt-flicker">
+                <div>
                     <div className="mb-12 text-center">
                         <h1 className="mb-4 text-[clamp(32px,7vw,42px)] font-bold tracking-[-0.02em] text-white">
                             Our Services
@@ -472,6 +454,7 @@ const MobileServicesView = () => {
                                         <img
                                             src={service.image}
                                             alt={service.title}
+                                            decoding="async"
                                             className="h-full w-full object-cover"
                                         />
                                     </div>
@@ -587,7 +570,7 @@ export default function ServicesSection() {
                     <AnimatedBg />
 
                     {/* Centered heading */}
-                    <div className="pointer-events-none absolute inset-x-0 top-[55px] xl:top-[60px] z-40 flex flex-col items-center px-6 text-center">
+                    <div className="pointer-events-none absolute inset-x-0 top-[15px] xl:top-[20px] 2xl:top-[45px] z-40 flex flex-col items-center px-6 text-center">
                         <SectionHeader
                             title="Our Services"
 
