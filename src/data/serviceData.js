@@ -55,59 +55,59 @@ import {
   Link2
 } from "lucide-react";
 
-import embeddedAboutUsImg from "../assets/ourservice/embeddedaboutus.png";
-import iNstinImg from "../assets/ourservice/i_nstin.jpeg";
-import iotAboutUsImg from "../assets/ourservice/iotaboutus.png";
-import pcbAboutUsImg from "../assets/ourservice/pcbaboutus.png";
-import productAboutUsImg from "../assets/ourservice/productaboutus.png";
-import aiAboutUsImg from "../assets/ourservice/aiaboutus.png";
-import softwareAboutUsImg from "../assets/ourservice/softwareaboutus.png";
-import portalAboutUsImg from "../assets/ourservice/portalaboutus.png";
-import industrialAboutUsImg from "../assets/ourservice/industrialaboutus.png";
-import alanKayImg from "../assets/ourservice/alankay.png";
-import mattMullenwegImg from "../assets/ourservice/MattMullenweg.png";
-import dieterRamsImg from "../assets/ourservice/DieterRams.png";
-import steveJobsImg from "../assets/ourservice/SteveJobs.png";
+import embeddedAboutUsImg from "../assets/ourservice/embeddedaboutus.webp";
+import iNstinImg from "../assets/ourservice/i_nstin.webp";
+import iotAboutUsImg from "../assets/ourservice/iotaboutus.webp";
+import pcbAboutUsImg from "../assets/ourservice/pcbaboutus.webp";
+import productAboutUsImg from "../assets/ourservice/productaboutus.webp";
+import aiAboutUsImg from "../assets/ourservice/aiaboutus.webp";
+import softwareAboutUsImg from "../assets/ourservice/softwareaboutus.webp";
+import portalAboutUsImg from "../assets/ourservice/portalaboutus.webp";
+import industrialAboutUsImg from "../assets/ourservice/industrialaboutus.webp";
+import alanKayImg from "../assets/ourservice/alankay.webp";
+import mattMullenwegImg from "../assets/ourservice/MattMullenweg.webp";
+import dieterRamsImg from "../assets/ourservice/DieterRams.webp";
+import steveJobsImg from "../assets/ourservice/SteveJobs.webp";
 import stm32Logo from "../assets/icon/stm32.png";
 import loraLogo from "../assets/icon/loro.png";
 import threeDLogo from "../assets/icon/3d.png";
 import bluetoothLogo from "../assets/icon/bluetooth.png";
 import altiumLogo from "../assets/icon/altium.png";
-import henryFordImg from "../assets/ourservice/HenryFord.png";
-import stephenHawkingImg from "../assets/ourservice/StephenHawking.jpg";
-import edwardBerardImg from "../assets/ourservice/Edward V. Berard,.jpg";
+import henryFordImg from "../assets/ourservice/HenryFord.webp";
+import stephenHawkingImg from "../assets/ourservice/StephenHawking.webp";
+import edwardBerardImg from "../assets/ourservice/Edward V. Berard,.webp";
 
-import portal1 from "../assets/servicehero/portal-1.png";
-import portal2 from "../assets/servicehero/portal-2.png";
-import portal3 from "../assets/servicehero/portal-3.png";
+import portal1 from "../assets/servicehero/portal-1.webp";
+import portal2 from "../assets/servicehero/portal-2.webp";
+import portal3 from "../assets/servicehero/portal-3.webp";
 
-import ai1 from "../assets/servicehero/ai-1.png";
-import ai2 from "../assets/servicehero/ai-2.png";
-import ai3 from "../assets/servicehero/ai-3.png";
+import ai1 from "../assets/servicehero/ai-1.webp";
+import ai2 from "../assets/servicehero/ai-2.webp";
+import ai3 from "../assets/servicehero/ai-3.webp";
 
-import embedded1 from "../assets/servicehero/embedded-1.png";
-import embedded2 from "../assets/servicehero/embedded-2.png";
-import embedded3 from "../assets/servicehero/embedded-3.png";
+import embedded1 from "../assets/servicehero/embedded-1.webp";
+import embedded2 from "../assets/servicehero/embedded-2.webp";
+import embedded3 from "../assets/servicehero/embedded-3.webp";
 
-import iot1 from "../assets/servicehero/iot-1.png";
-import iot2 from "../assets/servicehero/iot-2.png";
-import iot3 from "../assets/servicehero/iot-3.png";
+import iot1 from "../assets/servicehero/iot-1.webp";
+import iot2 from "../assets/servicehero/iot-2.webp";
+import iot3 from "../assets/servicehero/iot-3.webp";
 
-import industrial1 from "../assets/servicehero/industrial-1.png";
-import industrial2 from "../assets/servicehero/industrial-2.png";
-import industrial3 from "../assets/servicehero/industrial-3.png";
+import industrial1 from "../assets/servicehero/industrial-1.webp";
+import industrial2 from "../assets/servicehero/industrial-2.webp";
+import industrial3 from "../assets/servicehero/industrial-3.webp";
 
-import pcb1 from "../assets/servicehero/pcb-1.png";
-import pcb2 from "../assets/servicehero/pcb-2.png";
-import pcb3 from "../assets/servicehero/pcb-3.png";
+import pcb1 from "../assets/servicehero/pcb-1.webp";
+import pcb2 from "../assets/servicehero/pcb-2.webp";
+import pcb3 from "../assets/servicehero/pcb-3.webp";
 
-import product1 from "../assets/servicehero/product-1.png";
-import product2 from "../assets/servicehero/product-2.png";
-import product3 from "../assets/servicehero/product-3.png";
+import product1 from "../assets/servicehero/product-1.webp";
+import product2 from "../assets/servicehero/product-2.webp";
+import product3 from "../assets/servicehero/product-3.webp";
 
-import software1 from "../assets/servicehero/software-1.png";
-import software2 from "../assets/servicehero/software-2.png";
-import software3 from "../assets/servicehero/software-3.png";
+import software1 from "../assets/servicehero/software-1.webp";
+import software2 from "../assets/servicehero/software-2.webp";
+import software3 from "../assets/servicehero/software-3.webp";
 
 export const PortalDevelopmentData = {
   hero: {
