@@ -1,7 +1,7 @@
 import React, { useRef, useCallback, useState } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { ArrowRight, MapPin, Briefcase, X, Send, Loader2, FileText, Calendar, DollarSign, Laptop, Clock, Share2, Check } from "lucide-react";
-import careersImage from "../assets/images/careers.png";
+import careersImage from "../assets/images/careers.webp";
 
 // Job Description Modal Component
 const JobDescriptionModal = ({ job, isOpen, onClose }) => {
