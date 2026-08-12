@@ -10,7 +10,7 @@ const navItems = [
  { id: "home", label: "Home", scrollId: "home" },
  { id: "about", label: "About Us", scrollId: "about" },
  { id: "expertise", label: "Our Services", scrollId: "expertise" },
- { id: "projects", label: "Projects", scrollId: "projects" },
+ // { id: "projects", label: "Projects", scrollId: "projects" },
  { id: "careers", label: "Careers", to: "/careers" },
  { id: "contact", label: "Contact Us", scrollId: "contact" },
 ];
