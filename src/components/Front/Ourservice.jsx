@@ -169,7 +169,7 @@ const ServiceCard = ({ service, index }) => {
 
     const handleMove = useCallback((e) => {
         if (rafId.current) cancelAnimationFrame(rafId.current);
-        
+
         rafId.current = requestAnimationFrame(() => {
             const r = ref.current?.getBoundingClientRect();
             if (!r) return;
@@ -260,7 +260,7 @@ const ServiceCard = ({ service, index }) => {
                                 className="overflow-hidden"
                             >
                                 <Paragraph
-                                    className="m-0 mb-4 max-w-[95%] "
+                                    className="m-0 max-w-[95%] text-[13px] sm:text-[14px] lg:text-[14px] xl:text-[15px] leading-snug"
                                 >
                                     {service.description}
                                 </Paragraph>
