@@ -153,8 +153,8 @@
                             exit={{ height: 0, opacity: 0 }}
                             transition={{ duration: 0.3 }}
                         >
-                            <div className="px-4 pb-4 pt-0 md:px-5 md:pb-5 md:pt-0">
-                                <p className="text-[14px] sm:text-[15px] lg:text-[16px] leading-relaxed text-white pl-[52px] pr-4">
+                            <div className="px-4 pb-6 pt-0 md:px-5 md:pb-8 md:pt-0">
+                                <p className="m-0 text-[14px] sm:text-[15px] lg:text-[16px] leading-relaxed text-white pl-[52px] pr-4">
                                     {project.desc}
                                 </p>
                             </div>
