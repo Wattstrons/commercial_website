@@ -34,7 +34,7 @@ const Footer = () => {
  { label: "Home", scrollId: "home" },
  { label: "About Us", scrollId: "about" },
  { label: "Our Services", scrollId: "expertise" },
- { label: "Projects", scrollId: "projects" },
+//  { label: "Projects", scrollId: "projects" },
  { label: "Contact Us", scrollId: "contact" },
  ];
 
