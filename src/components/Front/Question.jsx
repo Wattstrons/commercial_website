@@ -78,7 +78,7 @@ const Question = () => {
     };
 
     return (
-        <Section className="bg-transparent text-white relative z-10 !pt-16 lg:!pt-[80px] 2xl:!pt-[150px] !pb-8 md:!pb-12 lg:!pb-16">
+        <Section className="bg-transparent text-white relative z-10 !pt-8 lg:!pt-[32px] 2xl:!pt-[45px] !pb-0 md:!pb-0 lg:!pb-0">
             <Container className="question-container">
 
                 {/* ================= HEADING ================= */}
