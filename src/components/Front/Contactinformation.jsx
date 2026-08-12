@@ -76,7 +76,7 @@ const ContactInformation = () => {
     return (
         <Section
             id="contact"
-            className="relative bg-transparent text-white overflow-hidden !pt-8 md:!pt-12 lg:!pt-16 2xl:!pt-[150px]"
+            className="relative bg-transparent text-white overflow-hidden !pt-8 lg:!pt-[32px] 2xl:!pt-[45px]"
         >
             <Container className="contact-container">
                 <ResponsiveGrid columns="2" className="!grid-cols-1 sm:!grid-cols-1 md:!grid-cols-1 lg:!grid-cols-2 gap-12 lg:gap-16 2xl:gap-24">
