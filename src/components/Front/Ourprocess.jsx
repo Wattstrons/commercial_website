@@ -124,7 +124,7 @@ const AccordionItem = ({ project, isActive, onClick }) => {
                 boxShadow: isActive ? `0 0 20px ${glowColor}15` : "none",
             }}
         >
-            <div className="px-4 py-3 md:px-5 md:py-4 flex items-center gap-4">
+            <div className="px-4 py-3 md:px-5 md:py-4 flex items-center gap-4 process-card-title">
                 {/* Icon */}
                 <div
                     className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-500 ${
@@ -161,7 +161,7 @@ const AccordionItem = ({ project, isActive, onClick }) => {
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.3 }}
                     >
-                        <div className="px-4 pb-6 pt-0 md:px-5 md:pb-8 md:pt-0">
+                        <div className="px-4 pb-6 pt-0 md:px-5 md:pb-8 md:pt-0 process-card-desc">
                             <p className="m-0 text-[14px] sm:text-[15px] lg:text-[16px] leading-relaxed text-white pl-[52px] pr-4">
                                 {project.desc}
                             </p>
@@ -331,9 +331,8 @@ const Ourprocess = ({
             style={{ height: `${(steps.length + 1) * 100}vh` }}
         >
             <Container className="sticky top-0 h-screen overflow-hidden flex pt-0">
-
-                {/* Heading like Technology Stack */}
-                <div className="absolute top-[50px] left-0 right-0 w-full text-center z-20 pointer-events-none">
+                    {/* Heading like Technology Stack */}
+                    <div className="absolute left-0 right-0 w-full text-center z-20 pointer-events-none process-heading">
                     <SectionHeader
                         title={title}
                         subtitle={subtitle}
@@ -356,11 +355,11 @@ const Ourprocess = ({
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, margin: "150px" }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="flex-none basis-1/2 relative overflow-visible z-0 flex items-start justify-center pt-[150px]"
+                    className="flex-none basis-1/2 relative overflow-visible z-0 flex items-start justify-center pt-[150px] process-main-padding"
                 >
                     <div className="w-full scale-[1.15]">
                         <motion.div
-                            className="w-full h-[65vh] min-h-[500px] mt-5"
+                            className="w-full h-[65vh] min-h-[350px] mt-5"
                             animate={{ y: [-15, 15, -15] }}
                             transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
                         >
@@ -374,9 +373,9 @@ const Ourprocess = ({
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, margin: "150px" }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="flex-none basis-1/2 relative flex items-start justify-end pl-[clamp(24px,4vw,64px)] z-10 pt-[150px]"
+                    className="flex-none basis-1/2 relative flex items-start justify-end pl-[clamp(24px,4vw,64px)] z-10 pt-[150px] process-main-padding"
                 >
-                    <div className="flex flex-col gap-[8px] xl:gap-[12px] 2xl:gap-[16px] w-full h-auto overflow-y-visible pr-3 pb-5 pl-1">
+                    <div className="flex flex-col gap-[8px] xl:gap-[12px] 2xl:gap-[16px] w-full h-auto overflow-y-visible pr-3 pb-5 pl-1 process-gap-container">
                         {desktopAccordionList}
                     </div>
                 </motion.div>
