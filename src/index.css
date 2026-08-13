@@ -15,8 +15,47 @@ body {
   background-color: #000;
   color: #fff;
 }
+/* ── Our Process TV vs Laptop Layout Adjustments ── */
 
+/* TV / Scaled Displays (1280px to 1407px) */
+@media (min-width: 1280px) and (max-width: 1407px) {
+  .process-card-title {
+    padding-top: 0.5rem !important; /* py-2 */
+    padding-bottom: 0.5rem !important; /* py-2 */
+  }
+  .process-card-desc {
+    padding-bottom: 1rem !important; /* pb-4 */
+  }
+  .process-gap-container {
+    gap: 16px !important; /* gap-[16px] */
+  }
+  .process-heading {
+    top: 15px !important;
+  }
+  .process-main-padding {
+    padding-top: 110px !important;
+  }
+}
 
+/* Laptops / Large Desktops (1408px and up) */
+@media (min-width: 1408px) {
+  .process-heading {
+    top: 50px !important;
+  }
+  .process-card-title {
+    padding-top: 1rem !important; /* py-4 */
+    padding-bottom: 1rem !important;
+  }
+  .process-card-desc {
+    padding-bottom: 2rem !important; /* pb-8 */
+  }
+  .process-gap-container {
+    gap: 16px !important; /* gap-[16px] */
+  }
+  .process-main-padding {
+    padding-top: 200px !important;
+  }
+}
 
 body {
   font-family: 'Space Grotesk', sans-serif;
