@@ -78,11 +78,14 @@ const Question = () => {
     };
 
     return (
-        <Section className="bg-transparent text-white relative z-10 !pt-8 lg:!pt-[32px] 2xl:!pt-[45px] !pb-0 md:!pb-0 lg:!pb-0">
+        <Section className="bg-transparent text-white relative z-10 !pt-6 lg:!pt-8 2xl:-mt-[150px] !pb-0 md:!pb-0 lg:!pb-0">
             <Container className="question-container">
+
+
 
                 {/* ================= HEADING ================= */}
                 <SectionHeader
+
                     title="Frequently Asked Questions"
                     titleTag="h1"
                     subtitle="Everything you need to know about our innovative technology solutions and intelligent products."
