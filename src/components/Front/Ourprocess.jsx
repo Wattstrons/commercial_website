@@ -325,7 +325,7 @@
         /* ── DESKTOP ── */
         return (
             <Section ref={sectionRef} className={className} style={{ position: "relative", height: `${(steps.length + 1) * 100}vh`, background: "#000", overflowX: "clip" }}>
-                <Container style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden", display: "flex", paddingTop: "120px" }}>
+                <Container style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden", display: "flex", paddingTop: "100px" }}>
 
                     {/* Heading like Technology Stack */}
                     <div
@@ -362,7 +362,7 @@
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true, margin: "150px" }}
                         transition={{ duration: 0.8, ease: "easeOut" }}
-                        style={{ flex: "0 0 50%", position: "relative", overflow: "visible", zIndex: 0, display: "flex", alignItems: "flex-start", justifyContent: "center", paddingTop: "12vh" }}
+                        style={{ flex: "0 0 50%", position: "relative", overflow: "visible", zIndex: 0, display: "flex", alignItems: "flex-start", justifyContent: "center", paddingTop: "8vh" }}
                     >
                         <div style={{ width: "100%", transform: "scale(1.15)" }}>
                             <motion.div
@@ -375,15 +375,14 @@
                         </div>
                     </motion.div>
 
-                    {/* RIGHT — Accordion List */}
                     <motion.div
                         initial={{ opacity: 0, x: 100 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true, margin: "150px" }}
                         transition={{ duration: 0.8, ease: "easeOut" }}
-                        style={{ flex: "0 0 50%", position: "relative", display: "flex", alignItems: "flex-start", justifyContent: "flex-end", paddingLeft: "clamp(24px, 4vw, 64px)", zIndex: 10, paddingTop: "12vh" }}
+                        style={{ flex: "0 0 50%", position: "relative", display: "flex", alignItems: "flex-start", justifyContent: "flex-end", paddingLeft: "clamp(24px, 4vw, 64px)", zIndex: 10, paddingTop: "8vh" }}
                     >
-                        <div className="flex flex-col gap-[10px] xl:gap-[16px] 2xl:gap-[24px]" style={{ width: "100%", height: "auto", marginTop: "40px", maxHeight: "70vh", overflowY: "auto", paddingRight: "12px", paddingBottom: "40px", paddingLeft: "4px" }}>
+                        <div className="flex flex-col gap-[10px] xl:gap-[16px] 2xl:gap-[24px]" style={{ width: "100%", height: "auto", marginTop: "10px", overflowY: "visible", paddingRight: "12px", paddingBottom: "20px", paddingLeft: "4px" }}>
                             {desktopAccordionList}
                         </div>
                     </motion.div>
