@@ -116,9 +116,8 @@ const AccordionItem = ({ project, isActive, onClick }) => {
         <motion.div
             layout
             onClick={onClick}
-            className={`cursor-pointer transition-all duration-500 overflow-hidden bg-[#0A0A0A] rounded-2xl ${
-                isActive ? "opacity-100" : "opacity-50"
-            }`}
+            className={`cursor-pointer transition-all duration-500 overflow-hidden bg-[#0A0A0A] rounded-2xl ${isActive ? "opacity-100" : "opacity-50"
+                }`}
             style={{
                 border: isActive ? `1px solid ${glowColor}` : "1px solid rgba(255,255,255,0.05)",
                 boxShadow: isActive ? `0 0 20px ${glowColor}15` : "none",
@@ -127,27 +126,24 @@ const AccordionItem = ({ project, isActive, onClick }) => {
             <div className="px-4 py-3 md:px-5 md:py-4 flex items-center gap-4 process-card-title">
                 {/* Icon */}
                 <div
-                    className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-500 ${
-                        isActive ? "bg-white/[0.08]" : "bg-white/[0.03]"
-                    }`}
+                    className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-500 ${isActive ? "bg-white/[0.08]" : "bg-white/[0.03]"
+                        }`}
                 >
                     {Icon && <Icon size={18} color={isActive ? glowColor : "rgba(255,255,255,0.5)"} />}
                 </div>
 
                 {/* Title */}
                 <h3
-                    className={`text-base md:text-lg font-bold flex-1 transition-colors duration-500 ${
-                        isActive ? "text-white" : "text-white/70"
-                    }`}
+                    className={`text-base md:text-lg font-bold flex-1 transition-colors duration-500 ${isActive ? "text-white" : "text-white/70"
+                        }`}
                 >
                     {project.title}
                 </h3>
 
                 {/* Number */}
                 <div
-                    className={`text-lg md:text-xl font-semibold transition-colors duration-500 ${
-                        isActive ? "text-white" : "text-white/30"
-                    }`}
+                    className={`text-lg md:text-xl font-semibold transition-colors duration-500 ${isActive ? "text-white" : "text-white/30"
+                        }`}
                 >
                     {project.number}
                 </div>
@@ -331,8 +327,8 @@ const Ourprocess = ({
             style={{ height: `${(steps.length + 1) * 100}vh` }}
         >
             <Container className="sticky top-0 h-screen overflow-hidden flex pt-0">
-                    {/* Heading like Technology Stack */}
-                    <div className="absolute left-0 right-0 w-full text-center z-20 pointer-events-none process-heading">
+                {/* Heading like Technology Stack */}
+                <div className="absolute left-0 right-0 w-full text-center z-20 pointer-events-none process-heading">
                     <SectionHeader
                         title={title}
                         subtitle={subtitle}
@@ -355,12 +351,13 @@ const Ourprocess = ({
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, margin: "150px" }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="flex-none basis-1/2 relative overflow-visible z-0 flex items-start justify-center pt-[150px] process-main-padding"
+                    className="flex-none basis-1/2 relative overflow-visible z-0 flex items-start justify-center pt-[150px]  process-main-padding"
                 >
                     <div className="w-full scale-[1.15]">
                         <motion.div
                             className="w-full h-[65vh] min-h-[350px] mt-5"
                             animate={{ y: [-15, 15, -15] }}
+
                             transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
                         >
                             {memoizedParticleCanvas}
@@ -373,7 +370,7 @@ const Ourprocess = ({
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, margin: "150px" }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="flex-none basis-1/2 relative flex items-start justify-end pl-[clamp(24px,4vw,64px)] z-10 pt-[150px] process-main-padding"
+                    className="flex-none basis-1/2 relative flex items-start justify-end pl-[clamp(24px,4vw,64px)] z-10 pt-[150px] process-main-padding 2xl:!mt-[80px]"
                 >
                     <div className="flex flex-col gap-[8px] xl:gap-[12px] 2xl:gap-[16px] w-full h-auto overflow-y-visible pr-3 pb-5 pl-1 process-gap-container">
                         {desktopAccordionList}
