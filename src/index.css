@@ -68,12 +68,12 @@ body {
   }
 
   .process-main-padding {
-    padding-top: 200px !important;
+    padding-top: 150px !important;
   }
 }
 
 /* 2XL Screens (Ultra-wide or 4K monitors, strictly larger than 1080p) */
-@media (min-width: 1921px) {
+@media (min-width: 1621px) {
   .process-right-side {
     margin-top: 100px !important;
   }
