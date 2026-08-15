@@ -370,7 +370,7 @@ const Ourprocess = ({
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, margin: "150px" }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="flex-none basis-1/2 relative flex items-start justify-end pl-[clamp(24px,4vw,64px)] z-10 pt-[150px] process-main-padding 2xl:!mt-[80px]"
+                    className="flex-none basis-1/2 relative flex items-start justify-end pl-[clamp(24px,4vw,64px)] z-10 pt-[150px] process-main-padding 2xl:!mt-[160px]"
                 >
                     <div className="flex flex-col gap-[8px] xl:gap-[12px] 2xl:gap-[16px] w-full h-auto overflow-y-visible pr-3 pb-5 pl-1 process-gap-container">
                         {desktopAccordionList}
