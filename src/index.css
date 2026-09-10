@@ -43,6 +43,10 @@ body {
   .process-main-padding {
     padding-top: 110px !important;
   }
+
+  .process-right-side {
+    margin-top: 60px !important;
+  }
 }
 
 /* Laptops / Large Desktops (1408px and up) */
@@ -69,6 +73,11 @@ body {
 
   .process-main-padding {
     padding-top: 150px !important;
+  }
+
+  
+  .process-right-side {
+    margin-top: 20px !important;
   }
 }
 
